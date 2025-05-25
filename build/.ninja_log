@@ -1,0 +1,19 @@
+# ninja log v6
+534	560	1747476297841236796	CMakeFiles/Rythin.dir/r_parser.cpp.o.modmap	3fef7e340e370095
+534	560	1747476297841236796	CMakeFiles/Rythin.dir/CXX.dd	3fef7e340e370095
+561	3541	1747476297843834729	CMakeFiles/Rythin.dir/r_lex.cpp.o	7a8ffa79ca1de43e
+562	3361	1747476297844088304	CMakeFiles/Rythin.dir/r_parser.cpp.o	1467248cd464fefd
+534	560	1747476297841236796	CMakeFiles/Rythin.dir/utils.cpp.o.modmap	3fef7e340e370095
+534	560	1747476297841236796	CMakeFiles/Rythin.dir/main.cpp.o.modmap	3fef7e340e370095
+561	3051	1747476297842167108	CMakeFiles/Rythin.dir/main.cpp.o	1022033b4aad1ed8
+3	490	1747476297284167083	CMakeFiles/Rythin.dir/r_parser.cpp.o.ddi	5b1c35b7908ca2ee
+534	560	1747476297841236796	CMakeFiles/Rythin.dir/r_lex.cpp.o.modmap	3fef7e340e370095
+563	2520	1747476297844167108	CMakeFiles/Rythin.dir/t_tokens.cpp.o	88aeb8ab827457a2
+1	533	1747476297282167083	CMakeFiles/Rythin.dir/main.cpp.o.ddi	65791e445c7e38a7
+1	394	1747476297283492806	CMakeFiles/Rythin.dir/r_lex.cpp.o.ddi	cba44565d1e63b8
+534	560	1747476297841236796	CMakeFiles/Rythin.dir/t_tokens.cpp.o.modmap	3fef7e340e370095
+564	2841	1747476297845167109	CMakeFiles/Rythin.dir/utils.cpp.o	1baaf4bab803f950
+3	228	1747476297285208195	CMakeFiles/Rythin.dir/t_tokens.cpp.o.ddi	ab5cf3a4d9774ed4
+3541	3669	1747476300822167241	Rythin	60e880cff8551d80
+7	416	1747476297288167084	CMakeFiles/Rythin.dir/utils.cpp.o.ddi	effd1e36280b607b
+534	560	1747476297841236796	/home/el-rafa/CLionProjects/Rythin/build/CMakeFiles/Rythin.dir/CXXModules.json	3fef7e340e370095

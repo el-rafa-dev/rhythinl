@@ -1,0 +1,38 @@
+[
+{
+  "directory": "/home/el-rafa/CLionProjects/Rythin/build",
+  "command": "/usr/bin/g++ -g -std=gnu++20 -fmodules-ts -fmodule-mapper=CMakeFiles/rythin.dir/rythin.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles/rythin.dir/rythin.cpp.o -c /home/el-rafa/CLionProjects/Rythin/rythin.cpp",
+  "file": "/home/el-rafa/CLionProjects/Rythin/rythin.cpp",
+  "output": "CMakeFiles/rythin.dir/rythin.cpp.o"
+},
+{
+  "directory": "/home/el-rafa/CLionProjects/Rythin/build",
+  "command": "/usr/bin/g++ -g -std=gnu++20 -fmodules-ts -fmodule-mapper=CMakeFiles/rythin.dir/r_lex.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles/rythin.dir/r_lex.cpp.o -c /home/el-rafa/CLionProjects/Rythin/r_lex.cpp",
+  "file": "/home/el-rafa/CLionProjects/Rythin/r_lex.cpp",
+  "output": "CMakeFiles/rythin.dir/r_lex.cpp.o"
+},
+{
+  "directory": "/home/el-rafa/CLionProjects/Rythin/build",
+  "command": "/usr/bin/g++ -g -std=gnu++20 -fmodules-ts -fmodule-mapper=CMakeFiles/rythin.dir/r_parser.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles/rythin.dir/r_parser.cpp.o -c /home/el-rafa/CLionProjects/Rythin/r_parser.cpp",
+  "file": "/home/el-rafa/CLionProjects/Rythin/r_parser.cpp",
+  "output": "CMakeFiles/rythin.dir/r_parser.cpp.o"
+},
+{
+  "directory": "/home/el-rafa/CLionProjects/Rythin/build",
+  "command": "/usr/bin/g++ -g -std=gnu++20 -fmodules-ts -fmodule-mapper=CMakeFiles/rythin.dir/t_tokens.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles/rythin.dir/t_tokens.cpp.o -c /home/el-rafa/CLionProjects/Rythin/t_tokens.cpp",
+  "file": "/home/el-rafa/CLionProjects/Rythin/t_tokens.cpp",
+  "output": "CMakeFiles/rythin.dir/t_tokens.cpp.o"
+},
+{
+  "directory": "/home/el-rafa/CLionProjects/Rythin/build",
+  "command": "/usr/bin/g++ -g -std=gnu++20 -fmodules-ts -fmodule-mapper=CMakeFiles/rythin.dir/utils.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles/rythin.dir/utils.cpp.o -c /home/el-rafa/CLionProjects/Rythin/utils.cpp",
+  "file": "/home/el-rafa/CLionProjects/Rythin/utils.cpp",
+  "output": "CMakeFiles/rythin.dir/utils.cpp.o"
+},
+{
+  "directory": "/home/el-rafa/CLionProjects/Rythin/build",
+  "command": "/usr/bin/g++ -g -std=gnu++20 -fmodules-ts -fmodule-mapper=CMakeFiles/rythin.dir/r_inter.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles/rythin.dir/r_inter.cpp.o -c /home/el-rafa/CLionProjects/Rythin/r_inter.cpp",
+  "file": "/home/el-rafa/CLionProjects/Rythin/r_inter.cpp",
+  "output": "CMakeFiles/rythin.dir/r_inter.cpp.o"
+}
+]

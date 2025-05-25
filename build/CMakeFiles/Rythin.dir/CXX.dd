@@ -1,0 +1,11 @@
+ninja_dyndep_version = 1.0
+build CMakeFiles/Rythin.dir/main.cpp.o: dyndep
+
+build CMakeFiles/Rythin.dir/r_lex.cpp.o: dyndep
+
+build CMakeFiles/Rythin.dir/r_parser.cpp.o: dyndep
+
+build CMakeFiles/Rythin.dir/t_tokens.cpp.o: dyndep
+
+build CMakeFiles/Rythin.dir/utils.cpp.o: dyndep
+

@@ -1,0 +1,52 @@
+{
+	"bmi-installation" : null,
+	"compiler-frontend-variant" : "GNU",
+	"compiler-id" : "GNU",
+	"compiler-simulate-id" : "",
+	"config" : "Debug",
+	"cxx-modules" : {},
+	"database-info" : null,
+	"dir-cur-bld" : "/home/el-rafa/CLionProjects/Rythin/build",
+	"dir-cur-src" : "/home/el-rafa/CLionProjects/Rythin",
+	"dir-top-bld" : "/home/el-rafa/CLionProjects/Rythin/build",
+	"dir-top-src" : "/home/el-rafa/CLionProjects/Rythin",
+	"exports" : [],
+	"forward-modules-from-target-dirs" : [],
+	"include-dirs" : [],
+	"language" : "CXX",
+	"linked-target-dirs" : [],
+	"module-dir" : "/home/el-rafa/CLionProjects/Rythin/build/CMakeFiles/Rythin.dir",
+	"sources" : 
+	{
+		"CMakeFiles/Rythin.dir/main.cpp.o" : 
+		{
+			"language" : "CXX",
+			"source" : "/home/el-rafa/CLionProjects/Rythin/main.cpp"
+		},
+		"CMakeFiles/Rythin.dir/r_inter.cpp.o" : 
+		{
+			"language" : "CXX",
+			"source" : "/home/el-rafa/CLionProjects/Rythin/r_inter.cpp"
+		},
+		"CMakeFiles/Rythin.dir/r_lex.cpp.o" : 
+		{
+			"language" : "CXX",
+			"source" : "/home/el-rafa/CLionProjects/Rythin/r_lex.cpp"
+		},
+		"CMakeFiles/Rythin.dir/r_parser.cpp.o" : 
+		{
+			"language" : "CXX",
+			"source" : "/home/el-rafa/CLionProjects/Rythin/r_parser.cpp"
+		},
+		"CMakeFiles/Rythin.dir/t_tokens.cpp.o" : 
+		{
+			"language" : "CXX",
+			"source" : "/home/el-rafa/CLionProjects/Rythin/t_tokens.cpp"
+		},
+		"CMakeFiles/Rythin.dir/utils.cpp.o" : 
+		{
+			"language" : "CXX",
+			"source" : "/home/el-rafa/CLionProjects/Rythin/utils.cpp"
+		}
+	}
+}

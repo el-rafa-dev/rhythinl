@@ -1,0 +1,26 @@
+;;está em fase de testes...
+using system.rythin
+from system.rythin get text
+;;from system get date
+
+def main:int() -> [
+;;    print(1+1)
+;;    print(1*1)
+;;    print(2/1)
+;;    print(2-1)
+//    print(1/2)
+    ;;aqui escreve um texto em uma linha unica...
+    ;;print("Hello World!")
+    ;;def a:int = 1
+
+    ;;aqui escreve o texto e em seguida uma nova linha...
+    ;;printnl("Hello World from Rythin!\t\n") 
+
+    ;;definindo ponteiros
+    ;;def a:int = 12 ;; valor inicial é 12
+    ;;def *addr:int = *a ;; pegou o endereço da int a
+    ;;def a_val:int = $addr ;; pegou o valor de a na memoria atraves do endereço passado para int addr
+    return 0
+]
+
+

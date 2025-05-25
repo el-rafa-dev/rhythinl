@@ -1,0 +1,83 @@
+usar classes de nodes para comparação no interpretador
+
+por exemplo: vamos parsear a expressão seguinte: print("Hello Text" + "Hello 2")
+
+teremos que usar as ASTNodes conforme o tipo especificado pelo lexer
+
+no caso desse exemplo, usaremos duas StringNodes
+
+vamos la, finja que isso aqui é sua estrutura de stringnode:
+
+//Crie uma classe ASTNode virutal com esse codigo: 
+class ASTNode {
+    public:
+        virtual ~ASTNode() = default;
+};
+//em seguida crie o ponteiro compartilhado pois os nodes herdaram a ASTNode
+using ASTPtr = std::shared_ptr<ASTNode>;
+
+//nesse caso como são string + string não precisamos criar duas stringnodes
+struct StringNodes : ASTPtr {
+    std::string val;
+}
+
+// crie o node o operador binario que pode ser +, -, * ou / e muito mais e faça com que ele herde o ASTNode ou nesse caso o ponteiro compartilhado ASTPtr. como não vamos ficar definindo cada tipo (tipo, criar um node para cada tipo), usaremos um char para definir somente o valor como caractere
+//e no interpretador iremos verificar o tipo com switch e case (por exemplo: switch (binary_operator) case '+': return TokensType::TOKEN_PLUS) usaremos O tokensTypes onde contem os tipos de tokens que seráo as palavras-chave da lang e definição de sintaxe
+
+struct BinOperatorNode : ASTPtr {
+    char* val;
+} 
+
+//vamos agora para o Parser... o parser vai servir para gerenciar os tokens e retornar seu respectivo valor
+// seu parser deve gerar um std::vector<Tokens> para assim o interpretador posteriormente vai checar uma por uma para evaluar kkkk cada valor das AST definididas com base nos Tokens no parser. por isso a importancia do parser
+//vou olhar o meu parser que está incompleto é claro, mas vai dar para eu me basear nele. o meu esta daquele jeito mas vou fazer diferente aqui pq o burro do rafael tem momentos unicos de pico maximo de "inteligensia"
+
+
+//primeiro criaremos um vector e o tipo será o ponteiro compartilhado ASTPtr:
+std::vector<ASTPtr> nodes;
+
+//em seguida criaremos a função Parser::Parse(std::vector<Tokens> nodes e dentro dele iremos ir adicionando algumas nodes)
+criaremos um ASTPtr chamado Parse()
+nele iremos adicionar o ParseDeclarations que é um ASTPtr ao std::vector<ASTPtr> nodes que ja está dentro do namespace
+nodes.push_back(ParseDeclarations())
+
+nesse ASTPtr Parser::ParseDeclarations() {
+    usaremos um switch (com base nos tokens atuais. segue o exemplo)
+    switch (current(0.types)) {
+        case TokensTypes::TOKEN_PLUS:
+            return ParseBinOpNode();
+    }
+}
+
+//defina no header tambem!
+//agora vamos definir o ParseBinOpNode()
+ASTPtr Parser::ParseBinOpNode() {
+    auto node = std::make_shared<BinOperatorNode>();
+    node->val = consume(TokensTypes::TOKEN_PLUS).value;
+    return node;
+}
+
+//depois no caso
+//agora vamos para o interpretador
+//no interpretador crie o metodo abaixo:
+void interprete(std::vector<ASTPtr> nodes) {
+    for (ASTPtr node : nodes) {
+        Execute(node);
+    }
+}
+
+//agora crie a função Execute
+void Execute(ASTPtr nodes) {
+    if (auto *p = dynamic_cast<PrintE>(nodes)) {
+        std::cerr << "[ERROR]: "<< p->val << std::endl;
+    }
+}
+
+
+
+
+/// passando para vm - ok \\\\
+/// temos que gerar o lexer - ok \\\
+/// temos que gerar a ast - ok \\\
+/// temos que gerar os op-codes -o - ainda não \\\
+/// temos que executar os op-codes na vm - ainda não \\\

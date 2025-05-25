@@ -1,0 +1,24 @@
+#ifndef CHUNK_H
+#define CHUNK_H
+
+#include <vector>
+#include <string>
+#include <stdint.h>
+#include "r_opcodes.h"
+
+namespace Rythin
+{
+    typedef struct 
+    {
+        std::vector<int> line;
+        uint8_t opcode;
+        std::vector<std::string> constants;
+    } Chunk;
+
+    /*void addConstant(Chunk& ch, uint8_t op, std::string constant, int line) {
+        //ch.opcode = op;
+        //ch.constants.push_back(constant);
+    }*/
+}
+
+#endif

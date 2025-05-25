@@ -1,0 +1,17 @@
+;using system
+
+printnl("Hello\fWorld\n\tTabela\n\tHello\n\tWorld\t\0\ftest\\\\\\\\\\\\\\\\")
+printnl("path: C:\\Path\\To\\File.ry")
+
+;def val_test:str = "hello world"
+
+if (true) -> [
+
+] but (false) [
+
+]
+
+loop (true) -> [
+    ;printa uma mensagem com quebra de linha
+    printnl("Hello World")
+]
