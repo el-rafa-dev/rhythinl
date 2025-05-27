@@ -1,6 +1,5 @@
 /***nesse header tem todos os Nós da ASTNode que é classe principal onde todo os nos herdam dela***/
 
-
 #ifndef AST_H
 #define AST_H
 
@@ -8,6 +7,7 @@
 #include <vector>
 #include <memory>
 #include "iostream"
+#include "lex_types.h"
 
 namespace Rythin
 {
@@ -47,9 +47,31 @@ namespace Rythin
 
     struct BinOp : public ASTNode
     {
-        std::string op;
+        ASTPtr op;
         ASTPtr left;
         ASTPtr right;
+        //BinOp(ASTPtr op, ASTPtr left, ASTPtr right) : op(op), left(left), right(right) {}
+    };
+
+    struct AddBinOp : public ASTNode { // + operator
+        std::string op;
+        AddBinOp(std::string op) : op(op) {}
+    };
+
+    struct DivBinOp : public ASTNode { // '/' operator
+        std::string op;
+
+        DivBinOp(std::string op) : op(op) {}
+    };
+
+    struct MinBinOp : public ASTNode { // '-' operator
+        std::string op;
+        MinBinOp(std::string op) : op(op) {}
+    };
+
+    struct MultBinOp : public ASTNode {
+        std::string op;
+        MultBinOp(std::string op) : op(op) {}
     };
 
     struct IfStatement : public ASTNode
@@ -63,22 +85,21 @@ namespace Rythin
     struct VariableNode : public ASTNode
     {
         std::string val;
-        VariableNode(const std::string val) : val(val){}
+        VariableNode(const std::string val) : val(val) {}
     };
 
-    struct VariableDefinitionNode : public ASTNode {
+    struct VariableDefinitionNode : public ASTNode
+    {
         std::string var_name;
-        ASTPtr type;
+        TokensTypes type;
         ASTPtr val;
-        VariableDefinitionNode(const std::string var, ASTPtr type, ASTPtr val) : var_name(var), type(type), val(val) {}
+        VariableDefinitionNode(const std::string var, TokensTypes type, ASTPtr val) : var_name(var), type(type), val(val) {}
     };
 
     struct LiteralNode : public ASTNode
     {
         std::string val;
-        LiteralNode(std::string val) : val(val) {
-            std::cout << "Literal node: " << val << std::endl;
-        }
+        LiteralNode(std::string val) : val(val) {}
     };
 
     struct BlockNode : public ASTNode
@@ -92,22 +113,26 @@ namespace Rythin
         ASTPtr body;
     };
 
-    struct IntNode : public ASTNode {
+    struct IntNode : public ASTNode
+    {
         int val;
         IntNode(int v) : val(v) {}
     };
 
-    struct DoubleNode : public ASTNode {
+    struct DoubleNode : public ASTNode
+    {
         double val;
         DoubleNode(double val) : val(val) {}
     };
 
-    struct FloatNode : public ASTNode {
+    struct FloatNode : public ASTNode
+    {
         float val;
         FloatNode(float val) : val(val) {}
     };
 
-    struct TrueOrFalseNode : public ASTNode {
+    struct TrueOrFalseNode : public ASTNode
+    {
         bool val;
         TrueOrFalseNode(bool val) : val(val) {}
     };

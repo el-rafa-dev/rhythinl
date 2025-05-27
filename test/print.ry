@@ -1,17 +1,19 @@
-;using system
-
+;3
+;23
 printnl("Hello\fWorld\n\tTabela\n\tHello\n\tWorld\t\0\ftest\\\\\\\\\\\\\\\\")
 printnl("path: C:\\Path\\To\\File.ry")
+;printnl($[helpo])
+;
+printnl("Val: " - 23.4f);
 
-;def val_test:str = "hello world"
+;def val_test:int = 1+1 * 2;
+;if (true) -> [
 
-if (true) -> [
+;] but (false) [
 
-] but (false) [
+;]
 
-]
-
-loop (true) -> [
+loop (fla) -> [
     ;printa uma mensagem com quebra de linha
     printnl("Hello World")
 ]

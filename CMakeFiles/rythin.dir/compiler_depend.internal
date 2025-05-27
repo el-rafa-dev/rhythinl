@@ -5,6 +5,7 @@ CMakeFiles/rythin.dir/r_inter.cpp.o
  /home/el-rafa/CLionProjects/Rythin/r_inter.cpp
  /home/el-rafa/CLionProjects/Rythin/ast.h
  /home/el-rafa/CLionProjects/Rythin/chunk.h
+ /home/el-rafa/CLionProjects/Rythin/lex_types.h
  /home/el-rafa/CLionProjects/Rythin/r_inter.h
  /home/el-rafa/CLionProjects/Rythin/r_opcodes.h
  /usr/include/alloca.h
@@ -302,6 +303,7 @@ CMakeFiles/rythin.dir/r_lex.cpp.o
  /home/el-rafa/CLionProjects/Rythin/r_lex.cpp
  /home/el-rafa/CLionProjects/Rythin/lex_types.h
  /home/el-rafa/CLionProjects/Rythin/r_lex.h
+ /home/el-rafa/CLionProjects/Rythin/rexcept.h
  /home/el-rafa/CLionProjects/Rythin/t_tokens.h
  /usr/include/alloca.h
  /usr/include/asm-generic/bitsperlong.h

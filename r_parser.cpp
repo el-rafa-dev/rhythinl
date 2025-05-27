@@ -37,7 +37,6 @@ namespace Rythin
             // checa se o token atual é o EOF (end of file), se for retorna o erro anaixo
             std::cerr << "[Error]: Expected " << current().value << "but reached the end of file.... Are you forget anything?" << std::endl;
             throw std::runtime_error("Left early");
-            exit(1);
         }
 
         if (current().type != tk)
@@ -82,17 +81,19 @@ namespace Rythin
             return ParsePrintE();
         case TokensTypes::TOKEN_PRINT_NEW_LINE:
             return ParsePrintNl();
+        case TokensTypes::TOKEN_DEF:
+            return ParseVarDeclaration();
         default:
             std::cerr << "Invalid Statement at line " << current().line << " Column " << current().column << std::endl;
-            throw CompilationException("Invalid Statement");
-            //return ParseExpression();
+            throw Excepts::CompilationException("Invalid Statement");
+            // return ParseExpression();
         }
     }
     ASTPtr Parser::ParseIfStatement()
     {
-        consume(TokensTypes::TOKEN_IF);     // consume the'if'
-        consume(TokensTypes::TOKEN_LPAREN); // consume the '(' parent
-        auto condition = ParseExpression();    // conditional expression (e.g.: 1 == 2) 
+        consume(TokensTypes::TOKEN_IF);        // consume the'if'
+        consume(TokensTypes::TOKEN_LPAREN);    // consume the '(' parent
+        auto condition = ParseExpression();    // conditional expression (e.g.: 1 == 2)
         consume(TokensTypes::TOKEN_RPAREN);    // consume ')'
         consume(TokensTypes::TOKEN_ARROW_SET); // -> consume the arrow set
 
@@ -102,8 +103,9 @@ namespace Rythin
         ASTPtr butCondition = nullptr;
         if (check(TokensTypes::TOKEN_BUT))
         {
-            consume(TokensTypes::TOKEN_BUT);  // consume 'but'
-            if (check(TokensTypes::TOKEN_LPAREN)) { //checa se há uma condição no 'but'
+            consume(TokensTypes::TOKEN_BUT); // consume 'but'
+            if (check(TokensTypes::TOKEN_LPAREN))
+            { // checa se há uma condição no 'but'
                 consume(TokensTypes::TOKEN_LPAREN);
                 butCondition = ParseExpression();
                 consume(TokensTypes::TOKEN_RPAREN);
@@ -112,7 +114,7 @@ namespace Rythin
         }
 
         auto node = std::make_shared<IfStatement>();
-        node->ifCondition= condition;
+        node->ifCondition = condition;
         node->ifBranch = ifBranch;
         node->butBranch = butBranch;
         node->butCondition = butCondition;
@@ -125,7 +127,7 @@ namespace Rythin
         auto node = std::make_shared<PrintNode>();
         consume(TokensTypes::TOKEN_PRINT);
         consume(TokensTypes::TOKEN_LPAREN);
-        //ch.emit(OpCode::OP_PRINT, consume(TokensTypes::TOKEN_STRING_LITERAL).value);
+        // ch.emit(OpCode::OP_PRINT, consume(TokensTypes::TOKEN_STRING_LITERAL).value);
         node->val = consume(TokensTypes::TOKEN_STRING_LITERAL).value;
         consume(TokensTypes::TOKEN_RPAREN);
         return node;
@@ -146,52 +148,107 @@ namespace Rythin
         auto node = std::make_shared<PrintNl>();
         consume(TokensTypes::TOKEN_PRINT_NEW_LINE);
         consume(TokensTypes::TOKEN_LPAREN);
-        node->val = consume(TokensTypes::TOKEN_STRING_LITERAL).value;
+        std::string value = consume(TokensTypes::TOKEN_STRING_LITERAL).value;
+        std::vector<std::string> additional_args;
+        while (!check(TokensTypes::TOKEN_RPAREN))
+        {
+            if (check(TokensTypes::TOKEN_PLUS))
+            {
+                consume(TokensTypes::TOKEN_PLUS);
+                additional_args.push_back(consume(current().type).value);
+            }
+            else
+            {
+                std::cerr << "[Error]: Concatenation only accepts + token at line " << current().line << " Column " << current().column << std::endl;
+                throw Excepts::SyntaxException("Concatenation Syntax Error");
+            }
+        }
+        for (int i; i < additional_args.size(); i++)
+        {
+            node->val = value + additional_args[i];
+        }
+        node->val = value;
         consume(TokensTypes::TOKEN_RPAREN);
         return node;
     }
 
+    ASTPtr Parser::ParseVarDeclaration()
+    {
+        consume(TokensTypes::TOKEN_DEF);
+        std::string name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
+        // std::cout << "Var name " << name << std::endl;
+        consume(TokensTypes::TOKEN_COLON);
+        TokensTypes tk = consume(current().type).type;
+        consume(TokensTypes::TOKEN_ASSIGN); // consome o '=' para pegar o valor ou expressão
+        auto val = ParseExpression();
+        // std::cout << "Value: " << val << " Type: " << Tokens::tokenTypeToString(tk) << std::endl;
+        return std::make_shared<VariableDefinitionNode>(name, tk, std::make_shared<LiteralNode>(name));
+    }
+
     ASTPtr Parser::ParseExpression()
     {
-        auto lhs = ParsePrimary();
-        return ParseBinaryOpRHS(0, lhs);
+        switch (current().type)
+        {
+        case TokensTypes::TOKEN_STRING_LITERAL:
+            std::cout << "String Literal: " << consume(current().type).value << std::endl;
+        case TokensTypes::TOKEN_INT:
+            std::cout << "Int val: " << consume(current().type).value << std::endl;
+            std::vector<ASTPtr> nodes;
+            while (current().value != "\n")
+            {
+                // nodes.push_back(std::make_shared<BinOp>(nullptr, nullptr, nullptr));
+                // std::cout << "Vals"<< consume(current().type).value << std::endl;
+                // if (current().value == "\n") break;
+            }
+        }
+        return NULL;
     }
 
     ASTPtr Parser::ParseLoopExpression()
     {
 
-        if (current().type == TokensTypes::TOKEN_INT || current().type == TokensTypes::TOKEN_STR || current().type == TokensTypes::TOKEN_FLOAT || current().type == TokensTypes::TOKEN_DOUBLE) {
-            std::cerr << "[Error]: loop keyword only accepts two types of argumments (e.g.:  var : " << current().tokenTypeToString(current().type) << " in "  << current().value << ") at line " <<  current().line << " Column " << current().column << std::endl;
+        if (current().type == TokensTypes::TOKEN_INT || current().type == TokensTypes::TOKEN_STR || current().type == TokensTypes::TOKEN_FLOAT || current().type == TokensTypes::TOKEN_DOUBLE)
+        {
+            std::cerr << "[Error]: loop keyword only accepts two types of argumments" << std::endl;
             throw std::logic_error("Logical Error");
-        } else if (check(TokensTypes::TOKEN_IDENTIFIER)) {
+        }
+        else if (check(TokensTypes::TOKEN_IDENTIFIER))
+        {
             return std::make_shared<VariableNode>(consume(TokensTypes::TOKEN_IDENTIFIER).value);
-            //consome o : para em seguida consumir o tipo da variavel
+            // consome o : para em seguida consumir o tipo da variavel
             consume(TokensTypes::TOKEN_COLON);
-            //switch para verificação de tipos da variavel
-            switch (current().type) {
-                case TokensTypes::TOKEN_INT:
-                    return std::make_shared<IntNode>(std::stoi(consume(current().type).value));
-                case TokensTypes::TOKEN_DOUBLE:
-                    return std::make_shared<DoubleNode>(std::stod(consume(current().type).value));
-                case TokensTypes::TOKEN_FLOAT:
-                    return std::make_shared<FloatNode>(std::stof(consume(current().type).value));
-                case TokensTypes::TOKEN_STR:
-                    return std::make_shared<LiteralNode>(consume(current().type).value);
-                default:
-                    std::cerr << "[Error]: Unexpected variable type at Line " << current().line << " Column " << current().column << std::endl; 
-                    throw std::runtime_error("Invalid type");
+            // switch para verificação de tipos da variavel
+            switch (current().type)
+            {
+            case TokensTypes::TOKEN_INT:
+                return std::make_shared<IntNode>(std::stoi(consume(current().type).value));
+            case TokensTypes::TOKEN_DOUBLE:
+                return std::make_shared<DoubleNode>(std::stod(consume(current().type).value));
+            case TokensTypes::TOKEN_FLOAT:
+                return std::make_shared<FloatNode>(std::stof(consume(current().type).value));
+            case TokensTypes::TOKEN_STR:
+                return std::make_shared<LiteralNode>(consume(current().type).value);
+            default:
+                std::cerr << "[Error]: Unexpected variable type at Line " << current().line << " Column " << current().column << std::endl;
+                throw std::runtime_error("Invalid type");
             }
-            
+
             /*if (check(TokensTypes::TOKEN_IDENTIFIER)) {
                 std::cout << " Var Type: " << consume(current().type).value << std::endl;
             }*/
-        } else if (current().type == TokensTypes::TOKEN_TRUE) {
+        }
+        else if (current().type == TokensTypes::TOKEN_TRUE)
+        {
             consume(TokensTypes::TOKEN_TRUE);
             return std::make_shared<TrueOrFalseNode>(true);
-        } else if (current().type == TokensTypes::TOKEN_FALSE) {
+        }
+        else if (current().type == TokensTypes::TOKEN_FALSE)
+        {
             consume(TokensTypes::TOKEN_FALSE);
             return std::make_shared<TrueOrFalseNode>(false);
-        } else {
+        }
+        else
+        {
             std::cerr << "[Error]: Invalid type of expression" << std::endl;
             throw std::logic_error("Logic Error");
         }
@@ -221,7 +278,7 @@ namespace Rythin
             consume(TokensTypes::TOKEN_RPAREN);
         default:
             std::cerr << "[Error]: Invalid expression at line " << current().line << " Column: " << current().column << std::endl;
-            throw Rythin::CompilationException("Invalid Expression");
+            throw Excepts::CompilationException("Invalid Expression");
         }
     }
 
@@ -255,7 +312,7 @@ namespace Rythin
         consume(TokensTypes::TOKEN_LOOP);
         consume(TokensTypes::TOKEN_LPAREN);
 
-        /// ParseLoopExpression will be check if have a varaible definition and his type
+        /// ParseLoopExpression will be check if have a varaible definition and his type or
         node->condition = ParseLoopExpression();
 
         consume(TokensTypes::TOKEN_RPAREN);
@@ -279,7 +336,7 @@ namespace Rythin
         consume(TokensTypes::TOKEN_RBRACKET); // ']'
         return block;
     }
-    ASTPtr Parser::ParseBinaryOpRHS(int exprPrec, ASTPtr lhs)
+    /*ASTPtr Parser::ParseBinaryOpRHS(int exprPrec, ASTPtr lhs)
     {
         while (true)
         {
@@ -314,5 +371,5 @@ namespace Rythin
 
             lhs = binOpNode;
         }
-    }
+    }*/
 }

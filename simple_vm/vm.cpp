@@ -21,7 +21,7 @@ void addInstruction(Instruction& inst, int opcode, std::string agr) {
     inst.val.push_back(agr);
 }
 
-// Função principal da VM
+// Função principl da VM
 void run_vm(Instruction* program) {
     int pc = 0; // Program counter
 
@@ -57,7 +57,6 @@ int main() {
     run_vm(&arg);
     return 0;
 }
-
 /* codigo comentado 
 #include <stdio.h>  // Biblioteca para entrada/saída (ex: printf)
 

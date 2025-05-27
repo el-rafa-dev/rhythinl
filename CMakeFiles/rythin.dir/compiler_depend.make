@@ -4,6 +4,7 @@
 CMakeFiles/rythin.dir/r_inter.cpp.o: r_inter.cpp \
   ast.h \
   chunk.h \
+  lex_types.h \
   r_inter.h \
   r_opcodes.h \
   /usr/include/alloca.h \
@@ -300,6 +301,7 @@ CMakeFiles/rythin.dir/r_inter.cpp.o: r_inter.cpp \
 CMakeFiles/rythin.dir/r_lex.cpp.o: r_lex.cpp \
   lex_types.h \
   r_lex.h \
+  rexcept.h \
   t_tokens.h \
   /usr/include/alloca.h \
   /usr/include/asm-generic/bitsperlong.h \
@@ -1523,8 +1525,6 @@ rythin.cpp:
 
 utils.h:
 
-rexcept.h:
-
 r_parser.h:
 
 r_parser.cpp:
@@ -1533,7 +1533,7 @@ r_parser.cpp:
 
 t_tokens.h:
 
-lex_types.h:
+rexcept.h:
 
 /usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/include/stddef.h:
 
@@ -1691,9 +1691,17 @@ CMakeFiles/rythin.dir/r_parser.cpp.o:
 
 /usr/include/bits/types/__fpos64_t.h:
 
+/usr/include/c++/15.1.1/x86_64-pc-linux-gnu/bits/time_members.h:
+
+/usr/include/c++/15.1.1/bits/ostream_insert.h:
+
 /usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/include/syslimits.h:
 
 /usr/include/c++/15.1.1/new:
+
+/usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/include/limits.h:
+
+/usr/include/bits/types/__sigset_t.h:
 
 /usr/include/bits/floatn-common.h:
 
@@ -1757,6 +1765,16 @@ CMakeFiles/rythin.dir/r_parser.cpp.o:
 
 /usr/include/c++/15.1.1/bits/memoryfwd.h:
 
+utils.cpp:
+
+/usr/include/linux/posix_types.h:
+
+/usr/include/c++/15.1.1/bits/fs_ops.h:
+
+/usr/include/bits/types/FILE.h:
+
+r_inter.cpp:
+
 t_tokens.cpp:
 
 /usr/include/bits/environments.h:
@@ -1785,6 +1803,24 @@ ast.h:
 
 /usr/include/c++/15.1.1/iosfwd:
 
+lex_types.h:
+
+r_inter.h:
+
+/usr/include/c++/15.1.1/bits/locale_facets_nonio.tcc:
+
+/usr/include/c++/15.1.1/tuple:
+
+/usr/include/c++/15.1.1/x86_64-pc-linux-gnu/bits/c++config.h:
+
+/usr/include/bits/select.h:
+
+CMakeFiles/rythin.dir/t_tokens.cpp.o:
+
+r_lex.h:
+
+/usr/include/c++/15.1.1/cwchar:
+
 /usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/crtendS.o:
 
 /usr/include/c++/15.1.1/stdexcept:
@@ -1811,9 +1847,7 @@ ast.h:
 
 /usr/include/c++/15.1.1/bits/stl_raw_storage_iter.h:
 
-/usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/include/limits.h:
-
-/usr/include/bits/types/__sigset_t.h:
+/usr/include/c++/15.1.1/x86_64-pc-linux-gnu/bits/error_constants.h:
 
 /usr/include/c++/15.1.1/cerrno:
 
@@ -1824,8 +1858,6 @@ ast.h:
 /usr/include/c++/15.1.1/bits/ranges_base.h:
 
 /usr/include/c++/15.1.1/bits/parse_numbers.h:
-
-/usr/include/c++/15.1.1/x86_64-pc-linux-gnu/bits/error_constants.h:
 
 /usr/include/errno.h:
 
@@ -1893,14 +1925,6 @@ CMakeFiles/rythin.dir/r_inter.cpp.o:
 
 /usr/include/c++/15.1.1/system_error:
 
-/usr/include/bits/select.h:
-
-CMakeFiles/rythin.dir/t_tokens.cpp.o:
-
-r_lex.h:
-
-/usr/include/c++/15.1.1/cwchar:
-
 /usr/include/linux/sched/types.h:
 
 /usr/include/c++/15.1.1/bits/basic_string.tcc:
@@ -1951,16 +1975,6 @@ r_lex.h:
 
 /usr/include/c++/15.1.1/cwctype:
 
-utils.cpp:
-
-/usr/include/linux/posix_types.h:
-
-r_inter.cpp:
-
-/usr/include/c++/15.1.1/bits/fs_ops.h:
-
-/usr/include/bits/types/FILE.h:
-
 /usr/include/c++/15.1.1/bits/ios_base.h:
 
 /usr/include/bits/local_lim.h:
@@ -1975,10 +1989,6 @@ r_inter.cpp:
 
 /usr/include/c++/15.1.1/bits/locale_classes.tcc:
 
-/usr/include/c++/15.1.1/bits/ostream_insert.h:
-
-/usr/include/c++/15.1.1/x86_64-pc-linux-gnu/bits/time_members.h:
-
 /usr/include/c++/15.1.1/ratio:
 
 /usr/include/c++/15.1.1/bits/locale_conv.h:
@@ -1988,14 +1998,6 @@ r_inter.cpp:
 /usr/include/c++/15.1.1/bits/locale_facets.h:
 
 /usr/include/c++/15.1.1/bits/streambuf.tcc:
-
-r_inter.h:
-
-/usr/include/c++/15.1.1/bits/locale_facets_nonio.tcc:
-
-/usr/include/c++/15.1.1/tuple:
-
-/usr/include/c++/15.1.1/x86_64-pc-linux-gnu/bits/c++config.h:
 
 chunk.h:
 

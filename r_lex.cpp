@@ -13,6 +13,7 @@
 #include "r_lex.h"
 #include "t_tokens.h"
 #include "lex_types.h"
+#include "rexcept.h"
 
 namespace Rythin
 {
@@ -47,7 +48,7 @@ namespace Rythin
                 std::string fractional = digits();
                 if (fractional.empty())
                 {
-                    throw std::runtime_error("\f\fInvalid float/double format at line: " + line);
+                    throw Excepts::SyntaxException("\f\fInvalid float/double format at line: " + line);
                 }
 
                 numberStr += fractional;
@@ -102,10 +103,10 @@ namespace Rythin
                 return Tokens(TokensTypes::TOKEN_EOF, std::string("\0"), line, column);
                 break;
             case ';':
-                advance_tk();
+                advance_tk(true);
                 while (current_input != '\0' && current_input != '\n')
                 {
-                    advance_tk();
+                    advance_tk(true);
                 }
                 return next_tk();
                 break;
@@ -299,13 +300,15 @@ namespace Rythin
         }
     }
 
-    void Lexer::advance_tk()
+    void Lexer::advance_tk(bool isComment)
     {
 
         if (current_input == '\n')
         {
-            line++;
-            column = 0;
+            if (!isCommentc) {
+                line++;
+                column = 0;
+            }
         }
         else
         {
@@ -444,10 +447,10 @@ namespace Rythin
                     throw std::runtime_error("Unknown escape sequence");
                 }
             }
-            else if (current_input == '$' && peekNextChar() == '{')
+            else if (current_input == '$' && peekNextChar() == '[')
             {
                 advance_tk(); // Skip $
-                advance_tk(); // Skip {
+                advance_tk(); // Skip [
                 ivalue += processInterpolation();
             }
             else
@@ -474,11 +477,11 @@ namespace Rythin
     std::string Lexer::processInterpolation()
     {
         int start = position;
-        while (current_input != '}' && current_input != '\0')
+        while (current_input != ']' && current_input != '\0')
         {
             advance_tk();
         }
-        if (current_input == '}')
+        if (current_input == ']')
         {
             std::string interpolatedValue = code_input.substr(start, position - start);
             advance_tk(); // Skip }

@@ -17,7 +17,7 @@ namespace Rythin
         int line;
         int column;
 
-        void advance_tk();
+        void advance_tk(bool isComment = NULL);
         void skip_withspace();
         Tokens identifier();
         Tokens stringLiteral();

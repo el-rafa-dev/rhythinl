@@ -37,6 +37,9 @@ namespace Rythin {
         ASTPtr ParseBinaryOpRHS(int exprPrec, ASTPtr lhs);
         ASTPtr ParseDeclarations();
         ASTPtr ParseExpression();
+        ASTPtr ParseVarExpression();
+
+        ASTPtr ParseVarDeclaration();
 
         bool isBinOperator(TokensTypes type) {
             return type == TokensTypes::TOKEN_PLUS ||
