@@ -5,7 +5,7 @@ RythinLang is a statically typed programming language focused on being objective
 
 ## Current Status
 
-The current status is in development and tests.
+The current status is development and tests.
 
 ## When will be released?
 
@@ -16,7 +16,7 @@ The first version for general use will be when it has the basic syntax of a lang
 ## How use/Exemple
 ```
 ; the semicolon characther (;) is for comments
-; here we wil be create the main function thats will be a int type which will receive a fin 0 to end the program (or use any number other than 0 to indicate to the system that the program was executed with errors
+; here we will be create the main function thats will be a int type which will receive a fin 0 to end the program (or use any number other than 0 to indicate to the system that the program was executed with errors
 
 def Main:func() -> [
     printnl("Hello World from Rythin!") ;; writing a message on console/terminal
