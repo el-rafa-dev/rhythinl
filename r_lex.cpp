@@ -305,7 +305,7 @@ namespace Rythin
 
         if (current_input == '\n')
         {
-            if (!isCommentc) {
+            if (!isComment) {
                 line++;
                 column = 0;
             }
