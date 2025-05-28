@@ -1,0 +1,7 @@
+test/
+test/*
+simple_vm/
+rythin
+build/*
+.vscode/
+.idea/

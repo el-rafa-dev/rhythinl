@@ -17,7 +17,8 @@ The first version for general use will be when it has the basic syntax of a lang
 ```
 ; the semicolon characther (;) is for comments
 ; here we will be create the main function thats will be a int type which will receive a fin 0 to end the program (or use any number other than 0 to indicate to the system that the program was executed with errors
-
+```
+```
 def main:func() -> [
     printnl("Hello World from Rythin!") ;; writing a message on console/terminal
     fin 0 ;; sucess code
