@@ -7,6 +7,7 @@ CMakeFiles/rythin.dir/r_inter.cpp.o: r_inter.cpp \
   lex_types.h \
   r_inter.h \
   r_opcodes.h \
+  t_tokens.h \
   /usr/include/alloca.h \
   /usr/include/asm-generic/bitsperlong.h \
   /usr/include/asm-generic/errno-base.h \
@@ -1534,8 +1535,6 @@ r_parser.cpp:
 
 /usr/include/c++/15.1.1/unordered_map:
 
-t_tokens.h:
-
 rexcept.h:
 
 /usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/include/stddef.h:
@@ -1664,6 +1663,8 @@ CMakeFiles/rythin.dir/r_parser.cpp.o:
 
 /usr/include/bits/waitflags.h:
 
+t_tokens.h:
+
 /usr/include/bits/types/struct_itimerspec.h:
 
 /usr/include/c++/15.1.1/bits/stl_algobase.h:
@@ -1692,6 +1693,12 @@ CMakeFiles/rythin.dir/r_parser.cpp.o:
 
 /usr/include/c++/15.1.1/bits/uses_allocator_args.h:
 
+/usr/include/sys/select.h:
+
+/usr/include/c++/15.1.1/x86_64-pc-linux-gnu/bits/os_defines.h:
+
+/usr/include/c++/15.1.1/x86_64-pc-linux-gnu/bits/gthr-default.h:
+
 /usr/include/bits/types/__fpos64_t.h:
 
 /usr/include/c++/15.1.1/x86_64-pc-linux-gnu/bits/time_members.h:
@@ -1705,12 +1712,6 @@ CMakeFiles/rythin.dir/r_parser.cpp.o:
 /usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/include/limits.h:
 
 /usr/include/bits/types/__sigset_t.h:
-
-/usr/include/bits/floatn-common.h:
-
-/usr/include/c++/15.1.1/bits/erase_if.h:
-
-/usr/include/c++/15.1.1/bits/stl_iterator_base_funcs.h:
 
 /usr/include/c++/15.1.1/limits:
 
@@ -1742,12 +1743,6 @@ CMakeFiles/rythin.dir/r_parser.cpp.o:
 
 /usr/include/bits/endianness.h:
 
-/usr/include/bits/types/__fpos_t.h:
-
-/usr/include/asm/unistd_64.h:
-
-/usr/include/bits/long-double.h:
-
 /usr/include/c++/15.1.1/bits/functional_hash.h:
 
 /usr/include/c++/15.1.1/bits/fs_dir.h:
@@ -1755,6 +1750,8 @@ CMakeFiles/rythin.dir/r_parser.cpp.o:
 /usr/include/c++/15.1.1/bits/ptr_traits.h:
 
 /usr/include/c++/15.1.1/cstdlib:
+
+/usr/include/asm-generic/errno-base.h:
 
 /usr/include/c++/15.1.1/bits/hashtable.h:
 
@@ -1783,6 +1780,12 @@ t_tokens.cpp:
 /usr/include/bits/environments.h:
 
 /usr/include/bits/types/struct_FILE.h:
+
+/usr/include/bits/types/__fpos_t.h:
+
+/usr/include/asm/unistd_64.h:
+
+/usr/include/bits/long-double.h:
 
 /usr/include/alloca.h:
 
@@ -1828,8 +1831,6 @@ r_lex.h:
 
 /usr/include/c++/15.1.1/stdexcept:
 
-/usr/include/asm-generic/errno-base.h:
-
 /usr/include/bits/typesizes.h:
 
 /usr/include/bits/posix2_lim.h:
@@ -1856,11 +1857,23 @@ r_lex.h:
 
 /usr/include/asm-generic/posix_types.h:
 
+/usr/include/bits/floatn-common.h:
+
+/usr/include/c++/15.1.1/bits/erase_if.h:
+
+/usr/include/c++/15.1.1/bits/stl_iterator_base_funcs.h:
+
 /usr/include/bits/floatn.h:
 
 /usr/include/c++/15.1.1/bits/ranges_base.h:
 
 /usr/include/c++/15.1.1/bits/parse_numbers.h:
+
+/usr/include/linux/sched/types.h:
+
+/usr/include/c++/15.1.1/bits/basic_string.tcc:
+
+/usr/include/c++/15.1.1/bits/max_size_type.h:
 
 /usr/include/errno.h:
 
@@ -1877,6 +1890,10 @@ r_lex.h:
 /usr/include/c++/15.1.1/bits/atomic_wait.h:
 
 /usr/include/bits/locale.h:
+
+/usr/include/c++/15.1.1/bits/postypes.h:
+
+/usr/include/bits/syscall.h:
 
 r_lex.cpp:
 
@@ -1927,16 +1944,6 @@ CMakeFiles/rythin.dir/r_inter.cpp.o:
 /usr/include/c++/15.1.1/bits/fs_path.h:
 
 /usr/include/c++/15.1.1/system_error:
-
-/usr/include/linux/sched/types.h:
-
-/usr/include/c++/15.1.1/bits/basic_string.tcc:
-
-/usr/include/c++/15.1.1/bits/max_size_type.h:
-
-/usr/include/bits/syscall.h:
-
-/usr/include/c++/15.1.1/bits/postypes.h:
 
 /usr/include/bits/wchar.h:
 
@@ -2165,9 +2172,3 @@ CMakeFiles/rythin.dir/rythin.cpp.o:
 /usr/include/c++/15.1.1/x86_64-pc-linux-gnu/bits/ctype_inline.h:
 
 /usr/include/c++/15.1.1/x86_64-pc-linux-gnu/bits/gthr.h:
-
-/usr/include/sys/select.h:
-
-/usr/include/c++/15.1.1/x86_64-pc-linux-gnu/bits/gthr-default.h:
-
-/usr/include/c++/15.1.1/x86_64-pc-linux-gnu/bits/os_defines.h:

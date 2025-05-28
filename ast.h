@@ -8,6 +8,7 @@
 #include <memory>
 #include "iostream"
 #include "lex_types.h"
+#include "t_tokens.h"
 
 namespace Rythin
 {
@@ -17,6 +18,7 @@ namespace Rythin
     public:
         virtual ~ASTNode() = default;
     };
+
     using ASTPtr = std::shared_ptr<ASTNode>;
 
     struct PrintNode : public ASTNode
@@ -88,14 +90,6 @@ namespace Rythin
         VariableNode(const std::string val) : val(val) {}
     };
 
-    struct VariableDefinitionNode : public ASTNode
-    {
-        std::string var_name;
-        TokensTypes type;
-        ASTPtr val;
-        VariableDefinitionNode(const std::string var, TokensTypes type, ASTPtr val) : var_name(var), type(type), val(val) {}
-    };
-
     struct LiteralNode : public ASTNode
     {
         std::string val;
@@ -135,6 +129,18 @@ namespace Rythin
     {
         bool val;
         TrueOrFalseNode(bool val) : val(val) {}
+    };
+
+    struct VariableDefinitionNode : public ASTNode
+    {
+        std::string var_name;
+        TokensTypes type;
+        ASTPtr val;
+        VariableDefinitionNode(const std::string var, TokensTypes type, ASTPtr val) : var_name(var), type(type), val(val) {
+            if (auto var = std::dynamic_pointer_cast<LiteralNode>(val)) {
+                std::cout << "Var Name: " << var_name << " Value: " << var->val << " Types: " << Tokens::tokenTypeToString(type) << std::endl;
+            }
+        }
     };
 }
 

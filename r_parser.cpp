@@ -182,7 +182,7 @@ namespace Rythin
         TokensTypes tk = consume(current().type).type;
         consume(TokensTypes::TOKEN_ASSIGN); // consome o '=' para pegar o valor ou expressão
         auto val = ParseExpression();
-        std::cout << "Value: " << &val << " Type: " << Tokens::tokenTypeToString(tk) << std::endl;
+        //std::cout << "Value: " << &val << " Type: " << Tokens::tokenTypeToString(tk) << std::endl;
         return std::make_shared<VariableDefinitionNode>(name, tk, val);
     }
 
