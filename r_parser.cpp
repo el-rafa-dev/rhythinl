@@ -177,13 +177,13 @@ namespace Rythin
     {
         consume(TokensTypes::TOKEN_DEF);
         std::string name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
-        // std::cout << "Var name " << name << std::endl;
+        //std::cout << "Var name " << name << std::endl;
         consume(TokensTypes::TOKEN_COLON);
         TokensTypes tk = consume(current().type).type;
         consume(TokensTypes::TOKEN_ASSIGN); // consome o '=' para pegar o valor ou expressão
         auto val = ParseExpression();
-        // std::cout << "Value: " << val << " Type: " << Tokens::tokenTypeToString(tk) << std::endl;
-        return std::make_shared<VariableDefinitionNode>(name, tk, std::make_shared<LiteralNode>(name));
+        std::cout << "Value: " << &val << " Type: " << Tokens::tokenTypeToString(tk) << std::endl;
+        return std::make_shared<VariableDefinitionNode>(name, tk, val);
     }
 
     ASTPtr Parser::ParseExpression()
@@ -191,18 +191,12 @@ namespace Rythin
         switch (current().type)
         {
         case TokensTypes::TOKEN_STRING_LITERAL:
-            std::cout << "String Literal: " << consume(current().type).value << std::endl;
+            return std::make_shared<LiteralNode>(consume(current().type).value);
         case TokensTypes::TOKEN_INT:
-            std::cout << "Int val: " << consume(current().type).value << std::endl;
-            std::vector<ASTPtr> nodes;
-            while (current().value != "\n")
-            {
-                // nodes.push_back(std::make_shared<BinOp>(nullptr, nullptr, nullptr));
-                // std::cout << "Vals"<< consume(current().type).value << std::endl;
-                // if (current().value == "\n") break;
-            }
+            return std::make_shared<IntNode>(std::stoi(consume(current().type).value));
+        default:
+            throw Excepts::CompilationException("Invalid Type");
         }
-        return NULL;
     }
 
     ASTPtr Parser::ParseLoopExpression()

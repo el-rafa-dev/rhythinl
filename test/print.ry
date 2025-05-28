@@ -1,16 +1,6 @@
-printnl();
-;def var:str = "Hello World"
+def val:str = "Hello World"
 
-printnl("$[var] + $[var]")
-
-;def val_test:int = 1+1 * 2;
-;if (true) -> [
-
-;] but (false) [
-
+;def main:func(args:str[]) -> [
+;    printnl("Hello World!")
+;    fin 0
 ;]
-
-loop (false) -> [
-    ;printa uma mensagem com quebra de linha
-    printnl("Hello World")
-]
