@@ -540,6 +540,7 @@ CMakeFiles/rythin.dir/r_parser.cpp.o
  /home/el-rafa/CLionProjects/Rythin/ast.h
  /home/el-rafa/CLionProjects/Rythin/chunk.h
  /home/el-rafa/CLionProjects/Rythin/lex_types.h
+ /home/el-rafa/CLionProjects/Rythin/log.h
  /home/el-rafa/CLionProjects/Rythin/r_opcodes.h
  /home/el-rafa/CLionProjects/Rythin/r_parser.h
  /home/el-rafa/CLionProjects/Rythin/rexcept.h

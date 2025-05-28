@@ -1,6 +1,4 @@
 // lex_types.cpp
-// created by chatgpt
-
 #include <iostream>
 #include <vector>
 #include <string>
@@ -302,13 +300,11 @@ namespace Rythin
 
     void Lexer::advance_tk(bool isComment)
     {
-
+        size_t isLineEmpty = code_input.find_last_not_of("\t\n\r");
         if (current_input == '\n')
         {
-            if (!isComment) {
-                line++;
-                column = 0;
-            }
+            line++;
+            column = 0;
         }
         else
         {
@@ -320,7 +316,7 @@ namespace Rythin
 
     void Lexer::skip_withspace()
     {
-        while (current_input != '\0' && std::isspace(current_input))
+        while (std::isspace(static_cast<unsigned char>(current_input)))
         {
             advance_tk();
         }
@@ -396,47 +392,47 @@ namespace Rythin
             if (current_input == '\\')
             {
                 advance_tk();
-                if (current_input == 'n')   //new line
+                if (current_input == 'n') // new line
                 {
                     ivalue += '\n';
                     advance_tk();
                 }
-                else if (current_input == 't')  //horizontal tab
+                else if (current_input == 't') // horizontal tab
                 {
                     ivalue += '\t';
                     advance_tk();
                 }
-                else if (current_input == '0')  //null character
+                else if (current_input == '0') // null character
                 {
                     ivalue += '\0';
                     advance_tk();
                 }
-                else if (current_input == 'v')  //vertical tab
+                else if (current_input == 'v') // vertical tab
                 {
                     ivalue += '\v';
                     advance_tk();
                 }
-                else if (current_input == 'r')  //carriage return 
+                else if (current_input == 'r') // carriage return
                 {
                     ivalue += '\r';
                     advance_tk();
                 }
-                else if (current_input == 'b')  //backspace
+                else if (current_input == 'b') // backspace
                 {
                     ivalue += '\b';
                     advance_tk();
                 }
-                else if (current_input == 'f')  //form feed
+                else if (current_input == 'f') // form feed
                 {
                     ivalue += '\f';
                     advance_tk();
                 }
-                else if (current_input == '"')  //double quote
+                else if (current_input == '"') // double quote
                 {
                     ivalue += '"';
                     advance_tk();
                 }
-                else if (current_input == '\\')     //backslash
+                else if (current_input == '\\') // backslash
                 {
                     ivalue += '\\';
                     advance_tk();
@@ -461,10 +457,10 @@ namespace Rythin
         }
         if (current_input == '\0')
         {
-            std::cerr << "Unterminated string literal at line " << line << std::endl;
-            throw std::runtime_error("Unterminated string literal");
+            std::cerr << "[Error]: Unterminated string literal at line " << line << std::endl;
+            throw Excepts::SyntaxException("Unterminated string literal");
         }
-        advance_tk(); //skipping closing quotes
+        advance_tk(); // skipping closing quotes
         return Tokens(TokensTypes::TOKEN_STRING_LITERAL, ivalue, line, column);
     }
 
@@ -483,13 +479,15 @@ namespace Rythin
         }
         if (current_input == ']')
         {
-            std::string interpolatedValue = code_input.substr(start, position - start);
-            advance_tk(); // Skip }
+            // lá na frente o interpolated value será substituido pelo valor da variavel interpolada
+            std::string interpolatedValue = "Helo Butamo";
+            // std::string interpolatedValue = code_input.substr(start, position - start);
+            advance_tk(); // Skip ]
             return interpolatedValue;
         }
         else
         {
-            std::cerr << "Unterminated interpolation at line " << line << " Column " << column << std::endl;
+            std::cerr << "[Error]Unterminated interpolation at line " << line << " Column " << column << std::endl;
             throw std::runtime_error("Unterminated interpolation");
         }
     }

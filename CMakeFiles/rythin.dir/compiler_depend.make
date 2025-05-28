@@ -537,6 +537,7 @@ CMakeFiles/rythin.dir/r_parser.cpp.o: r_parser.cpp \
   ast.h \
   chunk.h \
   lex_types.h \
+  log.h \
   r_opcodes.h \
   r_parser.h \
   rexcept.h \
@@ -1524,6 +1525,8 @@ CMakeFiles/rythin.dir/utils.cpp.o:
 rythin.cpp:
 
 utils.h:
+
+log.h:
 
 r_parser.h:
 

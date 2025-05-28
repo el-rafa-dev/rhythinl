@@ -11,6 +11,7 @@
 #include "r_opcodes.h"
 #include "rexcept.h"
 #include "chunk.h"
+#include "log.h"
 
 // using namespace std;
 
@@ -35,15 +36,17 @@ namespace Rythin
         if (current().type == TokensTypes::TOKEN_EOF)
         {
             // checa se o token atual é o EOF (end of file), se for retorna o erro anaixo
-            std::cerr << "[Error]: Expected " << current().value << "but reached the end of file.... Are you forget anything?" << std::endl;
-            throw std::runtime_error("Left early");
+            // LogErrors::addError("[Error]: Expected " + current().value + "but reached the end of file.... Are you forget anything?");
+            std::cerr << "[Error]: Expected " << current().value << " but reached the end of file.... Are you forget anything?" << std::endl;
+            throw Excepts::CompilationException("Left early");
         }
 
         if (current().type != tk)
         {
             // checa se o tipo não é igual ao tk e retorna  o erro abaixo
             std::cerr << "[Error]: Expected '" << Tokens::tokenTypeToString(tk) << "' but got: '" << Tokens::tokenTypeToString(current().type) << "' at line " << current().line << " Column " << current().column << std::endl;
-            throw std::runtime_error("Invalid token");
+            // LogErrors::addError("[Error]: Expected '" + Tokens::tokenTypeToString(tk) + "' but got: " + Tokens::tokenTypeToString(current().type) + "' at line: " + std::to_string(current().line) + " Column " + std::to_string(current().column));
+            throw Excepts::SyntaxException("Invalid token");
         }
         position++;
         return tokens[position - 1];
@@ -150,12 +153,14 @@ namespace Rythin
         consume(TokensTypes::TOKEN_LPAREN);
         std::string value = consume(TokensTypes::TOKEN_STRING_LITERAL).value;
         std::vector<std::string> additional_args;
+
         while (!check(TokensTypes::TOKEN_RPAREN))
         {
             if (check(TokensTypes::TOKEN_PLUS))
             {
                 consume(TokensTypes::TOKEN_PLUS);
-                additional_args.push_back(consume(current().type).value);
+                node->val = value + consume(current().type).value;
+                //additional_args.push_back(consume(current().type).value);
             }
             else
             {
@@ -163,11 +168,7 @@ namespace Rythin
                 throw Excepts::SyntaxException("Concatenation Syntax Error");
             }
         }
-        for (int i; i < additional_args.size(); i++)
-        {
-            node->val = value + additional_args[i];
-        }
-        node->val = value;
+        node -> val = value;
         consume(TokensTypes::TOKEN_RPAREN);
         return node;
     }
