@@ -51,4 +51,4 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 ## Contact
-contact with me via telegram! my user id: [@rafaprobr](https://t.me/rafaprobr)
+Contact with me via telegram! My user id: [@rafaprobr](https://t.me/rafaprobr)
