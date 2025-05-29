@@ -1,5 +1,5 @@
 
-# Rythin Programming Language
+# Rhythin Programming Language
 
 RythinLang is a statically typed programming language focused on being objective and direct, facilitating learning for both beginners and programmers with experience in the area.
 
@@ -50,3 +50,5 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
+## Contact
+contact with me via telegram! my user id: [@rafaprobr](https://t.me/rafaprobr)

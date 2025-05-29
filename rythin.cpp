@@ -65,8 +65,8 @@ int main(int argc, char *argv[])
 {
     if (argc > 1 && strcmp(argv[1], "-h") == 0)
     {
-        std::cout << "[Help Arg.]\nUsage:\n\trythin [option] [file]\nExample:\n\tE.g.:rythin -f /home/user/rythin_code.ry\nArguments list:" << std::endl;
-        std::cout << "\t[-f] [file-path/file-name] to execute a rythin file." << std::endl;
+        std::cout << "[Help Arg.]\nUsage:\n\trhythin [option] [file]\nExample:\n\tE.g.:rhythin -f /home/user/rythin_code.ry\nArguments list:" << std::endl;
+        std::cout << "\t[-f] [file-path/file-name] to execute a rhythin file." << std::endl;
         std::cout << "\t[-h] to see this list." << std::endl;
     }
     else if (argc > 1 && strcmp(argv[1], "-f") == 0)
