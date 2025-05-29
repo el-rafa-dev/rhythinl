@@ -106,6 +106,7 @@ namespace Rythin
     {
         ASTPtr condition;
         ASTPtr body;
+        
     };
 
     struct IntNode : public ASTNode

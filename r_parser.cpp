@@ -104,14 +104,19 @@ namespace Rythin
         ASTPtr butCondition = nullptr;
         if (check(TokensTypes::TOKEN_BUT))
         {
-            consume(TokensTypes::TOKEN_BUT); // consume 'but'
-            if (check(TokensTypes::TOKEN_LPAREN))
+            consume(TokensTypes::TOKEN_BUT); // consume the 'but'
+            while (!check(TokensTypes::TOKEN_RPAREN))
             { // checa se há uma condição no 'but'
                 consume(TokensTypes::TOKEN_LPAREN);
                 butCondition = ParseExpression();
-                consume(TokensTypes::TOKEN_RPAREN);
+                
             }
-            butBranch = ParseDeclarations(); // 'but' body
+            consume(TokensTypes::TOKEN_RPAREN);
+            consume(TokensTypes::TOKEN_LBRACKET);
+            while (!check(TokensTypes::TOKEN_RBRACKET)) {
+                butBranch = ParseDeclarations(); // 'but' body
+            }
+            consume(TokensTypes::TOKEN_RBRACKET);
         }
 
         auto node = std::make_shared<IfStatement>();
@@ -242,9 +247,15 @@ namespace Rythin
                 auto ptr = std::make_shared<FloatNode>(std::stof(consume(current().type).value));
                 return std::make_shared<ObjectNode>(ptr);
             }
+        case TokensTypes::TOKEN_TRUE:
+            consume(TokensTypes::TOKEN_TRUE);
+            return std::make_shared<TrueOrFalseNode>(true);
+        case TokensTypes::TOKEN_FALSE:
+            consume(TokensTypes::TOKEN_FALSE);
+            return std::make_shared<TrueOrFalseNode>(false);
         default:
             std::cerr << "[Error]: Invalid variable type at line " << current().line << " column " << current().column << std::endl;
-            // throw Excepts::CompilationException("Invalid Variable Type");
+            throw Excepts::CompilationException("Invalid Variable Type");
         }
     }
 
@@ -274,7 +285,7 @@ namespace Rythin
                 return std::make_shared<LiteralNode>(consume(current().type).value);
             default:
                 std::cerr << "[Error]: Unexpected variable type at Line " << current().line << " Column " << current().column << std::endl;
-                // throw std::runtime_error("Invalid type");
+                throw std::runtime_error("Invalid type");
             }
         }
         else if (current().type == TokensTypes::TOKEN_TRUE)
@@ -290,7 +301,7 @@ namespace Rythin
         else
         {
             std::cerr << "[Error]: Invalid type of expression" << std::endl;
-            // throw std::logic_error("Logic Error");
+            throw std::logic_error("Logic Error");
         }
     }
 
