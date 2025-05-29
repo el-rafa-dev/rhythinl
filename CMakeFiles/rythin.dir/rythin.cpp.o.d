@@ -201,6 +201,7 @@ CMakeFiles/rythin.dir/rythin.cpp.o: \
  /usr/include/c++/15.1.1/bits/ranges_algobase.h \
  /usr/include/c++/15.1.1/pstl/glue_memory_defs.h \
  /usr/include/c++/15.1.1/pstl/execution_defs.h \
+ /home/el-rafa/CLionProjects/Rythin/rexcept.h \
  /usr/include/c++/15.1.1/filesystem /usr/include/c++/15.1.1/bits/fs_fwd.h \
  /usr/include/c++/15.1.1/bits/chrono.h /usr/include/c++/15.1.1/ratio \
  /usr/include/c++/15.1.1/limits /usr/include/c++/15.1.1/ctime \

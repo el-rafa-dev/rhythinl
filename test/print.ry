@@ -1,6 +1,3 @@
-def val:str = "hello world"
-def val2:str = "d"
-
 ;def main:func(args:str[]) -> [
 ;    printnl("Hello World!")
 ;    fin 0

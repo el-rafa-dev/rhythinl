@@ -9,6 +9,7 @@
 #include "iostream"
 #include "lex_types.h"
 #include "t_tokens.h"
+#include "rexcept.h"
 
 namespace Rythin
 {
@@ -138,6 +139,16 @@ namespace Rythin
         ASTPtr val;
         VariableDefinitionNode(const std::string var, TokensTypes type, ASTPtr val) : var_name(var), type(type), val(val) {
             if (auto var = std::dynamic_pointer_cast<LiteralNode>(val)) {
+                if (type != TokensTypes::TOKEN_IDENTIFIER) {
+                   std::cout << "Var Name: " << var_name << " Value: " << var->val << " Types: " << Tokens::tokenTypeToString(type) << std::endl;
+                } else {
+                    throw Excepts::CompilationException("Invalid type");
+                }
+            } else if (auto var = std::dynamic_pointer_cast<IntNode>(val)) {
+                std::cout << "Var Name: " << var_name << " Value: " << var->val << " Types: " << Tokens::tokenTypeToString(type) << std::endl;
+            } else if (auto var = std::dynamic_pointer_cast<DoubleNode>(val)) {
+                std::cout << "Var Name: " << var_name << " Value: " << var->val << " Types: " << Tokens::tokenTypeToString(type) << std::endl;
+            } else if (auto var = std::dynamic_pointer_cast<FloatNode>(val)) {
                 std::cout << "Var Name: " << var_name << " Value: " << var->val << " Types: " << Tokens::tokenTypeToString(type) << std::endl;
             }
         }

@@ -194,8 +194,12 @@ namespace Rythin
             return std::make_shared<LiteralNode>(consume(current().type).value);
         case TokensTypes::TOKEN_INT:
             return std::make_shared<IntNode>(std::stoi(consume(current().type).value));
+        case TokensTypes::TOKEN_FLOAT:
+            return std::make_shared<FloatNode>(std::stof(consume(current().type).value));
+        case TokensTypes::TOKEN_DOUBLE:
+            return std::make_shared<DoubleNode>(std::stod(consume(current().type).value));
         default:
-            throw Excepts::CompilationException("Invalid Type");
+            throw Excepts::CompilationException("Invalid Variable Type");
         }
     }
 

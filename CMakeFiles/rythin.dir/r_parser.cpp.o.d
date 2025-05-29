@@ -195,6 +195,7 @@ CMakeFiles/rythin.dir/r_parser.cpp.o: \
  /usr/include/c++/15.1.1/pstl/execution_defs.h \
  /home/el-rafa/CLionProjects/Rythin/lex_types.h \
  /home/el-rafa/CLionProjects/Rythin/t_tokens.h \
+ /home/el-rafa/CLionProjects/Rythin/rexcept.h \
  /home/el-rafa/CLionProjects/Rythin/r_parser.h \
  /home/el-rafa/CLionProjects/Rythin/chunk.h \
  /home/el-rafa/CLionProjects/Rythin/r_opcodes.h \
@@ -202,5 +203,4 @@ CMakeFiles/rythin.dir/r_parser.cpp.o: \
  /usr/include/c++/15.1.1/bits/enable_special_members.h \
  /usr/include/c++/15.1.1/bits/monostate.h \
  /usr/include/c++/15.1.1/bits/parse_numbers.h \
- /home/el-rafa/CLionProjects/Rythin/rexcept.h \
  /home/el-rafa/CLionProjects/Rythin/log.h

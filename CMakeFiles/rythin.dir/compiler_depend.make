@@ -7,6 +7,7 @@ CMakeFiles/rythin.dir/r_inter.cpp.o: r_inter.cpp \
   lex_types.h \
   r_inter.h \
   r_opcodes.h \
+  rexcept.h \
   t_tokens.h \
   /usr/include/alloca.h \
   /usr/include/asm-generic/bitsperlong.h \
@@ -817,6 +818,7 @@ CMakeFiles/rythin.dir/rythin.cpp.o: rythin.cpp \
   r_lex.h \
   r_opcodes.h \
   r_parser.h \
+  rexcept.h \
   t_tokens.h \
   /usr/include/alloca.h \
   /usr/include/asm-generic/bitsperlong.h \
@@ -1535,8 +1537,6 @@ r_parser.cpp:
 
 /usr/include/c++/15.1.1/unordered_map:
 
-rexcept.h:
-
 /usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/include/stddef.h:
 
 /usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/include/stdarg.h:
@@ -1713,7 +1713,13 @@ t_tokens.h:
 
 /usr/include/bits/types/__sigset_t.h:
 
+rexcept.h:
+
 /usr/include/c++/15.1.1/limits:
+
+/usr/include/libintl.h:
+
+/usr/include/bits/endianness.h:
 
 /usr/include/bits/types.h:
 
@@ -1739,19 +1745,15 @@ t_tokens.h:
 
 /usr/include/c++/15.1.1/pstl/pstl_config.h:
 
-/usr/include/libintl.h:
-
-/usr/include/bits/endianness.h:
-
-/usr/include/c++/15.1.1/bits/functional_hash.h:
-
-/usr/include/c++/15.1.1/bits/fs_dir.h:
-
 /usr/include/c++/15.1.1/bits/ptr_traits.h:
 
 /usr/include/c++/15.1.1/cstdlib:
 
 /usr/include/asm-generic/errno-base.h:
+
+/usr/include/c++/15.1.1/cerrno:
+
+/usr/include/asm-generic/posix_types.h:
 
 /usr/include/c++/15.1.1/bits/hashtable.h:
 
@@ -1852,10 +1854,6 @@ r_lex.h:
 /usr/include/c++/15.1.1/bits/stl_raw_storage_iter.h:
 
 /usr/include/c++/15.1.1/x86_64-pc-linux-gnu/bits/error_constants.h:
-
-/usr/include/c++/15.1.1/cerrno:
-
-/usr/include/asm-generic/posix_types.h:
 
 /usr/include/bits/floatn-common.h:
 
@@ -1984,6 +1982,10 @@ CMakeFiles/rythin.dir/r_inter.cpp.o:
 /usr/include/c++/15.1.1/bits/stl_vector.h:
 
 /usr/include/c++/15.1.1/cwctype:
+
+/usr/include/c++/15.1.1/bits/fs_dir.h:
+
+/usr/include/c++/15.1.1/bits/functional_hash.h:
 
 /usr/include/c++/15.1.1/bits/ios_base.h:
 
@@ -2153,9 +2155,9 @@ CMakeFiles/rythin.dir/rythin.cpp.o:
 
 /usr/include/c++/15.1.1/sstream:
 
-/usr/include/c++/15.1.1/bits/exception_defines.h:
-
 /usr/include/c++/15.1.1/x86_64-pc-linux-gnu/bits/messages_members.h:
+
+/usr/include/c++/15.1.1/bits/exception_defines.h:
 
 /usr/include/c++/15.1.1/streambuf:
 
