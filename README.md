@@ -30,7 +30,7 @@ def main:func() -> [
 ```
 MIT License
 
-Copyright (c) [2025] [RythinOrg]
+Copyright (c) [2025] [El-Rafa-Dev (Rafael Sousa)]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
