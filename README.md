@@ -50,6 +50,5 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
-##Contact
-contact with me via telegram! my user id: [@rafaprobr[tlink]]
-[tlink]: https://t.me/rafaprobr
+## Contact
+contact with me via telegram! my user id: [@rafaprobr](https://t.me/rafaprobr)
