@@ -179,12 +179,10 @@ namespace Rythin
     {
         consume(TokensTypes::TOKEN_DEF);
         std::string name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
-        // std::cout << "Var name " << name << std::endl;
         consume(TokensTypes::TOKEN_COLON);
         TokensTypes tk = consume(current().type).type;
         consume(TokensTypes::TOKEN_ASSIGN); // consome o '=' para pegar o valor ou expressão
         auto val = ParseExpression();
-        // std::cout << "Value: " << &val << " Type: " << Tokens::tokenTypeToString(tk) << std::endl;
         return std::make_shared<VariableDefinitionNode>(name, tk, val);
     }
 
@@ -212,7 +210,8 @@ namespace Rythin
             delete[] unsign_char;
         }
         case TokensTypes::TOKEN_NIL:
-            return std::make_shared<NilNode>(nullptr);
+            consume(TokensTypes::TOKEN_NIL);
+            return std::make_shared<NilNode>();
         default:
             throw Excepts::CompilationException("Invalid Variable Type");
         }
@@ -246,10 +245,6 @@ namespace Rythin
                 std::cerr << "[Error]: Unexpected variable type at Line " << current().line << " Column " << current().column << std::endl;
                 throw std::runtime_error("Invalid type");
             }
-
-            /*if (check(TokensTypes::TOKEN_IDENTIFIER)) {
-                std::cout << " Var Type: " << consume(current().type).value << std::endl;
-            }*/
         }
         else if (current().type == TokensTypes::TOKEN_TRUE)
         {

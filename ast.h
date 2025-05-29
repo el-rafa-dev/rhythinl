@@ -139,10 +139,7 @@ namespace Rythin
     };
 
     struct NilNode : public ASTNode {
-        //nil = null or NULL.
-        std::string nil;
-        NilNode(std::string nil) : nil(nil) {}
-
+        NilNode() = default;
     };
 
     struct VariableDefinitionNode : public ASTNode
