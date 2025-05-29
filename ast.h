@@ -138,6 +138,13 @@ namespace Rythin
         TrueOrFalseNode(bool val) : val(val) {}
     };
 
+    struct NilNode : public ASTNode {
+        //nil = null or NULL.
+        std::string nil;
+        NilNode(std::string nil) : nil(nil) {}
+
+    };
+
     struct VariableDefinitionNode : public ASTNode
     {
         std::string var_name;

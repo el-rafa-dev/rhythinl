@@ -1,4 +1,4 @@
-def bys:byte = 2323
+def bys:str = nil
 
 ;def main:func(args:str[]) -> [
 ;    printnl("Hello World!")

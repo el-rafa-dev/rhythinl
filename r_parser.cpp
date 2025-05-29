@@ -13,6 +13,8 @@
 #include "chunk.h"
 #include "log.h"
 
+#define null __null
+
 // using namespace std;
 
 namespace Rythin
@@ -206,10 +208,11 @@ namespace Rythin
                 unsign_char[i] = static_cast<unsigned char>(current().value[1]);
             }
             unsign_char[current().value.length()] = '\0';
-            std::cout << "Byte: " << unsign_char[current().value.length()] << std::endl;
             consume(current().type);
             delete[] unsign_char;
         }
+        case TokensTypes::TOKEN_NIL:
+            return std::make_shared<NilNode>(nullptr);
         default:
             throw Excepts::CompilationException("Invalid Variable Type");
         }
@@ -265,7 +268,7 @@ namespace Rythin
         }
     }
 
-    ASTPtr Parser::ParsePrimary()
+    /*ASTPtr Parser::ParsePrimary()
     {
         switch (current().type)
         {
@@ -291,7 +294,7 @@ namespace Rythin
             std::cerr << "[Error]: Invalid expression at line " << current().line << " Column: " << current().column << std::endl;
             throw Excepts::CompilationException("Invalid Expression");
         }
-    }
+    }*/
 
     int Parser::GetPrecedence(TokensTypes tk)
     {
@@ -347,6 +350,7 @@ namespace Rythin
         consume(TokensTypes::TOKEN_RBRACKET); // ']'
         return block;
     }
+
     /*ASTPtr Parser::ParseBinaryOpRHS(int exprPrec, ASTPtr lhs)
     {
         while (true)
