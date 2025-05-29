@@ -160,7 +160,7 @@ namespace Rythin
             {
                 consume(TokensTypes::TOKEN_PLUS);
                 node->val = value + consume(current().type).value;
-                //additional_args.push_back(consume(current().type).value);
+                // additional_args.push_back(consume(current().type).value);
             }
             else
             {
@@ -168,7 +168,7 @@ namespace Rythin
                 throw Excepts::SyntaxException("Concatenation Syntax Error");
             }
         }
-        node -> val = value;
+        node->val = value;
         consume(TokensTypes::TOKEN_RPAREN);
         return node;
     }
@@ -177,12 +177,12 @@ namespace Rythin
     {
         consume(TokensTypes::TOKEN_DEF);
         std::string name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
-        //std::cout << "Var name " << name << std::endl;
+        // std::cout << "Var name " << name << std::endl;
         consume(TokensTypes::TOKEN_COLON);
         TokensTypes tk = consume(current().type).type;
         consume(TokensTypes::TOKEN_ASSIGN); // consome o '=' para pegar o valor ou expressão
         auto val = ParseExpression();
-        //std::cout << "Value: " << &val << " Type: " << Tokens::tokenTypeToString(tk) << std::endl;
+        // std::cout << "Value: " << &val << " Type: " << Tokens::tokenTypeToString(tk) << std::endl;
         return std::make_shared<VariableDefinitionNode>(name, tk, val);
     }
 
@@ -198,6 +198,18 @@ namespace Rythin
             return std::make_shared<FloatNode>(std::stof(consume(current().type).value));
         case TokensTypes::TOKEN_DOUBLE:
             return std::make_shared<DoubleNode>(std::stod(consume(current().type).value));
+        case TokensTypes::TOKEN_BYTES:
+        {
+            auto unsign_char = new unsigned char[current().value.length()];
+            for (int i = 0; i < current().value.length(); i++)
+            {
+                unsign_char[i] = static_cast<unsigned char>(current().value[1]);
+            }
+            unsign_char[current().value.length()] = '\0';
+            std::cout << "Byte: " << unsign_char[current().value.length()] << std::endl;
+            consume(current().type);
+            delete[] unsign_char;
+        }
         default:
             throw Excepts::CompilationException("Invalid Variable Type");
         }

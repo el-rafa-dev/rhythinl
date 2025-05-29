@@ -114,6 +114,12 @@ namespace Rythin
         IntNode(int v) : val(v) {}
     };
 
+    struct ByteNode : public ASTNode
+    {
+        unsigned char* byte;
+        ByteNode(unsigned char* by) : byte(by) {}
+    };
+
     struct DoubleNode : public ASTNode
     {
         double val;
@@ -150,6 +156,8 @@ namespace Rythin
                 std::cout << "Var Name: " << var_name << " Value: " << var->val << " Types: " << Tokens::tokenTypeToString(type) << std::endl;
             } else if (auto var = std::dynamic_pointer_cast<FloatNode>(val)) {
                 std::cout << "Var Name: " << var_name << " Value: " << var->val << " Types: " << Tokens::tokenTypeToString(type) << std::endl;
+            } else if (auto var = std::dynamic_pointer_cast<ByteNode>(val)) {
+                std::cout << "Var Name: " << var_name << " Value: " << var->byte << " Types: " << Tokens::tokenTypeToString(type) << std::endl;
             }
         }
     };

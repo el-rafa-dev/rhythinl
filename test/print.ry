@@ -1,3 +1,5 @@
+def bys:byte = 2323
+
 ;def main:func(args:str[]) -> [
 ;    printnl("Hello World!")
 ;    fin 0
