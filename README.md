@@ -1,7 +1,7 @@
 
 # Rhythin Programming Language
 
-RythinLang is a statically typed programming language focused on being objective and direct, facilitating learning for both beginners and programmers with experience in the area.
+RhythinLang is a statically typed programming language focused on being objective and direct, facilitating learning for both beginners and programmers with experience in the area.
 
 ## Current Status
 
