@@ -12,8 +12,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/rythin.dir/rhythin.cpp.o.d"
   "CMakeFiles/rythin.dir/t_tokens.cpp.o"
   "CMakeFiles/rythin.dir/t_tokens.cpp.o.d"
-  "CMakeFiles/rythin.dir/utils.cpp.o"
-  "CMakeFiles/rythin.dir/utils.cpp.o.d"
   "rythin"
   "rythin.pdb"
 )

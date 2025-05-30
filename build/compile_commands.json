@@ -25,12 +25,6 @@
 },
 {
   "directory": "/home/el-rafa/CLionProjects/Rythin/build",
-  "command": "/usr/bin/g++ -g -std=gnu++20 -fmodules-ts -fmodule-mapper=CMakeFiles/rythin.dir/utils.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles/rythin.dir/utils.cpp.o -c /home/el-rafa/CLionProjects/Rythin/utils.cpp",
-  "file": "/home/el-rafa/CLionProjects/Rythin/utils.cpp",
-  "output": "CMakeFiles/rythin.dir/utils.cpp.o"
-},
-{
-  "directory": "/home/el-rafa/CLionProjects/Rythin/build",
   "command": "/usr/bin/g++ -g -std=gnu++20 -fmodules-ts -fmodule-mapper=CMakeFiles/rythin.dir/r_inter.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles/rythin.dir/r_inter.cpp.o -c /home/el-rafa/CLionProjects/Rythin/r_inter.cpp",
   "file": "/home/el-rafa/CLionProjects/Rythin/r_inter.cpp",
   "output": "CMakeFiles/rythin.dir/r_inter.cpp.o"

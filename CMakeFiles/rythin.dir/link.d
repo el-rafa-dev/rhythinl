@@ -6,7 +6,6 @@ rythin: \
   CMakeFiles/rythin.dir/r_lex.cpp.o \
   CMakeFiles/rythin.dir/r_parser.cpp.o \
   CMakeFiles/rythin.dir/t_tokens.cpp.o \
-  CMakeFiles/rythin.dir/utils.cpp.o \
   CMakeFiles/rythin.dir/r_inter.cpp.o \
   CMakeFiles/rythin.dir/log_errors.cpp.o \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/../../../../lib/libstdc++.so \
@@ -50,8 +49,6 @@ CMakeFiles/rythin.dir/r_lex.cpp.o:
 CMakeFiles/rythin.dir/r_parser.cpp.o:
 
 CMakeFiles/rythin.dir/t_tokens.cpp.o:
-
-CMakeFiles/rythin.dir/utils.cpp.o:
 
 CMakeFiles/rythin.dir/r_inter.cpp.o:
 

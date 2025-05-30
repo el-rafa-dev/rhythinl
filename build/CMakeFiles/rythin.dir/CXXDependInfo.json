@@ -47,11 +47,6 @@
 		{
 			"language" : "CXX",
 			"source" : "/home/el-rafa/CLionProjects/Rythin/t_tokens.cpp"
-		},
-		"CMakeFiles/rythin.dir/utils.cpp.o" : 
-		{
-			"language" : "CXX",
-			"source" : "/home/el-rafa/CLionProjects/Rythin/utils.cpp"
 		}
 	}
 }

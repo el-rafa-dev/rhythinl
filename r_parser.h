@@ -34,7 +34,6 @@ namespace Rythin {
         ASTPtr ParseLoop();
         ASTPtr ParseBlock();
         ASTPtr ParseLoopExpression();
-        ASTPtr ParseBinaryOpRHS(int exprPrec, ASTPtr lhs);
         ASTPtr ParseDeclarations();
         ASTPtr ParseExpression();
         ASTPtr ParseVarExpression();

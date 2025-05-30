@@ -5,7 +5,6 @@
 #include <optional>
 
 // local includes
-#include "utils.h"
 #include "ast.h"
 #include "t_tokens.h"
 #include "r_parser.h"
@@ -349,41 +348,4 @@ namespace Rythin
         consume(TokensTypes::TOKEN_RBRACKET); // ']'
         return block;
     }
-
-    /*ASTPtr Parser::ParseBinaryOpRHS(int exprPrec, ASTPtr lhs)
-    {
-        while (true)
-        {
-            if (current().type == TokensTypes::TOKEN_PLUS || current().type == TokensTypes::TOKEN_MINUS ||
-                current().type == TokensTypes::TOKEN_MULTIPLY || current().type == TokensTypes::TOKEN_DIVIDE ||
-                current().type == TokensTypes::TOKEN_EQUAL || current().type == TokensTypes::TOKEN_NOT_EQUAL)
-                continue;
-
-            std::string op = current().value;
-            int tokPrec = GetPrecedence(current().type);
-
-            if (tokPrec < exprPrec)
-                return lhs;
-
-            consume(TokensTypes::TOKEN_PLUS);
-
-            auto rhs = ParsePrimary();
-
-            int nextPrec = -1;
-            if (current().type == TokensTypes::TOKEN_PLUS)
-                nextPrec = GetPrecedence(current().type);
-
-            if (tokPrec < nextPrec)
-            {
-                rhs = ParseBinaryOpRHS(tokPrec + 1, rhs);
-            }
-
-            auto binOpNode = std::make_shared<BinOp>();
-            binOpNode->op = op;
-            binOpNode->left = lhs;
-            binOpNode->right = rhs;
-
-            lhs = binOpNode;
-        }
-    }*/
 }
