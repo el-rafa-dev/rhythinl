@@ -20,7 +20,7 @@ The first version for general use will be when it has the basic syntax of a lang
 ```
 ```
 def main:func() -> [
-    printnl("Hello World from Rythin!") ;; writing a message on console/terminal
+    printnl("Hello World from Rhythin!") ;; writing a message on console/terminal
     fin 0 ;; sucess code
 ]
 ```
