@@ -37,14 +37,14 @@ namespace Rythin
         if (current().type == TokensTypes::TOKEN_EOF)
         {
             // checa se o token atual é o EOF (end of file), se for retorna o erro anaixo
-            LogErrors::getInstance().addError("Expected a statement but reached the end of file.... Are you forget anything?");
+            LogErrors::getInstance().addError("Expected a statement but reached the end of file.... Are you forget anything?", 1);
             throw Excepts::CompilationException("Left early");
         }
 
         if (current().type != tk)
         {
             // checa se o tipo não é igual ao tk e retorna  o erro abaixo
-            LogErrors::getInstance().addError("Expected '" + Tokens::tokenTypeToString(tk) + "' but got: " + Tokens::tokenTypeToString(current().type) + "' at line " + std::to_string(current().line) + " column " + std::to_string(current().column));
+            LogErrors::getInstance().addError("Expected '" + Tokens::tokenTypeToString(tk) + "' but got: " + Tokens::tokenTypeToString(current().type) + "' at line " + std::to_string(current().line) + " column " + std::to_string(current().column), 4);
             position++;
         }
         position++;
@@ -86,7 +86,7 @@ namespace Rythin
         case TokensTypes::TOKEN_DEF:
             return ParseVarDeclaration();
         default:
-            LogErrors::getInstance().addError("Invalid statement at line" + std::to_string(current().line) + " column " + std::to_string(current().column));
+            LogErrors::getInstance().addError("Invalid statement at line" + std::to_string(current().line) + " column " + std::to_string(current().column), 2);
             throw Excepts::CompilationException("Invalid Statement");
         }
     }
@@ -128,7 +128,20 @@ namespace Rythin
         auto node = std::make_shared<PrintNode>();
         consume(TokensTypes::TOKEN_PRINT);
         consume(TokensTypes::TOKEN_LPAREN);
-        // ch.emit(OpCode::OP_PRINT, consume(TokensTypes::TOKEN_STRING_LITERAL).value);
+        while (!check(TokensTypes::TOKEN_RPAREN))
+        {
+            if (check(TokensTypes::TOKEN_STRING_LITERAL)) {
+                node->val = consume(current().type).value;
+                while (check(TokensTypes::TOKEN_PLUS)) {
+                    consume(TokensTypes::TOKEN_PLUS);
+                    node->val += consume(current().type).value;
+                }
+            } else if (check(TokensTypes::TOKEN_NIL)) {
+                return std::make_shared<NilNode>();
+            } else {
+                LogErrors::getInstance().addError("Concatenation needs a predominant value (like str, int or others types)", 3);
+            }
+        }
         node->val = consume(TokensTypes::TOKEN_STRING_LITERAL).value;
         consume(TokensTypes::TOKEN_RPAREN);
         return node;
@@ -139,7 +152,20 @@ namespace Rythin
         auto node = std::make_shared<PrintE>();
         consume(TokensTypes::TOKEN_PRINT_ERROR);
         consume(TokensTypes::TOKEN_LPAREN);
-        node->val = consume(TokensTypes::TOKEN_STRING_LITERAL).value;
+        while (!check(TokensTypes::TOKEN_RPAREN))
+        {
+            if (check(TokensTypes::TOKEN_STRING_LITERAL)) {
+                node->val = consume(current().type).value;
+                while (check(TokensTypes::TOKEN_PLUS)) {
+                    consume(TokensTypes::TOKEN_PLUS);
+                    node->val += consume(current().type).value;
+                }
+            } else if (check(TokensTypes::TOKEN_NIL)) {
+                return std::make_shared<NilNode>();
+            } else {
+                LogErrors::getInstance().addError("Concatenation needs a predominant value (like str, int or others types)", 3);
+            }
+        }
         consume(TokensTypes::TOKEN_RPAREN);
         return node;
     }
@@ -149,30 +175,18 @@ namespace Rythin
         auto node = std::make_shared<PrintNl>();
         consume(TokensTypes::TOKEN_PRINT_NEW_LINE);
         consume(TokensTypes::TOKEN_LPAREN);
-        std::string value = consume(current().type).value;
-
-        if (value == Tokens::tokenTypeToString(TokensTypes::TOKEN_NIL)) {
-            return std::make_shared<NilNode>();
-        }
-
-        std::vector<std::string> additional_args;
-
         while (!check(TokensTypes::TOKEN_RPAREN))
         {
-            if (check(TokensTypes::TOKEN_PLUS))
-            {
-                consume(TokensTypes::TOKEN_PLUS);
-                node->val = value + consume(current().type).value;
-                // additional_args.push_back(consume(current().type).value);
-            }
-            else
-            {
-                LogErrors::getInstance().addError("Concatenation only accepts + token at line " + std::to_string(current().line) + " column " + std::to_string(current().column));
-                //break;
-                //std::cerr << "[Error]:  " << current().line << " Column " << current().column << std::endl;
+            if (check(TokensTypes::TOKEN_STRING_LITERAL)) {
+                node->val = consume(current().type).value;
+                while (check(TokensTypes::TOKEN_PLUS)) {
+                    consume(TokensTypes::TOKEN_PLUS);
+                    node->val += consume(current().type).value;
+                }
+            } else if (check(TokensTypes::TOKEN_NIL)) {
+                return std::make_shared<NilNode>();
             }
         }
-        node->val = value;
         consume(TokensTypes::TOKEN_RPAREN);
         return node;
     }
@@ -216,7 +230,7 @@ namespace Rythin
             return std::make_shared<NilNode>();
         default:
             std::cerr << "[Error]: Invalid variable type at line " << current().line << " column " << current().column << std::endl;
-            //throw Excepts::CompilationException("Invalid Variable Type");
+            // throw Excepts::CompilationException("Invalid Variable Type");
         }
     }
 
@@ -246,7 +260,7 @@ namespace Rythin
                 return std::make_shared<LiteralNode>(consume(current().type).value);
             default:
                 std::cerr << "[Error]: Unexpected variable type at Line " << current().line << " Column " << current().column << std::endl;
-                //throw std::runtime_error("Invalid type");
+                // throw std::runtime_error("Invalid type");
             }
         }
         else if (current().type == TokensTypes::TOKEN_TRUE)
@@ -262,7 +276,7 @@ namespace Rythin
         else
         {
             std::cerr << "[Error]: Invalid type of expression" << std::endl;
-            //throw std::logic_error("Logic Error");
+            // throw std::logic_error("Logic Error");
         }
     }
 

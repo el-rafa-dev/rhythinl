@@ -12,9 +12,10 @@
 ;            continue
 ;        ]
 ;    ]
-;    printnl("Hello World")
+;    printnl("Hello Worldhshd")
 ;    sem o finish o programa irá ficar em loop infinto
 ;    finish 0
 ;]
-printnl("Hello B\ns" +)
-;printnl(nil)
+
+printnl("H" + "e" + "l" + "l" + "o" + "\nW" + "o" + "r" + "l" + "d")
+printe("[Error]: Invalid type at line " + 12 + " column " + 1)

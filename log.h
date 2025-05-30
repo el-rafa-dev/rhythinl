@@ -15,13 +15,15 @@ namespace Log
         LogErrors(const LogErrors &) = delete;
         LogErrors &operator=(const LogErrors &) = delete;
         std::vector<std::string> logs;
+        int code;
     public:
         static LogErrors& getInstance() {
             static LogErrors instance;
             return instance;
         }
-        void addError(const std::string &error);
+        void addError(const std::string &error, int exit_code = __null);
         bool hasErrors();
+        int exitCode();
         void printErrors();
     };
 }

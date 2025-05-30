@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
             if (LogErrors::getInstance().hasErrors()) {
                 LogErrors::getInstance().printErrors();
             } else {
-                std::cout << "Compiled without errors or warnings" << std::endl;
+                std::cout << "[Sucess]: Compiled without errors or warnings. Exit code: " << std::to_string(LogErrors::getInstance().exitCode()) << std::endl;
             }
         }
         else
