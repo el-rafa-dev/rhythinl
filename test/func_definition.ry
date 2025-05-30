@@ -1,7 +1,0 @@
-def main:int(test:int) -> [
-    print( 4 * 2)
-    print("Hello World from Rythin!")
-]
-
-
-def main:int(test:int) -> [ print("Rythin")]

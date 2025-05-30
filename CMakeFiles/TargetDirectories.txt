@@ -1,3 +1,0 @@
-/home/el-rafa/CLionProjects/Rythin/CMakeFiles/rhythin.dir
-/home/el-rafa/CLionProjects/Rythin/CMakeFiles/edit_cache.dir
-/home/el-rafa/CLionProjects/Rythin/CMakeFiles/rebuild_cache.dir

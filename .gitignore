@@ -1,7 +1,10 @@
 test/
-test/*
-simple_vm/
 rythin
-build/*
+build/
+CMakeFiles/
+cmake-build-debug/
 .vscode/
 .idea/
+MakeFile
+*.i
+*.ry
