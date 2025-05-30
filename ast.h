@@ -138,6 +138,16 @@ namespace Rythin
         TrueOrFalseNode(bool val) : val(val) {}
     };
 
+    struct ReturnNode : public ASTNode {
+        ASTPtr val; //return value (pode ser um int, float/double, string ou byte)
+        ReturnNode(ASTPtr val) : val(val) {}
+    };
+
+    struct FinnishNode : public ASTNode {
+        int val; //finish code is a intiger
+        FinnishNode(int val) : val(val) {}
+    };
+
     struct NilNode : public ASTNode {
         NilNode() = default;
     };

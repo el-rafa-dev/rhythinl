@@ -369,7 +369,6 @@ namespace Rythin
             {"print", TokensTypes::TOKEN_PRINT},
             {"printnl", TokensTypes::TOKEN_PRINT_NEW_LINE},
             {"printe", TokensTypes::TOKEN_PRINT_ERROR},
-            {"printel", TokensTypes::TOKEN_PRINT_ERROR_LOG},
             {"true", TokensTypes::TOKEN_TRUE},
             {"false", TokensTypes::TOKEN_FALSE},
             {"nil", TokensTypes::TOKEN_NIL},

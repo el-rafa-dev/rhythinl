@@ -1,6 +1,16 @@
-def bys:str = nil
+;loop test
 
-;def main:func(args:str[]) -> [
-;    printnl("Hello World!")
-;    fin 0
-;]
+;struct sd {
+;    def a : str = nil
+;}
+
+def main:func() -> [
+    loop (a:int in 23) -> [
+        if (a >= 21) -> [
+            stop
+        ] but (a <= 21) [
+            continue
+        ]
+    ]
+    return 0
+]
