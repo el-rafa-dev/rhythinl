@@ -1,38 +1,38 @@
 [
 {
   "directory": "/home/el-rafa/CLionProjects/Rythin/build",
-  "command": "/usr/bin/g++ -g -std=gnu++20 -fmodules-ts -fmodule-mapper=CMakeFiles/rythin.dir/rhythin.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles/rythin.dir/rhythin.cpp.o -c /home/el-rafa/CLionProjects/Rythin/rhythin.cpp",
+  "command": "/usr/bin/g++ -g -std=gnu++20 -fmodules-ts -fmodule-mapper=CMakeFiles/rhythin.dir/rhythin.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles/rhythin.dir/rhythin.cpp.o -c /home/el-rafa/CLionProjects/Rythin/rhythin.cpp",
   "file": "/home/el-rafa/CLionProjects/Rythin/rhythin.cpp",
-  "output": "CMakeFiles/rythin.dir/rhythin.cpp.o"
+  "output": "CMakeFiles/rhythin.dir/rhythin.cpp.o"
 },
 {
   "directory": "/home/el-rafa/CLionProjects/Rythin/build",
-  "command": "/usr/bin/g++ -g -std=gnu++20 -fmodules-ts -fmodule-mapper=CMakeFiles/rythin.dir/r_lex.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles/rythin.dir/r_lex.cpp.o -c /home/el-rafa/CLionProjects/Rythin/r_lex.cpp",
+  "command": "/usr/bin/g++ -g -std=gnu++20 -fmodules-ts -fmodule-mapper=CMakeFiles/rhythin.dir/r_lex.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles/rhythin.dir/r_lex.cpp.o -c /home/el-rafa/CLionProjects/Rythin/r_lex.cpp",
   "file": "/home/el-rafa/CLionProjects/Rythin/r_lex.cpp",
-  "output": "CMakeFiles/rythin.dir/r_lex.cpp.o"
+  "output": "CMakeFiles/rhythin.dir/r_lex.cpp.o"
 },
 {
   "directory": "/home/el-rafa/CLionProjects/Rythin/build",
-  "command": "/usr/bin/g++ -g -std=gnu++20 -fmodules-ts -fmodule-mapper=CMakeFiles/rythin.dir/r_parser.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles/rythin.dir/r_parser.cpp.o -c /home/el-rafa/CLionProjects/Rythin/r_parser.cpp",
+  "command": "/usr/bin/g++ -g -std=gnu++20 -fmodules-ts -fmodule-mapper=CMakeFiles/rhythin.dir/r_parser.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles/rhythin.dir/r_parser.cpp.o -c /home/el-rafa/CLionProjects/Rythin/r_parser.cpp",
   "file": "/home/el-rafa/CLionProjects/Rythin/r_parser.cpp",
-  "output": "CMakeFiles/rythin.dir/r_parser.cpp.o"
+  "output": "CMakeFiles/rhythin.dir/r_parser.cpp.o"
 },
 {
   "directory": "/home/el-rafa/CLionProjects/Rythin/build",
-  "command": "/usr/bin/g++ -g -std=gnu++20 -fmodules-ts -fmodule-mapper=CMakeFiles/rythin.dir/t_tokens.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles/rythin.dir/t_tokens.cpp.o -c /home/el-rafa/CLionProjects/Rythin/t_tokens.cpp",
+  "command": "/usr/bin/g++ -g -std=gnu++20 -fmodules-ts -fmodule-mapper=CMakeFiles/rhythin.dir/t_tokens.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles/rhythin.dir/t_tokens.cpp.o -c /home/el-rafa/CLionProjects/Rythin/t_tokens.cpp",
   "file": "/home/el-rafa/CLionProjects/Rythin/t_tokens.cpp",
-  "output": "CMakeFiles/rythin.dir/t_tokens.cpp.o"
+  "output": "CMakeFiles/rhythin.dir/t_tokens.cpp.o"
 },
 {
   "directory": "/home/el-rafa/CLionProjects/Rythin/build",
-  "command": "/usr/bin/g++ -g -std=gnu++20 -fmodules-ts -fmodule-mapper=CMakeFiles/rythin.dir/r_inter.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles/rythin.dir/r_inter.cpp.o -c /home/el-rafa/CLionProjects/Rythin/r_inter.cpp",
+  "command": "/usr/bin/g++ -g -std=gnu++20 -fmodules-ts -fmodule-mapper=CMakeFiles/rhythin.dir/r_inter.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles/rhythin.dir/r_inter.cpp.o -c /home/el-rafa/CLionProjects/Rythin/r_inter.cpp",
   "file": "/home/el-rafa/CLionProjects/Rythin/r_inter.cpp",
-  "output": "CMakeFiles/rythin.dir/r_inter.cpp.o"
+  "output": "CMakeFiles/rhythin.dir/r_inter.cpp.o"
 },
 {
   "directory": "/home/el-rafa/CLionProjects/Rythin/build",
-  "command": "/usr/bin/g++ -g -std=gnu++20 -fmodules-ts -fmodule-mapper=CMakeFiles/rythin.dir/log_errors.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles/rythin.dir/log_errors.cpp.o -c /home/el-rafa/CLionProjects/Rythin/log_errors.cpp",
+  "command": "/usr/bin/g++ -g -std=gnu++20 -fmodules-ts -fmodule-mapper=CMakeFiles/rhythin.dir/log_errors.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles/rhythin.dir/log_errors.cpp.o -c /home/el-rafa/CLionProjects/Rythin/log_errors.cpp",
   "file": "/home/el-rafa/CLionProjects/Rythin/log_errors.cpp",
-  "output": "CMakeFiles/rythin.dir/log_errors.cpp.o"
+  "output": "CMakeFiles/rhythin.dir/log_errors.cpp.o"
 }
 ]

@@ -971,7 +971,6 @@ CMakeFiles/rythin.dir/r_parser.cpp.o: r_parser.cpp \
   /usr/include/c++/15.1.1/pstl/glue_memory_defs.h \
   /usr/include/c++/15.1.1/pstl/pstl_config.h \
   /usr/include/c++/15.1.1/stdexcept \
-  /usr/include/c++/15.1.1/stdlib.h \
   /usr/include/c++/15.1.1/streambuf \
   /usr/include/c++/15.1.1/string \
   /usr/include/c++/15.1.1/string_view \
@@ -1024,7 +1023,6 @@ CMakeFiles/rythin.dir/r_parser.cpp.o: r_parser.cpp \
   /usr/include/syscall.h \
   /usr/include/time.h \
   /usr/include/unistd.h \
-  /usr/include/utils.h \
   /usr/include/wchar.h \
   /usr/include/wctype.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/include/limits.h \
@@ -1510,11 +1508,8 @@ rythin: /usr/lib/Scrt1.o \
   CMakeFiles/rythin.dir/r_lex.cpp.o \
   CMakeFiles/rythin.dir/r_parser.cpp.o \
   CMakeFiles/rythin.dir/rhythin.cpp.o \
-  CMakeFiles/rythin.dir/t_tokens.cpp.o \
-  CMakeFiles/rythin.dir/utils.cpp.o
+  CMakeFiles/rythin.dir/t_tokens.cpp.o
 
-
-CMakeFiles/rythin.dir/utils.cpp.o:
 
 CMakeFiles/rythin.dir/log_errors.cpp.o:
 
@@ -1535,10 +1530,6 @@ CMakeFiles/rythin.dir/log_errors.cpp.o:
 /usr/lib/crti.o:
 
 /usr/lib/Scrt1.o:
-
-/usr/include/utils.h:
-
-/usr/include/c++/15.1.1/stdlib.h:
 
 /usr/include/c++/15.1.1/optional:
 

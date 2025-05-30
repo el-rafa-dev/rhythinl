@@ -63,11 +63,11 @@ CMAKE_BINARY_DIR = /home/el-rafa/CLionProjects/Rythin
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/rythin.dir/all
+all: CMakeFiles/rhythin.dir/all
 .PHONY : all
 
 # The main recursive "codegen" target.
-codegen: CMakeFiles/rythin.dir/codegen
+codegen: CMakeFiles/rhythin.dir/codegen
 .PHONY : codegen
 
 # The main recursive "preinstall" target.
@@ -75,40 +75,40 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/rythin.dir/clean
+clean: CMakeFiles/rhythin.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/rythin.dir
+# Target rules for target CMakeFiles/rhythin.dir
 
 # All Build rule for target.
-CMakeFiles/rythin.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rythin.dir/build.make CMakeFiles/rythin.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rythin.dir/build.make CMakeFiles/rythin.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/el-rafa/CLionProjects/Rythin/CMakeFiles --progress-num=1,2,3,4,5,6,7 "Built target rythin"
-.PHONY : CMakeFiles/rythin.dir/all
+CMakeFiles/rhythin.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/el-rafa/CLionProjects/Rythin/CMakeFiles --progress-num=1,2,3,4,5,6,7 "Built target rhythin"
+.PHONY : CMakeFiles/rhythin.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/rythin.dir/rule: cmake_check_build_system
+CMakeFiles/rhythin.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/el-rafa/CLionProjects/Rythin/CMakeFiles 7
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/rythin.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/rhythin.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/el-rafa/CLionProjects/Rythin/CMakeFiles 0
-.PHONY : CMakeFiles/rythin.dir/rule
+.PHONY : CMakeFiles/rhythin.dir/rule
 
 # Convenience name for target.
-rythin: CMakeFiles/rythin.dir/rule
-.PHONY : rythin
+rhythin: CMakeFiles/rhythin.dir/rule
+.PHONY : rhythin
 
 # codegen rule for target.
-CMakeFiles/rythin.dir/codegen:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rythin.dir/build.make CMakeFiles/rythin.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/el-rafa/CLionProjects/Rythin/CMakeFiles --progress-num=1,2,3,4,5,6,7 "Finished codegen for target rythin"
-.PHONY : CMakeFiles/rythin.dir/codegen
+CMakeFiles/rhythin.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/el-rafa/CLionProjects/Rythin/CMakeFiles --progress-num=1,2,3,4,5,6,7 "Finished codegen for target rhythin"
+.PHONY : CMakeFiles/rhythin.dir/codegen
 
 # clean rule for target.
-CMakeFiles/rythin.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rythin.dir/build.make CMakeFiles/rythin.dir/clean
-.PHONY : CMakeFiles/rythin.dir/clean
+CMakeFiles/rhythin.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/clean
+.PHONY : CMakeFiles/rhythin.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.
