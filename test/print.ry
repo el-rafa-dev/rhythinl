@@ -1,16 +1,20 @@
 ;loop test
-
+;
 ;struct sd {
 ;    def a : str = nil
 ;}
-
-def main:func() -> [
-    loop (a:int in 23) -> [
-        if (a >= 21) -> [
-            stop
-        ] but (a <= 21) [
-            continue
-        ]
-    ]
-    return 0
-]
+;
+;def main:func() -> [
+;    loop (a:int in 23) -> [
+;        if (a >= 21) -> [
+;            stop
+;        ] but (a <= 21) [
+;            continue
+;        ]
+;    ]
+;    printnl("Hello World")
+;    sem o finish o programa irá ficar em loop infinto
+;    finish 0
+;]
+printnl("Hello B\ns")
+printe()

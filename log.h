@@ -25,6 +25,7 @@ public:
         std::string inter_val;
         while (cur_inp != '"' && cur_inp != '\0')
         {
+            advance_input();
             if (cur_inp == '$')
             {
                 advance_input(); // avanca o $
@@ -32,6 +33,8 @@ public:
                 {
                     advance_input();
                     inter_val = cur_inp;
+                    std::cout << "Value interpolated: " << inter_val << std::endl;
+                    advance_input();
                 }
             }
         }

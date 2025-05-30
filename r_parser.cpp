@@ -38,8 +38,7 @@ namespace Rythin
         if (current().type == TokensTypes::TOKEN_EOF)
         {
             // checa se o token atual é o EOF (end of file), se for retorna o erro anaixo
-            // LogErrors::addError("[Error]: Expected " + current().value + "but reached the end of file.... Are you forget anything?");
-            std::cerr << "[Error]: Expected " << current().value << " but reached the end of file.... Are you forget anything?" << std::endl;
+            std::cerr << "[Error]: Expected a statement but reached the end of file.... Are you forget anything?" << std::endl;
             throw Excepts::CompilationException("Left early");
         }
 
@@ -47,8 +46,7 @@ namespace Rythin
         {
             // checa se o tipo não é igual ao tk e retorna  o erro abaixo
             std::cerr << "[Error]: Expected '" << Tokens::tokenTypeToString(tk) << "' but got: '" << Tokens::tokenTypeToString(current().type) << "' at line " << current().line << " Column " << current().column << std::endl;
-            // LogErrors::addError("[Error]: Expected '" + Tokens::tokenTypeToString(tk) + "' but got: " + Tokens::tokenTypeToString(current().type) + "' at line: " + std::to_string(current().line) + " Column " + std::to_string(current().column));
-            throw Excepts::SyntaxException("Invalid token");
+            position++;
         }
         position++;
         return tokens[position - 1];
@@ -213,7 +211,8 @@ namespace Rythin
             consume(TokensTypes::TOKEN_NIL);
             return std::make_shared<NilNode>();
         default:
-            throw Excepts::CompilationException("Invalid Variable Type");
+            std::cerr << "[Error]: Invalid variable type at line " << current().line << " column " << current().column << std::endl;
+            //throw Excepts::CompilationException("Invalid Variable Type");
         }
     }
 
@@ -243,7 +242,7 @@ namespace Rythin
                 return std::make_shared<LiteralNode>(consume(current().type).value);
             default:
                 std::cerr << "[Error]: Unexpected variable type at Line " << current().line << " Column " << current().column << std::endl;
-                throw std::runtime_error("Invalid type");
+                //throw std::runtime_error("Invalid type");
             }
         }
         else if (current().type == TokensTypes::TOKEN_TRUE)
@@ -259,7 +258,7 @@ namespace Rythin
         else
         {
             std::cerr << "[Error]: Invalid type of expression" << std::endl;
-            throw std::logic_error("Logic Error");
+            //throw std::logic_error("Logic Error");
         }
     }
 
