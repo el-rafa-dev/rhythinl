@@ -49,17 +49,17 @@ cmake_ninja_workdir = /home/el-rafa/CLionProjects/Rythin/build/
 
 build cmake_object_order_depends_target_rythin: phony || .
 
-build CMakeFiles/rythin.dir/rythin.cpp.o.ddi: CXX_SCAN__rythin_Debug /home/el-rafa/CLionProjects/Rythin/rythin.cpp || cmake_object_order_depends_target_rythin
-  DEP_FILE = CMakeFiles/rythin.dir/rythin.cpp.o.ddi.d
-  DYNDEP_INTERMEDIATE_FILE = CMakeFiles/rythin.dir/rythin.cpp.o.ddi
+build CMakeFiles/rythin.dir/rhythin.cpp.o.ddi: CXX_SCAN__rythin_Debug /home/el-rafa/CLionProjects/Rythin/rhythin.cpp || cmake_object_order_depends_target_rythin
+  DEP_FILE = CMakeFiles/rythin.dir/rhythin.cpp.o.ddi.d
+  DYNDEP_INTERMEDIATE_FILE = CMakeFiles/rythin.dir/rhythin.cpp.o.ddi
   FLAGS = -g -std=gnu++20
-  OBJ_FILE = CMakeFiles/rythin.dir/rythin.cpp.o
-  PREPROCESSED_OUTPUT_FILE = CMakeFiles/rythin.dir/rythin.cpp.o.ddi.i
+  OBJ_FILE = CMakeFiles/rythin.dir/rhythin.cpp.o
+  PREPROCESSED_OUTPUT_FILE = CMakeFiles/rythin.dir/rhythin.cpp.o.ddi.i
 
-build CMakeFiles/rythin.dir/rythin.cpp.o: CXX_COMPILER__rythin_scanned_Debug /home/el-rafa/CLionProjects/Rythin/rythin.cpp | CMakeFiles/rythin.dir/rythin.cpp.o.modmap || cmake_object_order_depends_target_rythin CMakeFiles/rythin.dir/CXX.dd
+build CMakeFiles/rythin.dir/rhythin.cpp.o: CXX_COMPILER__rythin_scanned_Debug /home/el-rafa/CLionProjects/Rythin/rhythin.cpp | CMakeFiles/rythin.dir/rhythin.cpp.o.modmap || cmake_object_order_depends_target_rythin CMakeFiles/rythin.dir/CXX.dd
   CONFIG = Debug
-  DEP_FILE = CMakeFiles/rythin.dir/rythin.cpp.o.d
-  DYNDEP_MODULE_MAP_FILE = CMakeFiles/rythin.dir/rythin.cpp.o.modmap
+  DEP_FILE = CMakeFiles/rythin.dir/rhythin.cpp.o.d
+  DYNDEP_MODULE_MAP_FILE = CMakeFiles/rythin.dir/rhythin.cpp.o.modmap
   FLAGS = -g -std=gnu++20
   OBJECT_DIR = CMakeFiles/rythin.dir
   OBJECT_FILE_DIR = CMakeFiles/rythin.dir
@@ -145,7 +145,23 @@ build CMakeFiles/rythin.dir/r_inter.cpp.o: CXX_COMPILER__rythin_scanned_Debug /h
   OBJECT_FILE_DIR = CMakeFiles/rythin.dir
   dyndep = CMakeFiles/rythin.dir/CXX.dd
 
-build CMakeFiles/rythin.dir/CXX.dd | /home/el-rafa/CLionProjects/Rythin/build/CMakeFiles/rythin.dir/CXXModules.json CMakeFiles/rythin.dir/rythin.cpp.o.modmap CMakeFiles/rythin.dir/r_lex.cpp.o.modmap CMakeFiles/rythin.dir/r_parser.cpp.o.modmap CMakeFiles/rythin.dir/t_tokens.cpp.o.modmap CMakeFiles/rythin.dir/utils.cpp.o.modmap CMakeFiles/rythin.dir/r_inter.cpp.o.modmap: CXX_DYNDEP__rythin_Debug CMakeFiles/rythin.dir/rythin.cpp.o.ddi CMakeFiles/rythin.dir/r_lex.cpp.o.ddi CMakeFiles/rythin.dir/r_parser.cpp.o.ddi CMakeFiles/rythin.dir/t_tokens.cpp.o.ddi CMakeFiles/rythin.dir/utils.cpp.o.ddi CMakeFiles/rythin.dir/r_inter.cpp.o.ddi | /home/el-rafa/CLionProjects/Rythin/build/CMakeFiles/rythin.dir/CXXDependInfo.json
+build CMakeFiles/rythin.dir/log_errors.cpp.o.ddi: CXX_SCAN__rythin_Debug /home/el-rafa/CLionProjects/Rythin/log_errors.cpp || cmake_object_order_depends_target_rythin
+  DEP_FILE = CMakeFiles/rythin.dir/log_errors.cpp.o.ddi.d
+  DYNDEP_INTERMEDIATE_FILE = CMakeFiles/rythin.dir/log_errors.cpp.o.ddi
+  FLAGS = -g -std=gnu++20
+  OBJ_FILE = CMakeFiles/rythin.dir/log_errors.cpp.o
+  PREPROCESSED_OUTPUT_FILE = CMakeFiles/rythin.dir/log_errors.cpp.o.ddi.i
+
+build CMakeFiles/rythin.dir/log_errors.cpp.o: CXX_COMPILER__rythin_scanned_Debug /home/el-rafa/CLionProjects/Rythin/log_errors.cpp | CMakeFiles/rythin.dir/log_errors.cpp.o.modmap || cmake_object_order_depends_target_rythin CMakeFiles/rythin.dir/CXX.dd
+  CONFIG = Debug
+  DEP_FILE = CMakeFiles/rythin.dir/log_errors.cpp.o.d
+  DYNDEP_MODULE_MAP_FILE = CMakeFiles/rythin.dir/log_errors.cpp.o.modmap
+  FLAGS = -g -std=gnu++20
+  OBJECT_DIR = CMakeFiles/rythin.dir
+  OBJECT_FILE_DIR = CMakeFiles/rythin.dir
+  dyndep = CMakeFiles/rythin.dir/CXX.dd
+
+build CMakeFiles/rythin.dir/CXX.dd | /home/el-rafa/CLionProjects/Rythin/build/CMakeFiles/rythin.dir/CXXModules.json CMakeFiles/rythin.dir/rhythin.cpp.o.modmap CMakeFiles/rythin.dir/r_lex.cpp.o.modmap CMakeFiles/rythin.dir/r_parser.cpp.o.modmap CMakeFiles/rythin.dir/t_tokens.cpp.o.modmap CMakeFiles/rythin.dir/utils.cpp.o.modmap CMakeFiles/rythin.dir/r_inter.cpp.o.modmap CMakeFiles/rythin.dir/log_errors.cpp.o.modmap: CXX_DYNDEP__rythin_Debug CMakeFiles/rythin.dir/rhythin.cpp.o.ddi CMakeFiles/rythin.dir/r_lex.cpp.o.ddi CMakeFiles/rythin.dir/r_parser.cpp.o.ddi CMakeFiles/rythin.dir/t_tokens.cpp.o.ddi CMakeFiles/rythin.dir/utils.cpp.o.ddi CMakeFiles/rythin.dir/r_inter.cpp.o.ddi CMakeFiles/rythin.dir/log_errors.cpp.o.ddi | /home/el-rafa/CLionProjects/Rythin/build/CMakeFiles/rythin.dir/CXXDependInfo.json
 
 
 # =============================================================================
@@ -155,7 +171,7 @@ build CMakeFiles/rythin.dir/CXX.dd | /home/el-rafa/CLionProjects/Rythin/build/CM
 #############################################
 # Link the executable rythin
 
-build rythin: CXX_EXECUTABLE_LINKER__rythin_Debug CMakeFiles/rythin.dir/rythin.cpp.o CMakeFiles/rythin.dir/r_lex.cpp.o CMakeFiles/rythin.dir/r_parser.cpp.o CMakeFiles/rythin.dir/t_tokens.cpp.o CMakeFiles/rythin.dir/utils.cpp.o CMakeFiles/rythin.dir/r_inter.cpp.o
+build rythin: CXX_EXECUTABLE_LINKER__rythin_Debug CMakeFiles/rythin.dir/rhythin.cpp.o CMakeFiles/rythin.dir/r_lex.cpp.o CMakeFiles/rythin.dir/r_parser.cpp.o CMakeFiles/rythin.dir/t_tokens.cpp.o CMakeFiles/rythin.dir/utils.cpp.o CMakeFiles/rythin.dir/r_inter.cpp.o CMakeFiles/rythin.dir/log_errors.cpp.o
   CONFIG = Debug
   DEP_FILE = CMakeFiles/rythin.dir/link.d
   FLAGS = -g

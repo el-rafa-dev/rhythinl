@@ -8,7 +8,7 @@ enum class ObjType {
 
 struct Obj {
     ObjType type;
-    Obj* next; // Para encadear objetos (GC futuro)
+    Obj* next; 
 };
 
 struct ObjString : Obj {

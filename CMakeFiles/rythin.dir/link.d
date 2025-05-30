@@ -2,12 +2,13 @@ rythin: \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/../../../../lib/Scrt1.o \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/../../../../lib/crti.o \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/crtbeginS.o \
-  CMakeFiles/rythin.dir/rythin.cpp.o \
+  CMakeFiles/rythin.dir/rhythin.cpp.o \
   CMakeFiles/rythin.dir/r_lex.cpp.o \
   CMakeFiles/rythin.dir/r_parser.cpp.o \
   CMakeFiles/rythin.dir/t_tokens.cpp.o \
   CMakeFiles/rythin.dir/utils.cpp.o \
   CMakeFiles/rythin.dir/r_inter.cpp.o \
+  CMakeFiles/rythin.dir/log_errors.cpp.o \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/../../../../lib/libstdc++.so \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/../../../../lib/libm.so \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/../../../../lib/libm.so \
@@ -42,7 +43,7 @@ rythin: \
 
 /usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/crtbeginS.o:
 
-CMakeFiles/rythin.dir/rythin.cpp.o:
+CMakeFiles/rythin.dir/rhythin.cpp.o:
 
 CMakeFiles/rythin.dir/r_lex.cpp.o:
 
@@ -53,6 +54,8 @@ CMakeFiles/rythin.dir/t_tokens.cpp.o:
 CMakeFiles/rythin.dir/utils.cpp.o:
 
 CMakeFiles/rythin.dir/r_inter.cpp.o:
+
+CMakeFiles/rythin.dir/log_errors.cpp.o:
 
 /usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/../../../../lib/libstdc++.so:
 

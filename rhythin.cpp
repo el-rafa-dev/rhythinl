@@ -9,9 +9,11 @@
 #include <cstring>
 #include <ctype.h>
 #include "r_opcodes.h"
+#include "log.h"
 
 #define EXIT_CODE 1
 
+using namespace Log;
 std::fstream rythin_file;
 
 namespace Rythin
@@ -47,14 +49,13 @@ namespace Rythin
                     if (token.type == TokensTypes::TOKEN_EOF)
                         break;
                 }
-                Rythin::Parser parser(tokens, "rythin_file");
+                Rythin::Parser parser(tokens, "rhythin_file");
                 std::vector<ASTPtr> nodes = parser.Parse();
                 Interpreter interpreter(nodes);
             }
             else
             {
-
-                std::cerr << "[Error]: Não foi possível abrir o arquivo." << std::endl;
+                LogErrors::getInstance().addError("Não foi possível abrir o arquivo.");
             }
         }
     };
@@ -75,15 +76,21 @@ int main(int argc, char *argv[])
         {
             Rythin::MainExecutor a;
             a.Run(argv[2]);
+
+            if (LogErrors::getInstance().hasErrors()) {
+                LogErrors::getInstance().printErrors();
+            } else {
+                std::cout << "Compiled without errors or warnings" << std::endl;
+            }
         }
         else
         {
-            printf("A file must be specified to execute\n");
+            LogErrors::getInstance().addError("A file must be specified to execute\n");
         }
     }
     else
     {
-        printf("Invalid argument! See --help or -h to see the list of options!\n");
+        LogErrors::getInstance().addError("Invalid argument! See --help or -h to see the list of options!\n");
     }
     return 0;
 }

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <stdexcept>
+#include <optional>
 
 // local includes
 #include "utils.h"
@@ -13,9 +14,8 @@
 #include "chunk.h"
 #include "log.h"
 
-#define null __null
-
 // using namespace std;
+using namespace Log;
 
 namespace Rythin
 {
@@ -38,14 +38,14 @@ namespace Rythin
         if (current().type == TokensTypes::TOKEN_EOF)
         {
             // checa se o token atual é o EOF (end of file), se for retorna o erro anaixo
-            std::cerr << "[Error]: Expected a statement but reached the end of file.... Are you forget anything?" << std::endl;
+            LogErrors::getInstance().addError("Expected a statement but reached the end of file.... Are you forget anything?");
             throw Excepts::CompilationException("Left early");
         }
 
         if (current().type != tk)
         {
             // checa se o tipo não é igual ao tk e retorna  o erro abaixo
-            std::cerr << "[Error]: Expected '" << Tokens::tokenTypeToString(tk) << "' but got: '" << Tokens::tokenTypeToString(current().type) << "' at line " << current().line << " Column " << current().column << std::endl;
+            LogErrors::getInstance().addError("Expected '" + Tokens::tokenTypeToString(tk) + "' but got: " + Tokens::tokenTypeToString(current().type) + "' at line " + std::to_string(current().line) + " column " + std::to_string(current().column));
             position++;
         }
         position++;
@@ -87,9 +87,8 @@ namespace Rythin
         case TokensTypes::TOKEN_DEF:
             return ParseVarDeclaration();
         default:
-            std::cerr << "Invalid Statement at line " << current().line << " Column " << current().column << std::endl;
+            LogErrors::getInstance().addError("Invalid statement at line" + std::to_string(current().line) + " column " + std::to_string(current().column));
             throw Excepts::CompilationException("Invalid Statement");
-            // return ParseExpression();
         }
     }
     ASTPtr Parser::ParseIfStatement()
@@ -151,7 +150,12 @@ namespace Rythin
         auto node = std::make_shared<PrintNl>();
         consume(TokensTypes::TOKEN_PRINT_NEW_LINE);
         consume(TokensTypes::TOKEN_LPAREN);
-        std::string value = consume(TokensTypes::TOKEN_STRING_LITERAL).value;
+        std::string value = consume(current().type).value;
+
+        if (value == Tokens::tokenTypeToString(TokensTypes::TOKEN_NIL)) {
+            return std::make_shared<NilNode>();
+        }
+
         std::vector<std::string> additional_args;
 
         while (!check(TokensTypes::TOKEN_RPAREN))
@@ -164,8 +168,9 @@ namespace Rythin
             }
             else
             {
-                std::cerr << "[Error]: Concatenation only accepts + token at line " << current().line << " Column " << current().column << std::endl;
-                throw Excepts::SyntaxException("Concatenation Syntax Error");
+                LogErrors::getInstance().addError("Concatenation only accepts + token at line " + std::to_string(current().line) + " column " + std::to_string(current().column));
+                //break;
+                //std::cerr << "[Error]:  " << current().line << " Column " << current().column << std::endl;
             }
         }
         node->val = value;

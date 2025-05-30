@@ -16,5 +16,5 @@
 ;    sem o finish o programa irá ficar em loop infinto
 ;    finish 0
 ;]
-printnl("Hello B\ns")
-printe()
+printnl("Hello B\ns" +)
+;printnl(nil)

@@ -72,19 +72,19 @@ include CMakeFiles/rythin.dir/flags.make
 CMakeFiles/rythin.dir/codegen:
 .PHONY : CMakeFiles/rythin.dir/codegen
 
-CMakeFiles/rythin.dir/rythin.cpp.o: CMakeFiles/rythin.dir/flags.make
-CMakeFiles/rythin.dir/rythin.cpp.o: rythin.cpp
-CMakeFiles/rythin.dir/rythin.cpp.o: CMakeFiles/rythin.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/el-rafa/CLionProjects/Rythin/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/rythin.dir/rythin.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/rythin.dir/rythin.cpp.o -MF CMakeFiles/rythin.dir/rythin.cpp.o.d -o CMakeFiles/rythin.dir/rythin.cpp.o -c /home/el-rafa/CLionProjects/Rythin/rythin.cpp
+CMakeFiles/rythin.dir/rhythin.cpp.o: CMakeFiles/rythin.dir/flags.make
+CMakeFiles/rythin.dir/rhythin.cpp.o: rhythin.cpp
+CMakeFiles/rythin.dir/rhythin.cpp.o: CMakeFiles/rythin.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/el-rafa/CLionProjects/Rythin/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/rythin.dir/rhythin.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/rythin.dir/rhythin.cpp.o -MF CMakeFiles/rythin.dir/rhythin.cpp.o.d -o CMakeFiles/rythin.dir/rhythin.cpp.o -c /home/el-rafa/CLionProjects/Rythin/rhythin.cpp
 
-CMakeFiles/rythin.dir/rythin.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/rythin.dir/rythin.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/el-rafa/CLionProjects/Rythin/rythin.cpp > CMakeFiles/rythin.dir/rythin.cpp.i
+CMakeFiles/rythin.dir/rhythin.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/rythin.dir/rhythin.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/el-rafa/CLionProjects/Rythin/rhythin.cpp > CMakeFiles/rythin.dir/rhythin.cpp.i
 
-CMakeFiles/rythin.dir/rythin.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/rythin.dir/rythin.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/el-rafa/CLionProjects/Rythin/rythin.cpp -o CMakeFiles/rythin.dir/rythin.cpp.s
+CMakeFiles/rythin.dir/rhythin.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/rythin.dir/rhythin.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/el-rafa/CLionProjects/Rythin/rhythin.cpp -o CMakeFiles/rythin.dir/rhythin.cpp.s
 
 CMakeFiles/rythin.dir/r_lex.cpp.o: CMakeFiles/rythin.dir/flags.make
 CMakeFiles/rythin.dir/r_lex.cpp.o: r_lex.cpp
@@ -156,28 +156,44 @@ CMakeFiles/rythin.dir/r_inter.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/rythin.dir/r_inter.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/el-rafa/CLionProjects/Rythin/r_inter.cpp -o CMakeFiles/rythin.dir/r_inter.cpp.s
 
+CMakeFiles/rythin.dir/log_errors.cpp.o: CMakeFiles/rythin.dir/flags.make
+CMakeFiles/rythin.dir/log_errors.cpp.o: log_errors.cpp
+CMakeFiles/rythin.dir/log_errors.cpp.o: CMakeFiles/rythin.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/el-rafa/CLionProjects/Rythin/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/rythin.dir/log_errors.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/rythin.dir/log_errors.cpp.o -MF CMakeFiles/rythin.dir/log_errors.cpp.o.d -o CMakeFiles/rythin.dir/log_errors.cpp.o -c /home/el-rafa/CLionProjects/Rythin/log_errors.cpp
+
+CMakeFiles/rythin.dir/log_errors.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/rythin.dir/log_errors.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/el-rafa/CLionProjects/Rythin/log_errors.cpp > CMakeFiles/rythin.dir/log_errors.cpp.i
+
+CMakeFiles/rythin.dir/log_errors.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/rythin.dir/log_errors.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/el-rafa/CLionProjects/Rythin/log_errors.cpp -o CMakeFiles/rythin.dir/log_errors.cpp.s
+
 # Object files for target rythin
 rythin_OBJECTS = \
-"CMakeFiles/rythin.dir/rythin.cpp.o" \
+"CMakeFiles/rythin.dir/rhythin.cpp.o" \
 "CMakeFiles/rythin.dir/r_lex.cpp.o" \
 "CMakeFiles/rythin.dir/r_parser.cpp.o" \
 "CMakeFiles/rythin.dir/t_tokens.cpp.o" \
 "CMakeFiles/rythin.dir/utils.cpp.o" \
-"CMakeFiles/rythin.dir/r_inter.cpp.o"
+"CMakeFiles/rythin.dir/r_inter.cpp.o" \
+"CMakeFiles/rythin.dir/log_errors.cpp.o"
 
 # External object files for target rythin
 rythin_EXTERNAL_OBJECTS =
 
-rythin: CMakeFiles/rythin.dir/rythin.cpp.o
+rythin: CMakeFiles/rythin.dir/rhythin.cpp.o
 rythin: CMakeFiles/rythin.dir/r_lex.cpp.o
 rythin: CMakeFiles/rythin.dir/r_parser.cpp.o
 rythin: CMakeFiles/rythin.dir/t_tokens.cpp.o
 rythin: CMakeFiles/rythin.dir/utils.cpp.o
 rythin: CMakeFiles/rythin.dir/r_inter.cpp.o
+rythin: CMakeFiles/rythin.dir/log_errors.cpp.o
 rythin: CMakeFiles/rythin.dir/build.make
 rythin: CMakeFiles/rythin.dir/compiler_depend.ts
 rythin: CMakeFiles/rythin.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/el-rafa/CLionProjects/Rythin/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable rythin"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/el-rafa/CLionProjects/Rythin/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX executable rythin"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/rythin.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

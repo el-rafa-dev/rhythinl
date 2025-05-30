@@ -18,6 +18,11 @@
 	"module-dir" : "/home/el-rafa/CLionProjects/Rythin/build/CMakeFiles/rythin.dir",
 	"sources" : 
 	{
+		"CMakeFiles/rythin.dir/log_errors.cpp.o" : 
+		{
+			"language" : "CXX",
+			"source" : "/home/el-rafa/CLionProjects/Rythin/log_errors.cpp"
+		},
 		"CMakeFiles/rythin.dir/r_inter.cpp.o" : 
 		{
 			"language" : "CXX",
@@ -33,10 +38,10 @@
 			"language" : "CXX",
 			"source" : "/home/el-rafa/CLionProjects/Rythin/r_parser.cpp"
 		},
-		"CMakeFiles/rythin.dir/rythin.cpp.o" : 
+		"CMakeFiles/rythin.dir/rhythin.cpp.o" : 
 		{
 			"language" : "CXX",
-			"source" : "/home/el-rafa/CLionProjects/Rythin/rythin.cpp"
+			"source" : "/home/el-rafa/CLionProjects/Rythin/rhythin.cpp"
 		},
 		"CMakeFiles/rythin.dir/t_tokens.cpp.o" : 
 		{

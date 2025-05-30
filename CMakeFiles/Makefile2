@@ -85,12 +85,12 @@ clean: CMakeFiles/rythin.dir/clean
 CMakeFiles/rythin.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/rythin.dir/build.make CMakeFiles/rythin.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/rythin.dir/build.make CMakeFiles/rythin.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/el-rafa/CLionProjects/Rythin/CMakeFiles --progress-num=1,2,3,4,5,6,7 "Built target rythin"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/el-rafa/CLionProjects/Rythin/CMakeFiles --progress-num=1,2,3,4,5,6,7,8 "Built target rythin"
 .PHONY : CMakeFiles/rythin.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/rythin.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/el-rafa/CLionProjects/Rythin/CMakeFiles 7
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/el-rafa/CLionProjects/Rythin/CMakeFiles 8
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/rythin.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/el-rafa/CLionProjects/Rythin/CMakeFiles 0
 .PHONY : CMakeFiles/rythin.dir/rule
@@ -102,7 +102,7 @@ rythin: CMakeFiles/rythin.dir/rule
 # codegen rule for target.
 CMakeFiles/rythin.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/rythin.dir/build.make CMakeFiles/rythin.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/el-rafa/CLionProjects/Rythin/CMakeFiles --progress-num=1,2,3,4,5,6,7 "Finished codegen for target rythin"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/el-rafa/CLionProjects/Rythin/CMakeFiles --progress-num=1,2,3,4,5,6,7,8 "Finished codegen for target rythin"
 .PHONY : CMakeFiles/rythin.dir/codegen
 
 # clean rule for target.
