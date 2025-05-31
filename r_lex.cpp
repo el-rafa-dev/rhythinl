@@ -334,7 +334,7 @@ namespace Rythin
         static const std::unordered_map<std::string, TokensTypes> keywords = {
             {"using", TokensTypes::TOKEN_USING},
             {"const", TokensTypes::TOKEN_CONST},
-            {"finish", TokensTypes::TOKEN_FINISH},
+            {"fin", TokensTypes::TOKEN_FINISH},
             {"def", TokensTypes::TOKEN_DEF},
             {"from", TokensTypes::TOKEN_FROM},
             {"get", TokensTypes::TOKEN_GET},
@@ -361,6 +361,7 @@ namespace Rythin
             {"bool", TokensTypes::TOKEN_BOOL},
             {"str", TokensTypes::TOKEN_STR},
             {"lint", TokensTypes::TOKEN_LONG_INT},
+            {"obj", TokensTypes::TOKEN_OBJECT},
             {"func", TokensTypes::TOKEN_FUNC},
             {"char", TokensTypes::TOKEN_CHAR},
             {"float", TokensTypes::TOKEN_FLOAT},
@@ -479,7 +480,7 @@ namespace Rythin
         if (current_input == ']')
         {
             // lá na frente o interpolated value será substituido pelo valor da variavel interpolada
-            std::string interpolatedValue = "Helo Butamo";
+            std::string interpolatedValue = "";
             // std::string interpolatedValue = code_input.substr(start, position - start);
             advance_tk(); // Skip ]
             return interpolatedValue;

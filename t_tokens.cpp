@@ -156,6 +156,8 @@ std::string Tokens::tokenTypeToString(TokensTypes type)
         return "float";
     case TokensTypes::TOKEN_DOUBLE:
         return "double";
+    case TokensTypes::TOKEN_OBJECT:
+        return "obj";
     case TokensTypes::TOKEN_BYTES:
         return "bytes";
     case TokensTypes::TOKEN_PRINT:

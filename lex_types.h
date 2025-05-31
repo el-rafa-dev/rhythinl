@@ -74,6 +74,7 @@ enum class TokensTypes {
     TOKEN_FLOAT_IND,
     TOKEN_DOUBLE,
     TOKEN_BYTES,
+    TOKEN_OBJECT,
     TOKEN_PRINT,
     TOKEN_NEW_LINE,
     TOKEN_PRINT_NEW_LINE,

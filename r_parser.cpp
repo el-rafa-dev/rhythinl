@@ -228,6 +228,20 @@ namespace Rythin
         case TokensTypes::TOKEN_NIL:
             consume(TokensTypes::TOKEN_NIL);
             return std::make_shared<NilNode>();
+        case TokensTypes::TOKEN_OBJECT:
+            if (check(TokensTypes::TOKEN_INT)) {
+                auto ptr = std::make_shared<IntNode>(std::stoi(consume(current().type).value));
+                return std::make_shared<ObjectNode>(ptr);
+            } else if (check(TokensTypes::TOKEN_DOUBLE)) {
+                auto ptr = std::make_shared<DoubleNode>(std::stod(consume(current().type).value));
+                return std::make_shared<ObjectNode>(ptr);
+            } else if (check(TokensTypes::TOKEN_STR)) {
+                auto ptr = std::make_shared<LiteralNode>(consume(current().type).value);
+                return std::make_shared<ObjectNode>(ptr);
+            } else if (check(TokensTypes::TOKEN_FLOAT)) {
+                auto ptr = std::make_shared<FloatNode>(std::stof(consume(current().type).value));
+                return std::make_shared<ObjectNode>(ptr);
+            }
         default:
             std::cerr << "[Error]: Invalid variable type at line " << current().line << " column " << current().column << std::endl;
             // throw Excepts::CompilationException("Invalid Variable Type");
@@ -338,7 +352,7 @@ namespace Rythin
         consume(TokensTypes::TOKEN_LOOP);
         consume(TokensTypes::TOKEN_LPAREN);
 
-        /// ParseLoopExpression will be check if have a varaible definition and his type or
+        /// ParseLoopExpression will be check if have a varaible definition and his type or condition
         node->condition = ParseLoopExpression();
 
         consume(TokensTypes::TOKEN_RPAREN);

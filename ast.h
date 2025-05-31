@@ -138,14 +138,19 @@ namespace Rythin
         TrueOrFalseNode(bool val) : val(val) {}
     };
 
+    struct ObjectNode : public ASTNode {
+        ASTPtr val;
+        ObjectNode(ASTPtr val) : val(val) {}
+    };
+
     struct ReturnNode : public ASTNode {
         ASTPtr val; //return value (pode ser um int, float/double, string ou byte)
         ReturnNode(ASTPtr val) : val(val) {}
     };
 
-    struct FinnishNode : public ASTNode {
+    struct FinishNode : public ASTNode {
         int val; //finish code is a intiger
-        FinnishNode(int val) : val(val) {}
+        FinishNode(int val) : val(val) {}
     };
 
     struct NilNode : public ASTNode {
@@ -172,6 +177,8 @@ namespace Rythin
                 std::cout << "Var Name: " << var_name << " Value: " << var->val << " Types: " << Tokens::tokenTypeToString(type) << std::endl;
             } else if (auto var = std::dynamic_pointer_cast<ByteNode>(val)) {
                 std::cout << "Var Name: " << var_name << " Value: " << var->byte << " Types: " << Tokens::tokenTypeToString(type) << std::endl;
+            } else if (auto var = std::dynamic_pointer_cast<ObjectNode>(val)) {
+                std::cout << "Var Name: " << var_name << " Value: " << var << " Types: " << Tokens::tokenTypeToString(type) << std::endl;
             }
         }
     };
