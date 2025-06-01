@@ -84,9 +84,10 @@ namespace Rythin
         case TokensTypes::TOKEN_PRINT_NEW_LINE:
             return ParsePrintNl();
         case TokensTypes::TOKEN_DEF:
-            return ParseDefinitions();
+            return ParseFuncDeclaration();
         default:
-            LogErrors::getInstance().addError("Invalid statement at line" + std::to_string(current().line) + " column " + std::to_string(current().column), 2);
+            LogErrors::getInstance().addError("Invalid statement at line " + std::to_string(current().line) + " column " + std::to_string(current().column), 2);
+            LogErrors::getInstance().printErrors();
             throw Excepts::CompilationException("Invalid Statement");
         }
     }
@@ -98,6 +99,25 @@ namespace Rythin
             }
         }
         return std::make_shared<NilNode>();
+    }
+
+    ASTPtr Parser::ParseFuncDeclaration() {
+        consume(TokensTypes::TOKEN_DEF);
+        std::string var_name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
+        consume(TokensTypes::TOKEN_COLON);
+        auto type = ParseExpression();
+        consume(TokensTypes::TOKEN_FUNC);
+        consume(TokensTypes::TOKEN_LPAREN);
+        std::vector<ASTPtr> args;
+        while (!check(TokensTypes::TOKEN_RPAREN)) {
+            args.push_back(ParseExpression());
+        }
+        consume(TokensTypes::TOKEN_RPAREN);
+        consume(TokensTypes::TOKEN_ARROW_SET);
+        consume(TokensTypes::TOKEN_LBRACKET);
+        auto block = ParseBlock();
+        consume(TokensTypes::TOKEN_RBRACKET);
+        return std::make_shared<FunctionDefinitionNode>(var_name, args, block);
     }
 
     ASTPtr Parser::ParseIfStatement()
@@ -176,6 +196,7 @@ namespace Rythin
                     node->val += consume(current().type).value;
                 }
             } else if (check(TokensTypes::TOKEN_NIL)) {
+                node->val = '\0';
                 return std::make_shared<NilNode>();
             } else {
                 LogErrors::getInstance().addError("Concatenation needs a predominant value (like str, int or others types)", 3);

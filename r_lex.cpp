@@ -334,7 +334,7 @@ namespace Rythin
         static const std::unordered_map<std::string, TokensTypes> keywords = {
             {"using", TokensTypes::TOKEN_USING},
             {"const", TokensTypes::TOKEN_CONST},
-            {"fin", TokensTypes::TOKEN_FINISH},
+            {"finish", TokensTypes::TOKEN_FINISH},
             {"def", TokensTypes::TOKEN_DEF},
             {"from", TokensTypes::TOKEN_FROM},
             {"get", TokensTypes::TOKEN_GET},

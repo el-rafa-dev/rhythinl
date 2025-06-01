@@ -37,6 +37,7 @@ namespace Rythin {
         ASTPtr ParseDeclarations();
         ASTPtr ParseExpression();
         ASTPtr ParseVarExpression();
+        ASTPtr ParseFuncDeclaration();
         ASTPtr ParseDefinitions();
 
         ASTPtr ParseVarDeclaration();

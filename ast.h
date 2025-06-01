@@ -50,7 +50,7 @@ namespace Rythin
 
     struct BinOp : public ASTNode
     {
-        ASTPtr op;
+        ASTPtr op;  //operators
         ASTPtr left;
         ASTPtr right;
         //BinOp(ASTPtr op, ASTPtr left, ASTPtr right) : op(op), left(left), right(right) {}
@@ -72,7 +72,7 @@ namespace Rythin
         MinBinOp(std::string op) : op(op) {}
     };
 
-    struct MultBinOp : public ASTNode {
+    struct MultBinOp : public ASTNode {     //'/' operator
         std::string op;
         MultBinOp(std::string op) : op(op) {}
     };
@@ -155,6 +155,13 @@ namespace Rythin
 
     struct NilNode : public ASTNode {
         NilNode() = default;
+    };
+
+    struct FunctionDefinitionNode : public ASTNode {
+        std::string var_name;
+        std::vector<ASTPtr> args;
+        ASTPtr block;
+        FunctionDefinitionNode(std::string name, std::vector<ASTPtr> args, ASTPtr block) : var_name(name), args(args), block(block) {}
     };
 
     struct VariableDefinitionNode : public ASTNode
