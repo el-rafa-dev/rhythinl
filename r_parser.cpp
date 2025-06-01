@@ -84,12 +84,22 @@ namespace Rythin
         case TokensTypes::TOKEN_PRINT_NEW_LINE:
             return ParsePrintNl();
         case TokensTypes::TOKEN_DEF:
-            return ParseVarDeclaration();
+            return ParseDefinitions();
         default:
             LogErrors::getInstance().addError("Invalid statement at line" + std::to_string(current().line) + " column " + std::to_string(current().column), 2);
             throw Excepts::CompilationException("Invalid Statement");
         }
     }
+
+    ASTPtr Parser::ParseDefinitions() {
+        while (check(TokensTypes::TOKEN_ARROW_SET)) {
+            if (check(TokensTypes::TOKEN_ARROW_SET)) {
+                std::cout << "Is function" << std::endl;
+            }
+        }
+        return std::make_shared<NilNode>();
+    }
+
     ASTPtr Parser::ParseIfStatement()
     {
         consume(TokensTypes::TOKEN_IF);        // consume the'if'
