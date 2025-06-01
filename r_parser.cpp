@@ -44,7 +44,7 @@ namespace Rythin
         if (current().type != tk)
         {
             // checa se o tipo não é igual ao tk e retorna  o erro abaixo
-            LogErrors::getInstance().addError("Expected '" + Tokens::tokenTypeToString(tk) + "' but got: " + Tokens::tokenTypeToString(current().type) + "' at line " + std::to_string(current().line) + " column " + std::to_string(current().column), 4);
+            LogErrors::getInstance().addError("Expected '" + Tokens::tokenTypeToString(tk) + "' but got: '" + Tokens::tokenTypeToString(current().type) + "' at line " + std::to_string(current().line) + " column " + std::to_string(current().column), 4);
             position++;
         }
         position++;
@@ -84,7 +84,7 @@ namespace Rythin
         case TokensTypes::TOKEN_PRINT_NEW_LINE:
             return ParsePrintNl();
         case TokensTypes::TOKEN_DEF:
-            return ParseFuncDeclaration();
+            return ParseVarDeclaration();
         default:
             LogErrors::getInstance().addError("Invalid statement at line " + std::to_string(current().line) + " column " + std::to_string(current().column), 2);
             LogErrors::getInstance().printErrors();
@@ -92,16 +92,20 @@ namespace Rythin
         }
     }
 
-    ASTPtr Parser::ParseDefinitions() {
-        while (check(TokensTypes::TOKEN_ARROW_SET)) {
-            if (check(TokensTypes::TOKEN_ARROW_SET)) {
+    ASTPtr Parser::ParseDefinitions()
+    {
+        while (check(TokensTypes::TOKEN_ARROW_SET))
+        {
+            if (check(TokensTypes::TOKEN_ARROW_SET))
+            {
                 std::cout << "Is function" << std::endl;
             }
         }
         return std::make_shared<NilNode>();
     }
 
-    ASTPtr Parser::ParseFuncDeclaration() {
+    ASTPtr Parser::ParseFuncDeclaration()
+    {
         consume(TokensTypes::TOKEN_DEF);
         std::string var_name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
         consume(TokensTypes::TOKEN_COLON);
@@ -109,7 +113,8 @@ namespace Rythin
         consume(TokensTypes::TOKEN_FUNC);
         consume(TokensTypes::TOKEN_LPAREN);
         std::vector<ASTPtr> args;
-        while (!check(TokensTypes::TOKEN_RPAREN)) {
+        while (!check(TokensTypes::TOKEN_RPAREN))
+        {
             args.push_back(ParseExpression());
         }
         consume(TokensTypes::TOKEN_RPAREN);
@@ -139,11 +144,11 @@ namespace Rythin
             { // checa se há uma condição no 'but'
                 consume(TokensTypes::TOKEN_LPAREN);
                 butCondition = ParseExpression();
-                
             }
             consume(TokensTypes::TOKEN_RPAREN);
             consume(TokensTypes::TOKEN_LBRACKET);
-            while (!check(TokensTypes::TOKEN_RBRACKET)) {
+            while (!check(TokensTypes::TOKEN_RBRACKET))
+            {
                 butBranch = ParseDeclarations(); // 'but' body
             }
             consume(TokensTypes::TOKEN_RBRACKET);
@@ -165,15 +170,21 @@ namespace Rythin
         consume(TokensTypes::TOKEN_LPAREN);
         while (!check(TokensTypes::TOKEN_RPAREN))
         {
-            if (check(TokensTypes::TOKEN_STRING_LITERAL)) {
+            if (check(TokensTypes::TOKEN_STRING_LITERAL))
+            {
                 node->val = consume(current().type).value;
-                while (check(TokensTypes::TOKEN_PLUS)) {
+                while (check(TokensTypes::TOKEN_PLUS))
+                {
                     consume(TokensTypes::TOKEN_PLUS);
                     node->val += consume(current().type).value;
                 }
-            } else if (check(TokensTypes::TOKEN_NIL)) {
+            }
+            else if (check(TokensTypes::TOKEN_NIL))
+            {
                 return std::make_shared<NilNode>();
-            } else {
+            }
+            else
+            {
                 LogErrors::getInstance().addError("Concatenation needs a predominant value (like str, int or others types)", 3);
             }
         }
@@ -189,16 +200,22 @@ namespace Rythin
         consume(TokensTypes::TOKEN_LPAREN);
         while (!check(TokensTypes::TOKEN_RPAREN))
         {
-            if (check(TokensTypes::TOKEN_STRING_LITERAL)) {
+            if (check(TokensTypes::TOKEN_STRING_LITERAL))
+            {
                 node->val = consume(current().type).value;
-                while (check(TokensTypes::TOKEN_PLUS)) {
+                while (check(TokensTypes::TOKEN_PLUS))
+                {
                     consume(TokensTypes::TOKEN_PLUS);
                     node->val += consume(current().type).value;
                 }
-            } else if (check(TokensTypes::TOKEN_NIL)) {
+            }
+            else if (check(TokensTypes::TOKEN_NIL))
+            {
                 node->val = '\0';
                 return std::make_shared<NilNode>();
-            } else {
+            }
+            else
+            {
                 LogErrors::getInstance().addError("Concatenation needs a predominant value (like str, int or others types)", 3);
             }
         }
@@ -213,13 +230,17 @@ namespace Rythin
         consume(TokensTypes::TOKEN_LPAREN);
         while (!check(TokensTypes::TOKEN_RPAREN))
         {
-            if (check(TokensTypes::TOKEN_STRING_LITERAL)) {
+            if (check(TokensTypes::TOKEN_STRING_LITERAL))
+            {
                 node->val = consume(current().type).value;
-                while (check(TokensTypes::TOKEN_PLUS)) {
+                while (check(TokensTypes::TOKEN_PLUS))
+                {
                     consume(TokensTypes::TOKEN_PLUS);
                     node->val += consume(current().type).value;
                 }
-            } else if (check(TokensTypes::TOKEN_NIL)) {
+            }
+            else if (check(TokensTypes::TOKEN_NIL))
+            {
                 return std::make_shared<NilNode>();
             }
         }
@@ -232,7 +253,33 @@ namespace Rythin
         consume(TokensTypes::TOKEN_DEF);
         std::string name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
         consume(TokensTypes::TOKEN_COLON);
-        TokensTypes tk = consume(current().type).type;
+        TokensTypes tk;
+        switch (current().type) {
+            case TokensTypes::TOKEN_BOOL:
+                tk = consume(TokensTypes::TOKEN_BOOL).type;
+                break;
+            case TokensTypes::TOKEN_INT:
+                tk = consume(TokensTypes::TOKEN_INT).type;
+                break;
+            case TokensTypes::TOKEN_FLOAT:
+                tk = consume(TokensTypes::TOKEN_FLOAT).type;
+                break;
+            case TokensTypes::TOKEN_DOUBLE:
+                tk = consume(TokensTypes::TOKEN_DOUBLE).type;
+                break;
+            case TokensTypes::TOKEN_STR:
+                tk = consume(TokensTypes::TOKEN_STR).type;
+                break;
+            case TokensTypes::TOKEN_BYTES:
+                tk = consume(TokensTypes::TOKEN_BYTES).type;
+                break;
+            case TokensTypes::TOKEN_OBJECT:
+                tk = consume(TokensTypes::TOKEN_OBJECT).type;
+                break;
+            default:
+                std::cerr << "[Error] Invalid type for variable definition at line " << current().line << " column " << current().column << std::endl;
+                throw Excepts::CompilationException("Invalid type definition");
+        }
         consume(TokensTypes::TOKEN_ASSIGN); // consome o '=' para pegar o valor ou expressão
         auto val = ParseExpression();
         return std::make_shared<VariableDefinitionNode>(name, tk, val);
@@ -252,29 +299,42 @@ namespace Rythin
             return std::make_shared<DoubleNode>(std::stod(consume(current().type).value));
         case TokensTypes::TOKEN_BYTES:
         {
-            auto unsign_char = new unsigned char[current().value.length()];
-            for (int i = 0; i < current().value.length(); i++)
+            auto lit_val = std::stoll(current().value);
+            unsigned char val;
+            if (lit_val < 0 || lit_val > 255)
             {
-                unsign_char[i] = static_cast<unsigned char>(current().value[1]);
+                LogErrors::getInstance().addError("[Warning]: Value " + std::to_string(lit_val) + " is out of range for byte type. It will be truncated to: " + std::to_string(static_cast<unsigned char>(lit_val)));
+                LogErrors::getInstance().printErrors();
+                val = static_cast<unsigned char>(lit_val);
             }
-            unsign_char[current().value.length()] = '\0';
+            else
+            {
+                val = static_cast<unsigned char>(lit_val);
+            }
             consume(current().type);
-            delete[] unsign_char;
+            return std::make_shared<ByteNode>(val);
         }
         case TokensTypes::TOKEN_NIL:
             consume(TokensTypes::TOKEN_NIL);
             return std::make_shared<NilNode>();
         case TokensTypes::TOKEN_OBJECT:
-            if (check(TokensTypes::TOKEN_INT)) {
+            if (check(TokensTypes::TOKEN_INT))
+            {
                 auto ptr = std::make_shared<IntNode>(std::stoi(consume(current().type).value));
                 return std::make_shared<ObjectNode>(ptr);
-            } else if (check(TokensTypes::TOKEN_DOUBLE)) {
+            }
+            else if (check(TokensTypes::TOKEN_DOUBLE))
+            {
                 auto ptr = std::make_shared<DoubleNode>(std::stod(consume(current().type).value));
                 return std::make_shared<ObjectNode>(ptr);
-            } else if (check(TokensTypes::TOKEN_STR)) {
+            }
+            else if (check(TokensTypes::TOKEN_STR))
+            {
                 auto ptr = std::make_shared<LiteralNode>(consume(current().type).value);
                 return std::make_shared<ObjectNode>(ptr);
-            } else if (check(TokensTypes::TOKEN_FLOAT)) {
+            }
+            else if (check(TokensTypes::TOKEN_FLOAT))
+            {
                 auto ptr = std::make_shared<FloatNode>(std::stof(consume(current().type).value));
                 return std::make_shared<ObjectNode>(ptr);
             }
@@ -285,8 +345,8 @@ namespace Rythin
             consume(TokensTypes::TOKEN_FALSE);
             return std::make_shared<TrueOrFalseNode>(false);
         default:
-            std::cerr << "[Error]: Invalid variable type at line " << current().line << " column " << current().column << std::endl;
-            throw Excepts::CompilationException("Invalid Variable Type");
+            std::cerr << "[Error]: Invalid variable value type at line " << current().line << " column " << current().column << std::endl;
+            throw Excepts::CompilationException("Invalid Variable Value Type");
         }
     }
 
@@ -333,58 +393,6 @@ namespace Rythin
         {
             std::cerr << "[Error]: Invalid type of expression" << std::endl;
             throw std::logic_error("Logic Error");
-        }
-    }
-
-    /*ASTPtr Parser::ParsePrimary()
-    {
-        switch (current().type)
-        {
-        case TokensTypes::TOKEN_INT:
-            return std::make_shared<IntNode>(std::stoi(consume(TokensTypes::TOKEN_INT).value));
-        case TokensTypes::TOKEN_DOUBLE:
-            return std::make_shared<DoubleNode>(std::stod(consume(TokensTypes::TOKEN_DOUBLE).value));
-        case TokensTypes::TOKEN_FLOAT:
-            return std::make_shared<FloatNode>(std::stof(consume(TokensTypes::TOKEN_FLOAT).value));
-        case TokensTypes::TOKEN_IDENTIFIER:
-            return std::make_shared<VariableNode>(consume(TokensTypes::TOKEN_IDENTIFIER).value);
-        case TokensTypes::TOKEN_TRUE:
-            consume(TokensTypes::TOKEN_TRUE);
-            return std::make_shared<TrueOrFalseNode>(true);
-        case TokensTypes::TOKEN_FALSE:
-            consume(TokensTypes::TOKEN_FALSE);
-            return std::make_shared<TrueOrFalseNode>(false);
-        case TokensTypes::TOKEN_LPAREN:
-            consume(TokensTypes::TOKEN_LPAREN);
-            return ParseExpression(); // vai parsear a expressão entre os parenteses
-            consume(TokensTypes::TOKEN_RPAREN);
-        default:
-            std::cerr << "[Error]: Invalid expression at line " << current().line << " Column: " << current().column << std::endl;
-            throw Excepts::CompilationException("Invalid Expression");
-        }
-    }*/
-
-    int Parser::GetPrecedence(TokensTypes tk)
-    {
-        switch (tk)
-        {
-        case TokensTypes::TOKEN_EQUAL:
-        case TokensTypes::TOKEN_NOT_EQUAL:
-            return 10;
-        case TokensTypes::TOKEN_GREATER_THAN:
-        case TokensTypes::TOKEN_GREATER_EQUAL:
-        case TokensTypes::TOKEN_LESS_THAN:
-        case TokensTypes::TOKEN_LESS_EQUAL:
-            return 20;
-        case TokensTypes::TOKEN_PLUS:
-        case TokensTypes::TOKEN_MINUS:
-            return 30;
-        case TokensTypes::TOKEN_MULTIPLY:
-        case TokensTypes::TOKEN_DIVIDE:
-        case TokensTypes::TOKEN_MODULO:
-            return 40;
-        default:
-            return -1;
         }
     }
 

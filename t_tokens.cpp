@@ -159,7 +159,7 @@ std::string Tokens::tokenTypeToString(TokensTypes type)
     case TokensTypes::TOKEN_OBJECT:
         return "obj";
     case TokensTypes::TOKEN_BYTES:
-        return "bytes";
+        return "byte";
     case TokensTypes::TOKEN_PRINT:
         return "print";
     case TokensTypes::TOKEN_PRINT_NEW_LINE:

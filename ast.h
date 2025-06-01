@@ -116,8 +116,10 @@ namespace Rythin
 
     struct ByteNode : public ASTNode
     {
-        unsigned char* byte;
-        ByteNode(unsigned char* by) : byte(by) {}
+        unsigned char byte;
+        ByteNode(unsigned char by) : byte(by) {
+            std::cout << "Byte value: " << byte << std::endl;
+        }
     };
 
     struct DoubleNode : public ASTNode
