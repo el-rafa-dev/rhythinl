@@ -163,6 +163,7 @@ namespace Rythin
         TokensTypes type;
         ASTPtr val;
         VariableDefinitionNode(const std::string var, TokensTypes type, ASTPtr val) : var_name(var), type(type), val(val) {
+            //apenas para testes de retorno, nada disso ficará no codigo final
             if (auto var = std::dynamic_pointer_cast<LiteralNode>(val)) {
                 if (type != TokensTypes::TOKEN_IDENTIFIER) {
                    std::cout << "Var Name: " << var_name << " Value: " << var->val << " Types: " << Tokens::tokenTypeToString(type) << std::endl;
@@ -179,6 +180,8 @@ namespace Rythin
                 std::cout << "Var Name: " << var_name << " Value: " << var->byte << " Types: " << Tokens::tokenTypeToString(type) << std::endl;
             } else if (auto var = std::dynamic_pointer_cast<ObjectNode>(val)) {
                 std::cout << "Var Name: " << var_name << " Value: " << var << " Types: " << Tokens::tokenTypeToString(type) << std::endl;
+            } else if (auto var = std::dynamic_pointer_cast<NilNode>(val)) {
+                std::cout << "Var Name " << var_name << " Value: nil" << " Types: " << Tokens::tokenTypeToString(type) << std::endl;
             }
         }
     };
