@@ -76,10 +76,13 @@ int main(int argc, char *argv[])
         {
             Rythin::MainExecutor a;
             a.Run(argv[2]);
-
-            if (LogErrors::getInstance().hasErrors()) {
+            if (LogErrors::getInstance().hasErrorsAndWarns())
+            {
                 LogErrors::getInstance().printErrors();
-            } else {
+                std::cerr << "[Bad compilation]: " << std::to_string(LogErrors::getInstance().getErrSize()) << " errors and " << std::to_string(LogErrors::getInstance().getWarnsSize()) << " warns. " << "Exited with code: " << LogErrors::getInstance().exitCode() << std::endl;
+            }
+            else
+            {
                 std::cout << "[Sucess]: Compiled without errors or warnings. Exit code: " << std::to_string(LogErrors::getInstance().exitCode()) << std::endl;
             }
         }

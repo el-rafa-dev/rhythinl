@@ -12,6 +12,10 @@
 #include "t_tokens.h"
 #include "lex_types.h"
 #include "rexcept.h"
+#include "log.h"
+
+using namespace Log;
+using namespace std;
 
 namespace Rythin
 {
@@ -46,6 +50,7 @@ namespace Rythin
                 std::string fractional = digits();
                 if (fractional.empty())
                 {
+                    LogErrors::getInstance().addError("Invalid float/double format at line " + to_string(line) + " column " + to_string(column), 23);
                     throw Excepts::SyntaxException("\f\fInvalid float/double format at line: " + line);
                 }
 
@@ -72,6 +77,7 @@ namespace Rythin
                 std::string fractional = digits();
                 if (fractional.empty())
                 {
+                    LogErrors::getInstance().addError("Invalid float/double format at line " + to_string(line) + " column " + to_string(column), 23);
                     throw std::runtime_error("Invalid float/double format");
                 }
 
@@ -439,6 +445,7 @@ namespace Rythin
                 }
                 else
                 {
+                    //LogErrors
                     std::cerr << "Unknown escape sequence \\" << current_input << " at line " << line << ", column " << column << std::endl;
                     throw std::runtime_error("Unknown escape sequence");
                 }

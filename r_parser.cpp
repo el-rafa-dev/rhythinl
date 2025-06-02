@@ -292,10 +292,11 @@ namespace Rythin
 
     ASTPtr Parser::ParseExpression(TokensTypes types)
     {
+        //consume the value based on the type of the variable
         switch (types)
         {
         case TokensTypes::TOKEN_STR:
-            return std::make_shared<LiteralNode>(consume(current().type).value);
+            return std::make_shared<LiteralNode>(consume(TokensTypes::TOKEN_STRING_LITERAL).value);
         case TokensTypes::TOKEN_INT:
         {
             try {
@@ -306,24 +307,35 @@ namespace Rythin
             }
         }
         case TokensTypes::TOKEN_FLOAT:
-            return std::make_shared<FloatNode>(std::stof(consume(current().type).value));
+            if (check(TokensTypes::TOKEN_FLOAT)) {
+                return std::make_shared<FloatNode>(std::stof(consume(TokensTypes::TOKEN_FLOAT).value));
+            } else if (check(TokensTypes::TOKEN_DOUBLE)) {
+                LogErrors::getInstance().addWarning("Using double as float at line " + std::to_string(current().line) + " column " + std::to_string(current().column), 6);
+                return std::make_shared<FloatNode>(std::stof(consume(TokensTypes::TOKEN_DOUBLE).value));
+            }
+            
         case TokensTypes::TOKEN_DOUBLE:
-            return std::make_shared<DoubleNode>(std::stod(consume(current().type).value));
+            if (check(TokensTypes::TOKEN_DOUBLE)) {
+                return std::make_shared<DoubleNode>(std::stod(consume(TokensTypes::TOKEN_DOUBLE).value));
+            } else if (check(TokensTypes::TOKEN_FLOAT)) {
+                LogErrors::getInstance().addWarning("Using float as double at line " + std::to_string(current().line) + " column " + std::to_string(current().column), 7);
+                return std::make_shared<DoubleNode>(std::stod(consume(TokensTypes::TOKEN_FLOAT).value));
+            }
         case TokensTypes::TOKEN_BYTES:
         {
             auto lit_val = std::stoll(current().value);
             unsigned char val;
             if (lit_val < 0 || lit_val > 255)
             {
-                LogErrors::getInstance().addError("[Warning]: Value " + std::to_string(lit_val) + " is out of range for byte type. It will be truncated to: " + std::to_string(static_cast<unsigned char>(lit_val)), 5);
-                LogErrors::getInstance().printErrors();
+                LogErrors::getInstance().addWarning("Value " + std::to_string(lit_val) + " is out of range for byte type. It will be truncated to: " + std::to_string(static_cast<unsigned char>(lit_val)), 5);
                 val = static_cast<unsigned char>(lit_val);
             }
             else
             {
                 val = static_cast<unsigned char>(lit_val);
             }
-            consume(current().type);
+            if (!check(TokensTypes::TOKEN_INT)) LogErrors::getInstance().addError("", 26);
+            consume(TokensTypes::TOKEN_INT);
             return std::make_shared<ByteNode>(val);
         }
         case TokensTypes::TOKEN_LONG_INT:
@@ -383,7 +395,7 @@ namespace Rythin
 
         if (current().type == TokensTypes::TOKEN_INT || current().type == TokensTypes::TOKEN_STR || current().type == TokensTypes::TOKEN_FLOAT || current().type == TokensTypes::TOKEN_DOUBLE)
         {
-            std::cerr << "[Error]: loop keyword only accepts two types of argumments" << std::endl;
+            LogErrors::getInstance().addError("[Error]: loop keyword only accepts two types of argumments", 59);
             throw std::logic_error("Logical Error");
         }
         else if (check(TokensTypes::TOKEN_IDENTIFIER))

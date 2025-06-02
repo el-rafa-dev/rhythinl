@@ -111,9 +111,7 @@ namespace Rythin
     struct IntNode : public ASTNode
     {
         int val;
-        IntNode(int v) : val(v) {
-            std::cout << "Lint val: " << val << std::endl; 
-        }
+        IntNode(int v) : val(v) {}
     };
 
     struct LIntNode : public ASTNode {
