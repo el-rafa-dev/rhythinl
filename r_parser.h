@@ -35,7 +35,7 @@ namespace Rythin {
         ASTPtr ParseBlock();
         ASTPtr ParseLoopExpression();
         ASTPtr ParseDeclarations();
-        ASTPtr ParseExpression();
+        ASTPtr ParseExpression(TokensTypes types);
         ASTPtr ParseVarExpression();
         ASTPtr ParseFuncDeclaration();
         ASTPtr ParseDefinitions();

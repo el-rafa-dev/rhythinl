@@ -55,7 +55,7 @@ namespace Rythin
             }
             else
             {
-                LogErrors::getInstance().addError("Não foi possível abrir o arquivo.");
+                LogErrors::getInstance().addError("Não foi possível abrir o arquivo.", -2);
             }
         }
     };
@@ -85,12 +85,12 @@ int main(int argc, char *argv[])
         }
         else
         {
-            LogErrors::getInstance().addError("A file must be specified to execute\n");
+            LogErrors::getInstance().addError("A file must be specified to execute\n", -1);
         }
     }
     else
     {
-        LogErrors::getInstance().addError("Invalid argument! See --help or -h to see the list of options!\n");
+        LogErrors::getInstance().addError("Invalid argument! See --help or -h to see the list of options!\n", 6);
     }
     return 0;
 }

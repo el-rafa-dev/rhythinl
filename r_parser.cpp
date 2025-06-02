@@ -109,13 +109,13 @@ namespace Rythin
         consume(TokensTypes::TOKEN_DEF);
         std::string var_name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
         consume(TokensTypes::TOKEN_COLON);
-        auto type = ParseExpression();
+        auto type = consume(current().type).type;
         consume(TokensTypes::TOKEN_FUNC);
         consume(TokensTypes::TOKEN_LPAREN);
         std::vector<ASTPtr> args;
         while (!check(TokensTypes::TOKEN_RPAREN))
         {
-            args.push_back(ParseExpression());
+            args.push_back(ParseExpression(type));
         }
         consume(TokensTypes::TOKEN_RPAREN);
         consume(TokensTypes::TOKEN_ARROW_SET);
@@ -129,7 +129,7 @@ namespace Rythin
     {
         consume(TokensTypes::TOKEN_IF);        // consume the'if'
         consume(TokensTypes::TOKEN_LPAREN);    // consume the '(' parent
-        auto condition = ParseExpression();    // conditional expression (e.g.: 1 == 2)
+        auto condition = nullptr;              // conditional expression (e.g.: 1 == 2)
         consume(TokensTypes::TOKEN_RPAREN);    // consume ')'
         consume(TokensTypes::TOKEN_ARROW_SET); // -> consume the arrow set
 
@@ -140,10 +140,11 @@ namespace Rythin
         if (check(TokensTypes::TOKEN_BUT))
         {
             consume(TokensTypes::TOKEN_BUT); // consume the 'but'
+            consume(TokensTypes::TOKEN_LPAREN);
             while (!check(TokensTypes::TOKEN_RPAREN))
             { // checa se há uma condição no 'but'
-                consume(TokensTypes::TOKEN_LPAREN);
-                butCondition = ParseExpression();
+
+                butCondition = nullptr;
             }
             consume(TokensTypes::TOKEN_RPAREN);
             consume(TokensTypes::TOKEN_LBRACKET);
@@ -254,45 +255,56 @@ namespace Rythin
         std::string name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
         consume(TokensTypes::TOKEN_COLON);
         TokensTypes tk;
-        switch (current().type) {
-            case TokensTypes::TOKEN_BOOL:
-                tk = consume(TokensTypes::TOKEN_BOOL).type;
-                break;
-            case TokensTypes::TOKEN_INT:
-                tk = consume(TokensTypes::TOKEN_INT).type;
-                break;
-            case TokensTypes::TOKEN_FLOAT:
-                tk = consume(TokensTypes::TOKEN_FLOAT).type;
-                break;
-            case TokensTypes::TOKEN_DOUBLE:
-                tk = consume(TokensTypes::TOKEN_DOUBLE).type;
-                break;
-            case TokensTypes::TOKEN_STR:
-                tk = consume(TokensTypes::TOKEN_STR).type;
-                break;
-            case TokensTypes::TOKEN_BYTES:
-                tk = consume(TokensTypes::TOKEN_BYTES).type;
-                break;
-            case TokensTypes::TOKEN_OBJECT:
-                tk = consume(TokensTypes::TOKEN_OBJECT).type;
-                break;
-            default:
-                std::cerr << "[Error] Invalid type for variable definition at line " << current().line << " column " << current().column << std::endl;
-                throw Excepts::CompilationException("Invalid type definition");
+        switch (current().type)
+        {
+        case TokensTypes::TOKEN_BOOL:
+            tk = consume(TokensTypes::TOKEN_BOOL).type;
+            break;
+        case TokensTypes::TOKEN_INT:
+            tk = consume(TokensTypes::TOKEN_INT).type;
+            break;
+        case TokensTypes::TOKEN_FLOAT:
+            tk = consume(TokensTypes::TOKEN_FLOAT).type;
+            break;
+        case TokensTypes::TOKEN_DOUBLE:
+            tk = consume(TokensTypes::TOKEN_DOUBLE).type;
+            break;
+        case TokensTypes::TOKEN_STR:
+            tk = consume(TokensTypes::TOKEN_STR).type;
+            break;
+        case TokensTypes::TOKEN_BYTES:
+            tk = consume(TokensTypes::TOKEN_BYTES).type;
+            break;
+        case TokensTypes::TOKEN_OBJECT:
+            tk = consume(TokensTypes::TOKEN_OBJECT).type;
+            break;
+        case TokensTypes::TOKEN_LONG_INT:
+            tk = consume(TokensTypes::TOKEN_LONG_INT).type;
+            break;
+        default:
+            std::cerr << "[Error] Invalid type for variable definition at line " << current().line << " column " << current().column << std::endl;
+            throw Excepts::CompilationException("Invalid type definition");
         }
         consume(TokensTypes::TOKEN_ASSIGN); // consome o '=' para pegar o valor ou expressão
-        auto val = ParseExpression();
+        auto val = ParseExpression(tk);
         return std::make_shared<VariableDefinitionNode>(name, tk, val);
     }
 
-    ASTPtr Parser::ParseExpression()
+    ASTPtr Parser::ParseExpression(TokensTypes types)
     {
-        switch (current().type)
+        switch (types)
         {
-        case TokensTypes::TOKEN_STRING_LITERAL:
+        case TokensTypes::TOKEN_STR:
             return std::make_shared<LiteralNode>(consume(current().type).value);
         case TokensTypes::TOKEN_INT:
-            return std::make_shared<IntNode>(std::stoi(consume(current().type).value));
+        {
+            try {
+                return std::make_shared<IntNode>(std::stoi(consume(TokensTypes::TOKEN_INT).value));
+            } catch (std::out_of_range e) {
+                std::cerr << "[Error]: Current value out of range at line " << current().line << " column " << current().column << std::endl;
+                throw std::out_of_range("Index out of range");
+            }
+        }
         case TokensTypes::TOKEN_FLOAT:
             return std::make_shared<FloatNode>(std::stof(consume(current().type).value));
         case TokensTypes::TOKEN_DOUBLE:
@@ -303,7 +315,7 @@ namespace Rythin
             unsigned char val;
             if (lit_val < 0 || lit_val > 255)
             {
-                LogErrors::getInstance().addError("[Warning]: Value " + std::to_string(lit_val) + " is out of range for byte type. It will be truncated to: " + std::to_string(static_cast<unsigned char>(lit_val)));
+                LogErrors::getInstance().addError("[Warning]: Value " + std::to_string(lit_val) + " is out of range for byte type. It will be truncated to: " + std::to_string(static_cast<unsigned char>(lit_val)), 5);
                 LogErrors::getInstance().printErrors();
                 val = static_cast<unsigned char>(lit_val);
             }
@@ -314,6 +326,16 @@ namespace Rythin
             consume(current().type);
             return std::make_shared<ByteNode>(val);
         }
+        case TokensTypes::TOKEN_LONG_INT:
+            if (std::stoll(current().value) < -2147483648 || std::stoll(current().value) > 2147483647)
+            {
+                std::cerr << "[Warning]: Value " << std::stoll(current().value) << " out of range at line " << current().line << " column " << current().column << std::endl;
+                throw Excepts::CompilationException("Index out of range");
+            }
+            else
+            {
+                return std::make_shared<LIntNode>(std::stoll(consume(current().type).value));
+            }
         case TokensTypes::TOKEN_NIL:
             consume(TokensTypes::TOKEN_NIL);
             return std::make_shared<NilNode>();
@@ -338,13 +360,19 @@ namespace Rythin
                 auto ptr = std::make_shared<FloatNode>(std::stof(consume(current().type).value));
                 return std::make_shared<ObjectNode>(ptr);
             }
-        case TokensTypes::TOKEN_TRUE:
-            consume(TokensTypes::TOKEN_TRUE);
-            return std::make_shared<TrueOrFalseNode>(true);
-        case TokensTypes::TOKEN_FALSE:
-            consume(TokensTypes::TOKEN_FALSE);
-            return std::make_shared<TrueOrFalseNode>(false);
+        case TokensTypes::TOKEN_BOOL:
+            if (check(TokensTypes::TOKEN_TRUE))
+            {
+                consume(TokensTypes::TOKEN_TRUE);
+                return std::make_shared<TrueOrFalseNode>(true);
+            }
+            else if (check(TokensTypes::TOKEN_FALSE))
+            {
+                consume(TokensTypes::TOKEN_FALSE);
+                return std::make_shared<TrueOrFalseNode>(false);
+            }
         default:
+            std::cout << "Token: " << Tokens::tokenTypeToString(types) << std::endl;
             std::cerr << "[Error]: Invalid variable value type at line " << current().line << " column " << current().column << std::endl;
             throw Excepts::CompilationException("Invalid Variable Value Type");
         }

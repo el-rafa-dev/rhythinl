@@ -21,7 +21,7 @@ namespace Log
             static LogErrors instance;
             return instance;
         }
-        void addError(const std::string &error, int exit_code = __null);
+        void addError(const std::string &error, int exit_code);
         bool hasErrors();
         int exitCode();
         void printErrors();

@@ -111,15 +111,20 @@ namespace Rythin
     struct IntNode : public ASTNode
     {
         int val;
-        IntNode(int v) : val(v) {}
+        IntNode(int v) : val(v) {
+            std::cout << "Lint val: " << val << std::endl; 
+        }
+    };
+
+    struct LIntNode : public ASTNode {
+        long int val;
+        LIntNode(int val) : val(val) {}
     };
 
     struct ByteNode : public ASTNode
     {
         unsigned char byte;
-        ByteNode(unsigned char by) : byte(by) {
-            std::cout << "Byte value: " << byte << std::endl;
-        }
+        ByteNode(unsigned char by) : byte(by) {}
     };
 
     struct DoubleNode : public ASTNode
@@ -171,28 +176,7 @@ namespace Rythin
         std::string var_name;
         TokensTypes type;
         ASTPtr val;
-        VariableDefinitionNode(const std::string var, TokensTypes type, ASTPtr val) : var_name(var), type(type), val(val) {
-            //apenas para testes de retorno, nada disso ficará no codigo final
-            if (auto var = std::dynamic_pointer_cast<LiteralNode>(val)) {
-                if (type != TokensTypes::TOKEN_IDENTIFIER) {
-                   std::cout << "Var Name: " << var_name << " Value: " << var->val << " Types: " << Tokens::tokenTypeToString(type) << std::endl;
-                } else {
-                    throw Excepts::CompilationException("Invalid type");
-                }
-            } else if (auto var = std::dynamic_pointer_cast<IntNode>(val)) {
-                std::cout << "Var Name: " << var_name << " Value: " << var->val << " Types: " << Tokens::tokenTypeToString(type) << std::endl;
-            } else if (auto var = std::dynamic_pointer_cast<DoubleNode>(val)) {
-                std::cout << "Var Name: " << var_name << " Value: " << var->val << " Types: " << Tokens::tokenTypeToString(type) << std::endl;
-            } else if (auto var = std::dynamic_pointer_cast<FloatNode>(val)) {
-                std::cout << "Var Name: " << var_name << " Value: " << var->val << " Types: " << Tokens::tokenTypeToString(type) << std::endl;
-            } else if (auto var = std::dynamic_pointer_cast<ByteNode>(val)) {
-                std::cout << "Var Name: " << var_name << " Value: " << var->byte << " Types: " << Tokens::tokenTypeToString(type) << std::endl;
-            } else if (auto var = std::dynamic_pointer_cast<ObjectNode>(val)) {
-                std::cout << "Var Name: " << var_name << " Value: " << var << " Types: " << Tokens::tokenTypeToString(type) << std::endl;
-            } else if (auto var = std::dynamic_pointer_cast<NilNode>(val)) {
-                std::cout << "Var Name " << var_name << " Value: nil" << " Types: " << Tokens::tokenTypeToString(type) << std::endl;
-            }
-        }
+        VariableDefinitionNode(const std::string var, TokensTypes type, ASTPtr val) : var_name(var), type(type), val(val) {}
     };
 }
 
