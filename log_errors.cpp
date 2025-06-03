@@ -40,9 +40,7 @@ namespace Log
         {
             // writing errors and warnings to console
             std::cerr << logs[lo] << std::endl;
-        }
-        for (int size = 0; size = warns.size(); size++) {
-            std::cerr << warns[size] << std::endl;
+            std::cerr << warns[warns.size()] << std::endl;
         }
     }
 }

@@ -102,16 +102,31 @@ namespace Rythin
         std::vector<ASTPtr> statements;
     };
 
-    struct LoopNode : public ASTNode
+    struct LoopConditionNode : public ASTNode
     {
         ASTPtr condition;
         ASTPtr body;
+    };
+
+    struct LoopNode : public ASTNode
+    {
+        std::string var_name;
+        TokensTypes type;
+        ASTPtr value;
+        ASTPtr block;
+        LoopNode(std::string var_name, TokensTypes type, ASTPtr value, ASTPtr block) : var_name(var_name), type(type), block(block) {}
     };
 
     struct IntNode : public ASTNode
     {
         int val;
         IntNode(int v) : val(v) {}
+    };
+
+    struct InterpolationNode : public ASTNode 
+    {
+        std::string val;
+        //dont need a constructor
     };
 
     struct LIntNode : public ASTNode {

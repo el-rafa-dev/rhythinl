@@ -23,11 +23,9 @@ namespace Rythin {
         bool check(TokensTypes tk);
         //private functions
         private:
-        Rythin::Chunk ch;
         ASTPtr ParsePrint();
         ASTPtr ParsePrintE();
         ASTPtr ParsePrintNl();
-        ASTPtr ParsePrintEL();
         ASTPtr ParseIfStatement();
         ASTPtr ParsePrimary();
         int GetPrecedence(TokensTypes tk);
@@ -39,6 +37,8 @@ namespace Rythin {
         ASTPtr ParseVarExpression();
         ASTPtr ParseFuncDeclaration();
         ASTPtr ParseDefinitions();
+        ASTPtr ParseLoopCondition();
+        ASTPtr ParseLoopCond();
 
         ASTPtr ParseVarDeclaration();
 

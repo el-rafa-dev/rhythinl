@@ -13,6 +13,7 @@
 #include "lex_types.h"
 #include "rexcept.h"
 #include "log.h"
+#include "ast.h"
 
 using namespace Log;
 using namespace std;
@@ -487,10 +488,9 @@ namespace Rythin
         if (current_input == ']')
         {
             // lá na frente o interpolated value será substituido pelo valor da variavel interpolada
-            std::string interpolatedValue = "";
-            // std::string interpolatedValue = code_input.substr(start, position - start);
+            auto inter_node = std::make_shared<InterpolationNode>();
             advance_tk(); // Skip ]
-            return interpolatedValue;
+            return inter_node->val;
         }
         else
         {
