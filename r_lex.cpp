@@ -28,7 +28,7 @@ namespace Rythin
     Tokens Lexer::next_tk()
     {
         skip_withspace();
-        if (std::isalpha(current_input))
+        if (std::isalpha(current_input) || current_input == '_')
         {
             return identifier();
         }
@@ -111,7 +111,7 @@ namespace Rythin
                 advance_tk(true);
                 while (current_input != '\0' && current_input != '\n')
                 {
-                    advance_tk(true);
+                    advance_tk();
                 }
                 return next_tk();
                 break;
@@ -307,7 +307,6 @@ namespace Rythin
 
     void Lexer::advance_tk(bool isComment)
     {
-        size_t isLineEmpty = code_input.find_last_not_of("\t\n\r");
         if (current_input == '\n')
         {
             line++;
@@ -446,7 +445,7 @@ namespace Rythin
                 }
                 else
                 {
-                    //LogErrors
+                    // LogErrors
                     std::cerr << "Unknown escape sequence \\" << current_input << " at line " << line << ", column " << column << std::endl;
                     throw std::runtime_error("Unknown escape sequence");
                 }
@@ -509,4 +508,4 @@ namespace Rythin
         }
         return res;
     }
-} 
+}

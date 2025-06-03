@@ -290,6 +290,10 @@ namespace Rythin
         return std::make_shared<VariableDefinitionNode>(name, tk, val);
     }
 
+    ASTPtr Parser::ParseFuncExpressions() {
+        //mais tarde corrijo
+    }
+
     ASTPtr Parser::ParseExpression(TokensTypes types)
     {
         // consume the value based on the type of the variable
@@ -348,6 +352,7 @@ namespace Rythin
             consume(TokensTypes::TOKEN_INT);
             return std::make_shared<ByteNode>(val);
         }
+
         case TokensTypes::TOKEN_LONG_INT:
             if (std::stoll(current().value) < -2147483648 || std::stoll(current().value) > 2147483647)
             {
@@ -358,6 +363,7 @@ namespace Rythin
             {
                 return std::make_shared<LIntNode>(std::stoll(consume(current().type).value));
             }
+
         case TokensTypes::TOKEN_NIL:
             consume(TokensTypes::TOKEN_NIL);
             return std::make_shared<NilNode>();
@@ -405,15 +411,12 @@ namespace Rythin
         return consume(current().type).type == TokensTypes::TOKEN_TRUE ? (std::make_shared<TrueOrFalseNode>(true)) : (std::make_shared<TrueOrFalseNode>(false));
     }
 
-    ASTPtr Parser::ParseLoop() 
-    {
-    }
-
     ASTPtr Parser::ParseLoopExpression()
     {
         consume(TokensTypes::TOKEN_LOOP);
         consume(TokensTypes::TOKEN_LPAREN);
-        if (check(TokensTypes::TOKEN_TRUE)) {
+        if (check(TokensTypes::TOKEN_TRUE))
+        {
             return ParseLoopCond();
         }
         auto var_name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
@@ -421,36 +424,37 @@ namespace Rythin
         consume(TokensTypes::TOKEN_COLON);
         // switch para verificação de tipos da variavel
         TokensTypes type;
-        switch (current().type) {
-            case TokensTypes::TOKEN_INT:
-                type = consume(TokensTypes::TOKEN_INT).type;
-                break;
-            case TokensTypes::TOKEN_FLOAT:
-                type = consume(TokensTypes::TOKEN_FLOAT).type;
-                break;
-            case TokensTypes::TOKEN_DOUBLE:
-                type = consume(TokensTypes::TOKEN_DOUBLE).type;
-                break;
-            default:
-                LogErrors::getInstance().addError("Loop expression only accepts number types (int, float, double)", 23);
-                throw Excepts::SyntaxException("Loop Expression");
+        switch (current().type)
+        {
+        case TokensTypes::TOKEN_INT:
+            type = consume(TokensTypes::TOKEN_INT).type;
+            break;
+        case TokensTypes::TOKEN_FLOAT:
+            type = consume(TokensTypes::TOKEN_FLOAT).type;
+            break;
+        case TokensTypes::TOKEN_DOUBLE:
+            type = consume(TokensTypes::TOKEN_DOUBLE).type;
+            break;
+        default:
+            LogErrors::getInstance().addError("Loop expression only accepts number types (int, float, double)", 23);
+            throw Excepts::SyntaxException("Loop Expression");
         }
         consume(TokensTypes::TOKEN_IN);
         ASTPtr val;
         switch (current().type)
         {
-            case TokensTypes::TOKEN_INT:
-                val = std::make_shared<IntNode>(std::stoi(consume(TokensTypes::TOKEN_INT).value));
-                break;
-            case TokensTypes::TOKEN_FLOAT:
-                val = std::make_shared<FloatNode>(std::stof(consume(TokensTypes::TOKEN_FLOAT).value));
-                break;
-            case TokensTypes::TOKEN_DOUBLE:
-                val = std::make_shared<DoubleNode>(std::stod(consume(TokensTypes::TOKEN_DOUBLE).value));
-                break;
-            default:
-                LogErrors::getInstance().addError("Invalid type for loop expression", 23);
-                throw Excepts::SyntaxException("Invalid loop type");
+        case TokensTypes::TOKEN_INT:
+            val = std::make_shared<IntNode>(std::stoi(consume(TokensTypes::TOKEN_INT).value));
+            break;
+        case TokensTypes::TOKEN_FLOAT:
+            val = std::make_shared<FloatNode>(std::stof(consume(TokensTypes::TOKEN_FLOAT).value));
+            break;
+        case TokensTypes::TOKEN_DOUBLE:
+            val = std::make_shared<DoubleNode>(std::stod(consume(TokensTypes::TOKEN_DOUBLE).value));
+            break;
+        default:
+            LogErrors::getInstance().addError("Invalid type for loop expression", 23);
+            throw Excepts::SyntaxException("Invalid loop type");
         }
         consume(TokensTypes::TOKEN_RPAREN);
         consume(TokensTypes::TOKEN_ARROW_SET);
@@ -461,9 +465,6 @@ namespace Rythin
     ASTPtr Parser::ParseLoopCond()
     {
         auto node = std::make_shared<LoopConditionNode>();
-        /*consume(TokensTypes::TOKEN_LOOP);
-        consume(TokensTypes::TOKEN_LPAREN);*/
-
         /// ParseLoopExpression will be check if have a varaible definition and his type or condition
         node->condition = ParseLoopCondition();
 

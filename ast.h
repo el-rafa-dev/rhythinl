@@ -126,7 +126,6 @@ namespace Rythin
     struct InterpolationNode : public ASTNode 
     {
         std::string val;
-        //dont need a constructor
     };
 
     struct LIntNode : public ASTNode {

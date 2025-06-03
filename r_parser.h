@@ -29,13 +29,13 @@ namespace Rythin {
         ASTPtr ParseIfStatement();
         ASTPtr ParsePrimary();
         int GetPrecedence(TokensTypes tk);
-        ASTPtr ParseLoop();
         ASTPtr ParseBlock();
         ASTPtr ParseLoopExpression();
         ASTPtr ParseDeclarations();
         ASTPtr ParseExpression(TokensTypes types);
         ASTPtr ParseVarExpression();
         ASTPtr ParseFuncDeclaration();
+        ASTPtr ParseFuncExpressions();
         ASTPtr ParseDefinitions();
         ASTPtr ParseLoopCondition();
         ASTPtr ParseLoopCond();
