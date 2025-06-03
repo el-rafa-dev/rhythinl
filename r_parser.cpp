@@ -84,6 +84,8 @@ namespace Rythin
         case TokensTypes::TOKEN_PRINT_NEW_LINE:
             return ParsePrintNl();
         case TokensTypes::TOKEN_DEF:
+            return ParseFuncDeclaration();
+        case TokensTypes::TOKEN_LET:
             return ParseVarDeclaration();
         default:
             LogErrors::getInstance().addError("Invalid statement at line " + std::to_string(current().line) + " column " + std::to_string(current().column), 2);
@@ -109,19 +111,20 @@ namespace Rythin
         consume(TokensTypes::TOKEN_DEF);
         std::string var_name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
         consume(TokensTypes::TOKEN_COLON);
-        auto type = consume(current().type).type;
-        consume(TokensTypes::TOKEN_FUNC);
+        auto type = consume(TokensTypes::TOKEN_FUNC).type;
         consume(TokensTypes::TOKEN_LPAREN);
         std::vector<ASTPtr> args;
         while (!check(TokensTypes::TOKEN_RPAREN))
         {
-            args.push_back(ParseExpression(type));
+            args.push_back(ParseFuncExpressions());
+            while (check(TokensTypes::TOKEN_COMMA)) {
+                consume(TokensTypes::TOKEN_COMMA);
+                args.push_back(ParseFuncExpressions());
+            }
         }
         consume(TokensTypes::TOKEN_RPAREN);
         consume(TokensTypes::TOKEN_ARROW_SET);
-        consume(TokensTypes::TOKEN_LBRACKET);
         auto block = ParseBlock();
-        consume(TokensTypes::TOKEN_RBRACKET);
         return std::make_shared<FunctionDefinitionNode>(var_name, args, block);
     }
 
@@ -251,7 +254,7 @@ namespace Rythin
 
     ASTPtr Parser::ParseVarDeclaration()
     {
-        consume(TokensTypes::TOKEN_DEF);
+        consume(TokensTypes::TOKEN_LET);
         std::string name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
         consume(TokensTypes::TOKEN_COLON);
         TokensTypes tk;
@@ -291,7 +294,11 @@ namespace Rythin
     }
 
     ASTPtr Parser::ParseFuncExpressions() {
-        //mais tarde corrijo
+        auto exp_node = std::make_shared<ExpressionNode>();
+        exp_node->var_name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
+        consume(TokensTypes::TOKEN_COLON);
+        exp_node->type = consume(current().type).type;
+        return exp_node;
     }
 
     ASTPtr Parser::ParseExpression(TokensTypes types)

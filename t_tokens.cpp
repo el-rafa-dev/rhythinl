@@ -104,6 +104,8 @@ std::string Tokens::tokenTypeToString(TokensTypes type)
         return "finish";
     case TokensTypes::TOKEN_DEF:
         return "def";
+    case TokensTypes::TOKEN_LET:
+        return "let";
     case TokensTypes::TOKEN_FROM:
         return "from";
     case TokensTypes::TOKEN_GET:

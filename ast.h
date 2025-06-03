@@ -176,6 +176,13 @@ namespace Rythin
         NilNode() = default;
     };
 
+    struct ExpressionNode : public ASTNode
+    {
+        std::string var_name;
+        TokensTypes type;
+        
+    };
+
     struct FunctionDefinitionNode : public ASTNode {
         std::string var_name;
         std::vector<ASTPtr> args;

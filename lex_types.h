@@ -46,6 +46,7 @@ enum class TokensTypes {
     TOKEN_CONST,
     TOKEN_FINISH,
     TOKEN_DEF,
+    TOKEN_LET,
     TOKEN_FROM,
     TOKEN_GET,
     TOKEN_LOOP,

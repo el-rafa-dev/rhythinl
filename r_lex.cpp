@@ -342,6 +342,7 @@ namespace Rythin
             {"const", TokensTypes::TOKEN_CONST},
             {"finish", TokensTypes::TOKEN_FINISH},
             {"def", TokensTypes::TOKEN_DEF},
+            {"let", TokensTypes::TOKEN_LET},
             {"from", TokensTypes::TOKEN_FROM},
             {"get", TokensTypes::TOKEN_GET},
             {"loop", TokensTypes::TOKEN_LOOP},
