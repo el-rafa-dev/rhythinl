@@ -60,31 +60,10 @@ namespace Rythin
 
     struct BinOp : public ASTNode
     {
-        ASTPtr op;  //operators
+        TokensTypes op;  //operators
         ASTPtr left;
         ASTPtr right;
-        //BinOp(ASTPtr op, ASTPtr left, ASTPtr right) : op(op), left(left), right(right) {}
-    };
-
-    struct AddBinOp : public ASTNode { // + operator
-        std::string op;
-        AddBinOp(std::string op) : op(op) {}
-    };
-
-    struct DivBinOp : public ASTNode { // '/' operator
-        std::string op;
-
-        DivBinOp(std::string op) : op(op) {}
-    };
-
-    struct MinBinOp : public ASTNode { // '-' operator
-        std::string op;
-        MinBinOp(std::string op) : op(op) {}
-    };
-
-    struct MultBinOp : public ASTNode {     //'/' operator
-        std::string op;
-        MultBinOp(std::string op) : op(op) {}
+        BinOp(TokensTypes op, ASTPtr left, ASTPtr right) : op(op), left(left), right(right) {}
     };
 
     struct IfStatement : public ASTNode
@@ -93,6 +72,7 @@ namespace Rythin
         ASTPtr ifBranch;
         ASTPtr butBranch;
         ASTPtr butCondition;
+        IfStatement(ASTPtr ifCondition, ASTPtr ifBranch, ASTPtr butBranch, ASTPtr butCondition) : ifCondition(ifCondition), ifBranch(ifBranch), butBranch(butBranch), butCondition(butCondition) {}
     };
 
     struct VariableNode : public ASTNode

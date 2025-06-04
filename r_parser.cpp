@@ -45,7 +45,8 @@ namespace Rythin
         {
             // checa se o tipo não é igual ao tk e retorna  o erro abaixo
             LogErrors::getInstance().addError("Expected '" + Tokens::tokenTypeToString(tk) + "' but got: '" + Tokens::tokenTypeToString(current().type) + "' at line " + std::to_string(current().line) + " column " + std::to_string(current().column), 4);
-            position++;
+            LogErrors::getInstance().printAll();
+            throw Excepts::CompilationException("Invalid token");
         }
         position++;
         return tokens[position - 1];
@@ -150,13 +151,7 @@ namespace Rythin
             consume(TokensTypes::TOKEN_RBRACKET);
         }
 
-        auto node = std::make_shared<IfStatement>();
-        node->ifCondition = condition;
-        node->ifBranch = ifBranch;
-        node->butBranch = butBranch;
-        node->butCondition = butCondition;
-
-        return node;
+        return std::make_shared<IfStatement>(condition, ifBranch, butBranch, butCondition);
     }
 
     ASTPtr Parser::ParsePrint()
@@ -223,7 +218,6 @@ namespace Rythin
             }
             else if (check(TokensTypes::TOKEN_NIL))
             {
-                node->val = '\0';
                 return std::make_shared<NilNode>();
             }
             else

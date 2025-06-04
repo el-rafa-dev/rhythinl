@@ -34,13 +34,23 @@ namespace Log
         return this->warns.size();
     }
 
+    void LogErrors::printAll() {
+        printWarnings();
+        printErrors();
+    }
+
+    void LogErrors::printWarnings() {
+        for (int i=0; i < warns.size(); i++) {
+            std::cerr << warns[i] << std::endl;
+        }
+    }
+
     void LogErrors::printErrors()
     {
         for (int lo = 0; lo < logs.size(); lo++)
         {
             // writing errors and warnings to console
             std::cerr << logs[lo] << std::endl;
-            std::cerr << warns[warns.size()] << std::endl;
         }
     }
 }

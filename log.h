@@ -29,6 +29,8 @@ namespace Log
         bool hasErrorsAndWarns();
         int exitCode();
         void printErrors();
+        void printAll();
+        void printWarnings();
     };
 }
 
