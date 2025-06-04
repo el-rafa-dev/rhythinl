@@ -37,6 +37,16 @@ namespace Rythin
         std::string val;
     };
 
+    struct CinputNode : public ASTNode
+    {
+        std::string val; //the value is set by compiler/interpreter
+        std::string msg;
+        int time;
+        CinputNode() {}
+        CinputNode(std::string msg) : msg(msg) {}
+        CinputNode(std::string msg, int time) : msg(msg), time(time) {}
+    };
+
     struct PrintErrorLog : public ASTNode
     {
         std::string val;
@@ -126,6 +136,7 @@ namespace Rythin
     struct InterpolationNode : public ASTNode 
     {
         std::string val;
+        std::string var_name;
     };
 
     struct LIntNode : public ASTNode {

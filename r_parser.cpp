@@ -73,6 +73,8 @@ namespace Rythin
         switch (current().type)
         {
 
+        case TokensTypes::TOKEN_CINPUT:
+            return ParseCinput();
         case TokensTypes::TOKEN_IF:
             return ParseIfStatement();
         case TokensTypes::TOKEN_LOOP:
@@ -92,19 +94,9 @@ namespace Rythin
             LogErrors::getInstance().printErrors();
             throw Excepts::CompilationException("Invalid Statement");
         }
+    
     }
 
-    ASTPtr Parser::ParseDefinitions()
-    {
-        while (check(TokensTypes::TOKEN_ARROW_SET))
-        {
-            if (check(TokensTypes::TOKEN_ARROW_SET))
-            {
-                std::cout << "Is function" << std::endl;
-            }
-        }
-        return std::make_shared<NilNode>();
-    }
 
     ASTPtr Parser::ParseFuncDeclaration()
     {
@@ -195,6 +187,22 @@ namespace Rythin
         node->val = consume(TokensTypes::TOKEN_STRING_LITERAL).value;
         consume(TokensTypes::TOKEN_RPAREN);
         return node;
+    }
+
+    ASTPtr Parser::ParseCinput() 
+    {
+        consume(TokensTypes::TOKEN_CINPUT);
+        consume(TokensTypes::TOKEN_LPAREN);
+        if (check(TokensTypes::TOKEN_STRING_LITERAL)) {
+            auto msg = consume(TokensTypes::TOKEN_STRING_LITERAL).value;
+            return std::make_shared<CinputNode>(msg);
+
+            if (check(TokensTypes::TOKEN_COMMA)) {
+                return std::make_shared<CinputNode>(msg, std::stoi(consume(TokensTypes::TOKEN_INT).value));
+            }
+        }
+        consume(TokensTypes::TOKEN_RPAREN);
+        return std::make_shared<CinputNode>();
     }
 
     ASTPtr Parser::ParsePrintE()

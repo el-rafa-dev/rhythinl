@@ -132,8 +132,6 @@ std::string Tokens::tokenTypeToString(TokensTypes type)
         return "alloc";
     case TokensTypes::TOKEN_FLUSH:
         return "flush";
-    case TokensTypes::TOKEN_INPUT:
-        return "input";
     case TokensTypes::TOKEN_FWRITE:
         return "fwrite";
     case TokensTypes::TOKEN_FREAD:
@@ -168,8 +166,8 @@ std::string Tokens::tokenTypeToString(TokensTypes type)
         return "printnl";
     case TokensTypes::TOKEN_PRINT_ERROR:
         return "printe";
-    case TokensTypes::TOKEN_PRINT_ERROR_LOG:
-        return "printel";
+    case TokensTypes::TOKEN_CINPUT:
+        return "cinput";
     case TokensTypes::TOKEN_TRUE:
         return "true";
     case TokensTypes::TOKEN_FALSE:

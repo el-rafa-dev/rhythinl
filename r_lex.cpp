@@ -108,13 +108,21 @@ namespace Rythin
                 return Tokens(TokensTypes::TOKEN_EOF, std::string("\0"), line, column);
                 break;
             case ';':
-                advance_tk(true);
+                advance_tk();
+                
                 while (current_input != '\0' && current_input != '\n')
                 {
                     advance_tk();
                 }
                 return next_tk();
-                break;
+            
+            case '#':
+                advance_tk();
+                while (current_input != '\0' && current_input != '\n') {
+                    advance_tk();
+                }
+                return next_tk();
+
             case ':':
                 advance_tk();
                 return Tokens(TokensTypes::TOKEN_COLON, ":", line, column);
@@ -358,7 +366,7 @@ namespace Rythin
             {"return", TokensTypes::TOKEN_RETURN},
             {"alloc", TokensTypes::TOKEN_ALLOC},
             {"flush", TokensTypes::TOKEN_FLUSH},
-            {"input", TokensTypes::TOKEN_INPUT},
+            {"cinput", TokensTypes::TOKEN_CINPUT},
             {"fwrite", TokensTypes::TOKEN_FWRITE},
             {"fread", TokensTypes::TOKEN_FREAD},
             {"mkdir", TokensTypes::TOKEN_MKDIR},
@@ -434,6 +442,11 @@ namespace Rythin
                     ivalue += '\f';
                     advance_tk();
                 }
+                else if (current_input == 'a') // alarm
+                {
+                    ivalue += '\a';
+                    advance_tk();
+                }
                 else if (current_input == '"') // double quote
                 {
                     ivalue += '"';
@@ -487,8 +500,8 @@ namespace Rythin
         }
         if (current_input == ']')
         {
-            // lá na frente o interpolated value será substituido pelo valor da variavel interpolada
             auto inter_node = std::make_shared<InterpolationNode>();
+            inter_node->var_name = code_input.substr(start, position - start);
             advance_tk(); // Skip ]
             return inter_node->val;
         }
