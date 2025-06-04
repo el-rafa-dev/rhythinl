@@ -32,10 +32,10 @@ jobs:
             cpp_compiler: cl
           - os: ubuntu-latest
             c_compiler: gcc
-            cpp_compiler: gcc
+            cpp_compiler: clang++
           - os: arch-latest
             c_compiler: gcc
-            cpp_compiler: g++
+            cpp_compiler: clang
         exclude:
           - os: windows-latest
             c_compiler: gcc
