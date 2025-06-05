@@ -92,6 +92,31 @@ int executeRun(char *argv[])
     }
 }
 
+void printVersion() 
+{
+    std::cout << "\x1b[1m\x1b[31m               ...:::::^:::..                         \x1b[0m\x1b[1m\x1b[31m[Rhythin] :: [Version] :: [0.0.0.1-01]\x1b[0m" << std::endl;
+    std::cout << "\x1b[1m\x1b[31m             ...::^~7J5PGGBBBG57::.                   \x1b[0m\x1b[1m\x1b[31m[Author]  :: [Rafael de Sousa]\x1b[0m" << std::endl;
+    std::cout << "\x1b[1m\x1b[31m           .::^!?Y5B&@@@@@@@@@@@@B7::.                \x1b[0m\x1b[1m\x1b[31m[Copyright] (C) [2025] [Rafael de Sousa]\x1b[0m    " << std::endl;
+    std::cout << "\x1b[1m\x1b[31m         .:^~75#&@@@@@@@@@@@@@@@@@@@Y::                                       " << std::endl;
+    std::cout << "\x1b[1m\x1b[31m        .^^Y#@@@@@@@@&#G5Y?7!~J@@@@@&^:.                                      " << std::endl;
+    std::cout << "\x1b[1m\x1b[31m        ^^J@@@@@@B5J7~:...... .?#@@@@@5..                                     " << std::endl;
+    std::cout << "\x1b[1m\x1b[31m        ^^7&@@@@P::..    ..:7B@@@@@@Y...                                      " << std::endl;
+    std::cout << "\x1b[1m\x1b[31m        .^^B@@@@J::    ..:?B@@@@@@#7..                                        " << std::endl;
+    std::cout << "\x1b[1m\x1b[31m        .^^#@@@@7::.....:~Y#@@@@@@&Y:                                         " << std::endl;
+    std::cout << "\x1b[1m\x1b[31m        :^~&@@@@!::  ::JG@@@@@@@#J:                                           " << std::endl;
+    std::cout << "\x1b[1m\x1b[31m        :^!@@@@&!?G&@@@@@@&G!@@@.                                             " << std::endl;
+    std::cout << "\x1b[1m\x1b[31m        :^7@@@@@&@@@@@@#P?^@@@.                                               " << std::endl;
+    std::cout << "\x1b[1m\x1b[31m        ^^J@@@@@@@@@@@B7@@^:..                                                " << std::endl;
+    std::cout << "\x1b[1m\x1b[31m        ^^Y@@@@@@@@@@@@@&&BG5Y?7~^:..                                         " << std::endl;
+    std::cout << "\x1b[1m\x1b[31m        ^^5@@@@@GB&@@@@@@@@@@@@@@@&#BG5J!^:...                                " << std::endl;
+    std::cout << "\x1b[1m\x1b[31m        .^^P@@@@@!:^7JPB&@@@@@@@@@@@@@@@@@&#5!:.                              " << std::endl;
+    std::cout << "\x1b[1m\x1b[31m        .^^P@@@@@5::...:^~7J5PGB##&@@@@@@@@@@#::.                             " << std::endl;
+    std::cout << "\x1b[1m\x1b[31m        ^^7&@@@@PP:^.         ::^~!7?JJJJJ?!::                                " << std::endl;
+    std::cout << "\x1b[1m\x1b[31m        .^^!J5PY@^^.                                                          " << std::endl;
+    std::cout << "\x1b[1m\x1b[31m          ^^@@@@^^·                                                           " << std::endl;
+    std::cout << "\x1b[1m\x1b[31m                                                                       \x1b[0m" << std::endl;                                                                                                                                        
+}
+
 int main(int argc, char *argv[])
 {
     if (argc > 1 && strcmp(argv[1], "-h") == 0)
@@ -107,6 +132,9 @@ int main(int argc, char *argv[])
         return executeRun(argv);
     } else if (argc > 1 && strcmp(argv[1], "--file") == 0) {
         return executeRun(argv);
+    }
+    else if (argc > 1 && strcmp(argv[1], "-v") == 0) {
+        printVersion();
     }
     else
     {
