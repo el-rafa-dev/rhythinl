@@ -50,7 +50,6 @@ namespace Rythin
         }
         position++;
         return tokens[position - 1];
-        // std::cout << "current token: " << tokens[position].value << std::endl;
     }
 
     std::vector<ASTPtr> Parser::Parse()
@@ -92,12 +91,10 @@ namespace Rythin
             return ParseVarDeclaration();
         default:
             LogErrors::getInstance().addError("Invalid statement at line " + std::to_string(current().line) + " column " + std::to_string(current().column), 2);
-            LogErrors::getInstance().printErrors();
+            LogErrors::getInstance().printAll();
             throw Excepts::CompilationException("Invalid Statement");
         }
-    
     }
-
 
     ASTPtr Parser::ParseFuncDeclaration()
     {
@@ -110,7 +107,8 @@ namespace Rythin
         while (!check(TokensTypes::TOKEN_RPAREN))
         {
             args.push_back(ParseFuncExpressions());
-            while (check(TokensTypes::TOKEN_COMMA)) {
+            while (check(TokensTypes::TOKEN_COMMA))
+            {
                 consume(TokensTypes::TOKEN_COMMA);
                 args.push_back(ParseFuncExpressions());
             }
@@ -123,10 +121,9 @@ namespace Rythin
 
     ASTPtr Parser::ParseIfStatement()
     {
+
         consume(TokensTypes::TOKEN_IF);        // consume the'if'
-        consume(TokensTypes::TOKEN_LPAREN);    // consume the '(' parent
-        auto condition = nullptr;              // conditional expression (e.g.: 1 == 2)
-        consume(TokensTypes::TOKEN_RPAREN);    // consume ')'
+        auto condition = ParseIfExpressions(); // conditional expression (e.g.: 1 == 2)
         consume(TokensTypes::TOKEN_ARROW_SET); // -> consume the arrow set
 
         auto ifBranch = ParseDeclarations(); // if body
@@ -140,7 +137,7 @@ namespace Rythin
             while (!check(TokensTypes::TOKEN_RPAREN))
             { // checa se há uma condição no 'but'
 
-                butCondition = nullptr;
+                butCondition = ParseIfExpressions();
             }
             consume(TokensTypes::TOKEN_RPAREN);
             consume(TokensTypes::TOKEN_LBRACKET);
@@ -152,6 +149,46 @@ namespace Rythin
         }
 
         return std::make_shared<IfStatement>(condition, ifBranch, butBranch, butCondition);
+    }
+
+    ASTPtr Parser::ParseIfExpressions()
+    {
+        std::string var_names;
+        TokensTypes tks;
+        TokensTypes div;
+        ASTPtr val;
+        consume(TokensTypes::TOKEN_LPAREN);
+        while (!check(TokensTypes::TOKEN_RPAREN))
+        {
+            if (check(TokensTypes::TOKEN_IDENTIFIER))
+            {
+                var_names = consume(TokensTypes::TOKEN_IDENTIFIER).value;
+                if (isConditionOperator(current().type))
+                {
+                    tks = consume(current().type).type;
+                    switch (current().type)
+                    {
+                        case TokensTypes::TOKEN_INT:
+                            val = std::make_shared<IntNode>(std::stoi(consume(current().type).value));
+                            break;
+                        case TokensTypes::TOKEN_FLOAT:
+                            val = std::make_shared<FloatNode>(std::stof(consume(current().type).value));
+                            break;
+                        case TokensTypes::TOKEN_DOUBLE:
+                            val = std::make_shared<DoubleNode>(std::stod(consume(current().type).value));
+                            break;
+                        case TokensTypes::TOKEN_IDENTIFIER:
+                            break;
+                    }
+                    if (isDivisor(current().type))
+                    {
+                        div = consume(current().type).type;
+                    }
+                }
+            }
+        }
+        consume(TokensTypes::TOKEN_RPAREN);
+        return std::make_shared<IfExpressionNode>(var_names, tks, div, val);
     }
 
     ASTPtr Parser::ParsePrint()
@@ -184,15 +221,17 @@ namespace Rythin
         return node;
     }
 
-    ASTPtr Parser::ParseCinput() 
+    ASTPtr Parser::ParseCinput()
     {
         consume(TokensTypes::TOKEN_CINPUT);
         consume(TokensTypes::TOKEN_LPAREN);
-        if (check(TokensTypes::TOKEN_STRING_LITERAL)) {
+        if (check(TokensTypes::TOKEN_STRING_LITERAL))
+        {
             auto msg = consume(TokensTypes::TOKEN_STRING_LITERAL).value;
             return std::make_shared<CinputNode>(msg);
 
-            if (check(TokensTypes::TOKEN_COMMA)) {
+            if (check(TokensTypes::TOKEN_COMMA))
+            {
                 return std::make_shared<CinputNode>(msg, std::stoi(consume(TokensTypes::TOKEN_INT).value));
             }
         }
@@ -295,7 +334,8 @@ namespace Rythin
         return std::make_shared<VariableDefinitionNode>(name, tk, val);
     }
 
-    ASTPtr Parser::ParseFuncExpressions() {
+    ASTPtr Parser::ParseFuncExpressions()
+    {
         auto exp_node = std::make_shared<ExpressionNode>();
         exp_node->var_name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
         consume(TokensTypes::TOKEN_COLON);

@@ -27,7 +27,7 @@ namespace Rythin {
         ASTPtr ParsePrintE();
         ASTPtr ParsePrintNl();
         ASTPtr ParseIfStatement();
-        ASTPtr ParsePrimary();
+        ASTPtr ParseIfExpressions();
 
         ASTPtr ParseBlock();
         ASTPtr ParseLoopExpression();
@@ -42,23 +42,24 @@ namespace Rythin {
 
         ASTPtr ParseVarDeclaration();
 
-        bool isBinOperator(TokensTypes type) {
-            return type == TokensTypes::TOKEN_PLUS ||
-                   type == TokensTypes::TOKEN_MINUS ||
-                   type == TokensTypes::TOKEN_MULTIPLY ||
-                   type == TokensTypes::TOKEN_DIVIDE ||
-                   type == TokensTypes::TOKEN_LESS_THAN ||
-                   type == TokensTypes::TOKEN_GREATER_THAN ||
-                   type == TokensTypes::TOKEN_EQUAL ||
-                   type == TokensTypes::TOKEN_NOT_EQUAL ||
-                   type == TokensTypes::TOKEN_LESS_EQUAL ||
-                   type == TokensTypes::TOKEN_GREATER_EQUAL;
+        bool isConditionOperator(TokensTypes type) {
+                   type == TokensTypes::TOKEN_LESS_THAN || // < 
+                   type == TokensTypes::TOKEN_GREATER_THAN || // >
+                   type == TokensTypes::TOKEN_EQUAL ||  // ==
+                   type == TokensTypes::TOKEN_NOT_EQUAL ||  //!=
+                   type == TokensTypes::TOKEN_LESS_EQUAL || // <=
+                   type == TokensTypes::TOKEN_GREATER_EQUAL; // >=
         }
 
         bool isOperator(TokensTypes tk) {
             return tk == TokensTypes::TOKEN_TRUE ||
                    tk == TokensTypes::TOKEN_FALSE ||
                    tk == TokensTypes::TOKEN_IDENTIFIER;
+        }
+
+        bool isDivisor(TokensTypes tk) {
+            return tk == TokensTypes::TOKEN_LOGICAL_OR ||
+                   tk == TokensTypes::TOKEN_LOGICAL_AND;
         }
     };
 }
