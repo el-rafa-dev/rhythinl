@@ -446,7 +446,7 @@ namespace Rythin
                 {
                     ivalue += '\a';
                     advance_tk();
-                }
+                } 
                 else if (current_input == '"') // double quote
                 {
                     ivalue += '"';

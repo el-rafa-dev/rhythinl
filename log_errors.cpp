@@ -5,12 +5,12 @@ namespace Log
 {
     void LogErrors::addError(const std::string& error, int exit_code)
     {
-        logs.push_back("[Error]: " + error);
+        logs.push_back("\x1b[1m\x1b[31m[Error]:\x1b[0m " + error);
         this->code = exit_code;
     }
 
     void LogErrors::addWarning(const std::string &err, int exit) {
-        warns.push_back("[Warning]: " + err);
+        warns.push_back("\x1b[1m\x1b[33m[Warning]:\x1b[0m " + err);
         code = exit;
     }
 

@@ -75,12 +75,12 @@ int executeRun(char *argv[])
         if (LogErrors::getInstance().hasErrorsAndWarns())
         {
             LogErrors::getInstance().printErrors();
-            std::cerr << "[Bad compilation]: " << std::to_string(LogErrors::getInstance().getErrSize()) << " errors and " << std::to_string(LogErrors::getInstance().getWarnsSize()) << " warnings. But compiled. Exited with code: " << LogErrors::getInstance().exitCode() << std::endl;
+            std::cerr << "\x1b[1m\x1b[31m[Bad compilation]:\x1b[0m " << std::to_string(LogErrors::getInstance().getErrSize()) << " errors and " << std::to_string(LogErrors::getInstance().getWarnsSize()) << " warnings. But compiled. Exited with code: " << LogErrors::getInstance().exitCode() << std::endl;
             return LogErrors::getInstance().exitCode();
         }
         else
         {
-            std::cout << "[Sucess]: Compiled without errors or warnings. Exit code: " << std::to_string(LogErrors::getInstance().exitCode()) << std::endl;
+            std::cout << "\x1b[1m\x1b[32m[Sucess]:\x1b[0m Compiled without errors or warnings. Exit code: " << std::to_string(LogErrors::getInstance().exitCode()) << std::endl;
             return 0;
         }
     }
@@ -108,7 +108,7 @@ void printVersion()
     std::cout << "\x1b[1m\x1b[31m        :^7@@@@@&@@@@@@#P?^@@@.                                               " << std::endl;
     std::cout << "\x1b[1m\x1b[31m        ^^J@@@@@@@@@@@B7@@^:..                                                " << std::endl;
     std::cout << "\x1b[1m\x1b[31m        ^^Y@@@@@@@@@@@@@&&BG5Y?7~^:..                                         " << std::endl;
-    std::cout << "\x1b[1m\x1b[31m        ^^5@@@@@GB&@@@@@@@@@@@@@@@&#BG5J!^:...                                " << std::endl;
+    std::cout << "\x1b[1m\x1b[31m        ^^5@@@@@GB&@@@@@@@@@@@@@&@@@@@J!^:...                                " << std::endl;
     std::cout << "\x1b[1m\x1b[31m        .^^P@@@@@!:^7JPB&@@@@@@@@@@@@@@@@@&#5!:.                              " << std::endl;
     std::cout << "\x1b[1m\x1b[31m        .^^P@@@@@5::...:^~7J5PGB##&@@@@@@@@@@#::.                             " << std::endl;
     std::cout << "\x1b[1m\x1b[31m        ^^7&@@@@PP:^.         ::^~!7?JJJJJ?!::                                " << std::endl;

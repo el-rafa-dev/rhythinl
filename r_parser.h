@@ -43,7 +43,7 @@ namespace Rythin {
         ASTPtr ParseVarDeclaration();
 
         bool isConditionOperator(TokensTypes type) {
-                   type == TokensTypes::TOKEN_LESS_THAN || // < 
+            return type == TokensTypes::TOKEN_LESS_THAN || // < 
                    type == TokensTypes::TOKEN_GREATER_THAN || // >
                    type == TokensTypes::TOKEN_EQUAL ||  // ==
                    type == TokensTypes::TOKEN_NOT_EQUAL ||  //!=
@@ -51,7 +51,7 @@ namespace Rythin {
                    type == TokensTypes::TOKEN_GREATER_EQUAL; // >=
         }
 
-        bool isOperator(TokensTypes tk) {
+        bool isTrueOrFalseOperator(TokensTypes tk) {
             return tk == TokensTypes::TOKEN_TRUE ||
                    tk == TokensTypes::TOKEN_FALSE ||
                    tk == TokensTypes::TOKEN_IDENTIFIER;
