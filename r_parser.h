@@ -27,7 +27,6 @@ namespace Rythin {
         ASTPtr ParsePrintNl();
         ASTPtr ParseIfStatement();
         ASTPtr ParseIfExpressions();
-
         ASTPtr ParseBlock();
         ASTPtr ParseLoopExpression();
         ASTPtr ParseDeclarations();
@@ -35,10 +34,9 @@ namespace Rythin {
         ASTPtr ParseFuncDeclaration();
         ASTPtr ParseFuncExpressions();
         ASTPtr ParseCinput();
-
         ASTPtr ParseLoopCondition();
         ASTPtr ParseLoopCond();
-
+        ASTPtr ParsePositiveVals();
         ASTPtr ParseVarDeclaration();
 
         bool isConditionOperator(TokensTypes type) {

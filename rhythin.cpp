@@ -52,7 +52,7 @@ namespace Rythin
             }
             else
             {
-                LogErrors::getInstance().addError("Não foi possível abrir o arquivo.", -2);
+                LogErrors::getInstance().addError("Não foi possível abrir o arquivo.", 5);
             }
         }
     };

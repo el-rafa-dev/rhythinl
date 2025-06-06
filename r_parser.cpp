@@ -150,7 +150,9 @@ namespace Rythin
                 {
                     butBranch = ParseDeclarations(); // 'but' body
                 }
-            } else {
+            }
+            else
+            {
                 consume(TokensTypes::TOKEN_LBRACKET);
                 butBranch = ParseDeclarations();
             }
@@ -352,6 +354,9 @@ namespace Rythin
         {
         case TokensTypes::TOKEN_STR:
             return std::make_shared<LiteralNode>(consume(TokensTypes::TOKEN_STRING_LITERAL).value);
+        case TokensTypes::TOKEN_PLUS:
+            consume(TokensTypes::TOKEN_PLUS);
+
         case TokensTypes::TOKEN_INT:
         {
             try
@@ -403,7 +408,6 @@ namespace Rythin
             consume(TokensTypes::TOKEN_INT);
             return std::make_shared<ByteNode>(val);
         }
-
         case TokensTypes::TOKEN_LONG_INT:
             if (std::stoll(current().value) < (-9223372036854775807) || std::stoll(current().value) > (9223372036854775807))
             {
@@ -457,6 +461,9 @@ namespace Rythin
         }
     }
 
+    /*ASTPtr Parser::ParsePositiveVals()
+    {
+    }*/
 
     ASTPtr Parser::ParseLoopCondition()
     {
@@ -470,7 +477,9 @@ namespace Rythin
         if (check(TokensTypes::TOKEN_TRUE))
         {
             return ParseLoopCond();
-        } else if (check(TokensTypes::TOKEN_FALSE)) {
+        }
+        else if (check(TokensTypes::TOKEN_FALSE))
+        {
             return ParseLoopCond();
         }
         auto var_name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
