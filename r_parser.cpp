@@ -356,7 +356,10 @@ namespace Rythin
             return std::make_shared<LiteralNode>(consume(TokensTypes::TOKEN_STRING_LITERAL).value);
         case TokensTypes::TOKEN_PLUS:
             consume(TokensTypes::TOKEN_PLUS);
-
+            return ParsePositiveVals(consume(current().type).type);
+        case TokensTypes::TOKEN_MINUS:
+            consume(TokensTypes::TOKEN_MINUS);
+            return ParseNegativeVals(consume(current().type).type);
         case TokensTypes::TOKEN_INT:
         {
             try
@@ -461,9 +464,53 @@ namespace Rythin
         }
     }
 
-    /*ASTPtr Parser::ParsePositiveVals()
+    ASTPtr Parser::ParsePositiveVals(TokensTypes curr)
     {
-    }*/
+        switch (curr)
+        {
+        case TokensTypes::TOKEN_INT:
+            try
+            {
+                return std::make_shared<IntNode>(+std::stoi(consume(TokensTypes::TOKEN_INT).value));
+            }
+            catch (std::out_of_range e)
+            {
+                std::cerr << "[Error]: Current value out of range at line " << current().line << " column " << current().column << std::endl;
+                throw std::out_of_range("Index out of range");
+            }
+
+        case TokensTypes::TOKEN_DOUBLE:
+            return std::make_shared<DoubleNode>(+std::stod(consume(current().type).value));
+        case TokensTypes::TOKEN_FLOAT:
+            return std::make_shared<FloatNode>(+std::stof(consume(current().type).value));
+        default:
+            throw Excepts::CompilationException("Invalid positive type");
+        }
+    }
+
+    ASTPtr Parser::ParseNegativeVals(TokensTypes tks)
+    {
+        switch (tks)
+        {
+        case TokensTypes::TOKEN_INT:
+            try
+            {
+                return std::make_shared<IntNode>(-std::stoi(consume(TokensTypes::TOKEN_INT).value));
+            }
+            catch (std::out_of_range e)
+            {
+                std::cerr << "[Error]: Current value out of range at line " << current().line << " column " << current().column << std::endl;
+                throw std::out_of_range("Index out of range");
+            }
+
+        case TokensTypes::TOKEN_DOUBLE:
+            return std::make_shared<DoubleNode>(-std::stod(consume(current().type).value));
+        case TokensTypes::TOKEN_FLOAT:
+            return std::make_shared<FloatNode>(-std::stof(consume(current().type).value));
+        default:
+            throw Excepts::CompilationException("Invalid positive type");
+        }
+    }
 
     ASTPtr Parser::ParseLoopCondition()
     {

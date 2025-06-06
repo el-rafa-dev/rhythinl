@@ -36,7 +36,8 @@ namespace Rythin {
         ASTPtr ParseCinput();
         ASTPtr ParseLoopCondition();
         ASTPtr ParseLoopCond();
-        ASTPtr ParsePositiveVals();
+        ASTPtr ParsePositiveVals(TokensTypes curr);
+        ASTPtr ParseNegativeVals(TokensTypes curr);
         ASTPtr ParseVarDeclaration();
 
         bool isConditionOperator(TokensTypes type) {
