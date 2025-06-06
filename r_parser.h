@@ -14,9 +14,8 @@ namespace Rythin {
         private:
         int position;
         std::vector<Tokens> tokens;
-        std::string current_file;
         public:
-        Parser(std::vector<Tokens> tokens, std::string current_file);
+        Parser(std::vector<Tokens> tokens);
         Tokens current();
         Tokens consume(TokensTypes tk);
         std::vector<ASTPtr> Parse();

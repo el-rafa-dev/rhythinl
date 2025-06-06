@@ -39,7 +39,7 @@ namespace Rythin
 
     struct CinputNode : public ASTNode
     {
-        std::string val; //the value is set by compiler/interpreter
+        std::string val; // the value is set by compiler/interpreter
         std::string msg;
         int time;
         CinputNode() {}
@@ -60,19 +60,10 @@ namespace Rythin
 
     struct BinOp : public ASTNode
     {
-        TokensTypes op;  //operators
+        TokensTypes op; // operators
         ASTPtr left;
         ASTPtr right;
         BinOp(TokensTypes op, ASTPtr left, ASTPtr right) : op(op), left(left), right(right) {}
-    };
-
-    struct IfStatement : public ASTNode
-    {
-        ASTPtr ifCondition;
-        ASTPtr ifBranch;
-        ASTPtr butBranch;
-        ASTPtr butCondition;
-        IfStatement(ASTPtr ifCondition, ASTPtr ifBranch, ASTPtr butBranch, ASTPtr butCondition) : ifCondition(ifCondition), ifBranch(ifBranch), butBranch(butBranch), butCondition(butCondition) {}
     };
 
     struct VariableNode : public ASTNode
@@ -113,15 +104,22 @@ namespace Rythin
         IntNode(int v) : val(v) {}
     };
 
-    struct InterpolationNode : public ASTNode 
+    struct InterpolationNode : public ASTNode
     {
         std::string val;
         std::string var_name;
     };
 
-    struct LIntNode : public ASTNode {
+    struct LIntNode : public ASTNode
+    {
         long int val;
         LIntNode(int val) : val(val) {}
+    };
+
+    struct LLIntNode : public ASTNode
+    {
+        long long int val;
+        LLIntNode(int *val) : val(*val) {}
     };
 
     struct ByteNode : public ASTNode
@@ -148,22 +146,41 @@ namespace Rythin
         TrueOrFalseNode(bool val) : val(val) {}
     };
 
-    struct ObjectNode : public ASTNode {
+    struct IfStatement : public ASTNode
+    {
+        ASTPtr ifCondition;
+        ASTPtr ifBranch;
+        ASTPtr butBranch;
+        ASTPtr butCondition;
+        IfStatement(ASTPtr ifCondition, ASTPtr ifBranch, ASTPtr butBranch, ASTPtr butCondition) : ifCondition(ifCondition), ifBranch(ifBranch), butBranch(butBranch), butCondition(butCondition)
+        {
+            if (auto var = std::dynamic_pointer_cast<TrueOrFalseNode>(ifCondition))
+            {
+                std::cout << "IfCondition Val: " << var->val << std::endl;
+            }
+        }
+    };
+
+    struct ObjectNode : public ASTNode
+    {
         ASTPtr val;
         ObjectNode(ASTPtr val) : val(val) {}
     };
 
-    struct ReturnNode : public ASTNode {
-        ASTPtr val; //return value (pode ser um int, float/double, string ou byte)
+    struct ReturnNode : public ASTNode
+    {
+        ASTPtr val; // return value (pode ser um int, float/double, string ou byte)
         ReturnNode(ASTPtr val) : val(val) {}
     };
 
-    struct FinishNode : public ASTNode {
-        int val; //finish code is a intiger
+    struct FinishNode : public ASTNode
+    {
+        int val; // finish code is a intiger
         FinishNode(int val) : val(val) {}
     };
 
-    struct NilNode : public ASTNode {
+    struct NilNode : public ASTNode
+    {
         NilNode() = default;
     };
 
@@ -171,19 +188,19 @@ namespace Rythin
     {
         std::string var_name;
         TokensTypes type;
-        
     };
 
     struct IfExpressionNode : public ASTNode
     {
-        std::string var_name; //name of the variable
-        TokensTypes type;   //type of expression (== or other types)
+        std::string var_name;      // name of the variable
+        TokensTypes type;          // type of expression (== or other types)
         TokensTypes logic_divisor; // the divisor of the expressions like (&&, || and !)
-        ASTPtr val; //the value of the condition (like x > 2, the value of this expression is 2)
-        //IfExpressionNode(std::string& var_name, TokensTypes type, TokensTypes logic_divisor, ASTPtr val) : var_name(var_name), type(type), logic_divisor(logic_divisor), val(val) {}
+        ASTPtr val;                // the value of the condition (like x > 2, the value of this expression is 2)
+        // IfExpressionNode(std::string& var_name, TokensTypes type, TokensTypes logic_divisor, ASTPtr val) : var_name(var_name), type(type), logic_divisor(logic_divisor), val(val) {}
     };
 
-    struct FunctionDefinitionNode : public ASTNode {
+    struct FunctionDefinitionNode : public ASTNode
+    {
         std::string var_name;
         std::vector<ASTPtr> args;
         ASTPtr block;

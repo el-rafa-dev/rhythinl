@@ -11,7 +11,7 @@
 #include "log.h"
 
 using namespace Log;
-std::fstream rythin_file;
+std::fstream file;
 
 namespace Rythin
 {
@@ -20,20 +20,20 @@ namespace Rythin
     public:
         void Run(std::string file_name)
         {
-            std::fstream rythin_file(file_name, std::ios::in); // Abre para leitura
-            if (rythin_file.is_open())
+            std::fstream file(file_name, std::ios::in); // Abre para leitura
+            if (file.is_open())
             {
-                std::string codigo_completo;
-                std::string linha;
-                while (std::getline(rythin_file, linha))
+                std::string code;
+                std::string line;
+                while (std::getline(file, line))
                 {
-                    if (!linha.empty())
-                        codigo_completo += linha + '\n';
+                    if (!line.empty())
+                        code += line + '\n';
                 }
 
-                rythin_file.close();
+                file.close();
 
-                Lexer lexer(codigo_completo);
+                Lexer lexer(code);
 
                 std::vector<Tokens> tokens;
 
@@ -46,7 +46,7 @@ namespace Rythin
                     if (token.type == TokensTypes::TOKEN_EOF)
                         break;
                 }
-                Rythin::Parser parser(tokens, "rhythin_file");
+                Rythin::Parser parser(tokens);
                 std::vector<ASTPtr> nodes = parser.Parse();
                 Interpreter interpreter(nodes);
             }

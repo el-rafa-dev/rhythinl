@@ -19,7 +19,7 @@ using namespace Log;
 namespace Rythin
 {
 
-    Parser::Parser(std::vector<Tokens> tokens, std::string current_file) : position(0), tokens(tokens), current_file(current_file)
+    Parser::Parser(std::vector<Tokens> tokens) : position(0), tokens(tokens)
     {
     }
 
@@ -405,7 +405,7 @@ namespace Rythin
         }
 
         case TokensTypes::TOKEN_LONG_INT:
-            if (std::stoll(current().value) < -2147483648 || std::stoll(current().value) > 2147483647)
+            if (std::stoll(current().value) < (-9223372036854775807) || std::stoll(current().value) > (9223372036854775807))
             {
                 std::cerr << "[Warning]: Value " << std::stoll(current().value) << " out of range at line " << current().line << " column " << current().column << std::endl;
                 throw Excepts::CompilationException("Index out of range");
@@ -457,6 +457,7 @@ namespace Rythin
         }
     }
 
+
     ASTPtr Parser::ParseLoopCondition()
     {
         return consume(current().type).type == TokensTypes::TOKEN_TRUE ? (std::make_shared<TrueOrFalseNode>(true)) : (std::make_shared<TrueOrFalseNode>(false));
@@ -468,6 +469,8 @@ namespace Rythin
         consume(TokensTypes::TOKEN_LPAREN);
         if (check(TokensTypes::TOKEN_TRUE))
         {
+            return ParseLoopCond();
+        } else if (check(TokensTypes::TOKEN_FALSE)) {
             return ParseLoopCond();
         }
         auto var_name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
