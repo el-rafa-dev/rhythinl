@@ -1,8 +1,8 @@
-![Rhtyhin Logo](https://github.com/el-rafa-dev/rhythinl/blob/main/20250606_233111.png "Rhythin Logo Image")
+[logo]: https://github.com/el-rafa-dev/rhythinl/blob/main/20250606_233111.png "Rhythin Logo Image"
 
 
 # Rhythin Programming Language
-
+![Rhythin Logo][logo]
 RhythinLang is a statically typed programming language focused on being objective and direct, facilitating learning for both beginners and programmers with experience in the area.
 
 ## Current Status
