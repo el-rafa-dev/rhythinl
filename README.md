@@ -1,12 +1,7 @@
-<div style="margin: auto;">
-    <div>
-    <img src="./gitsrc/rhythin_logo.png" alt="Rhythin Logo" style="display: block; margin-left: auto; margin-right:auto; width: 50%; height: 50%;">
-    </div>
-    <a href=""> </a>
-</div>
+<img src="./gitsrc/rhythin_logo.png" alt="Rhythin Logo" style="display: block; margin-left: auto; margin-right:auto; width: 50%; height: 50%;">
 
 # Rhythin Programming Language
-RhythinLang is a statically typed and compiled programming language focused on being objective and direct to run on CLI terminals/console, facilitating learning for both beginners and programmers with experience in the area.
+RhythinLang is a statically typed and compiled programming language focused on being objective and direct to execute on Command Line Interface (CLI?, facilitating learning for both beginners and programmers with experience in the area.
 
 ## Current Status
 
