@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/el-rafa/CLionProjects/Rythin
+CMAKE_SOURCE_DIR = /home/el-rafa/CLionProjects/Rhythin
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/el-rafa/CLionProjects/Rythin
+CMAKE_BINARY_DIR = /home/el-rafa/CLionProjects/Rhythin
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,16 +87,16 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/el-rafa/CLionProjects/Rythin/CMakeFiles /home/el-rafa/CLionProjects/Rythin//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/el-rafa/CLionProjects/Rhythin/CMakeFiles /home/el-rafa/CLionProjects/Rhythin//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/el-rafa/CLionProjects/Rythin/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/el-rafa/CLionProjects/Rhythin/CMakeFiles 0
 .PHONY : all
 
 # The main codegen target
 codegen: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/el-rafa/CLionProjects/Rythin/CMakeFiles /home/el-rafa/CLionProjects/Rythin//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/el-rafa/CLionProjects/Rhythin/CMakeFiles /home/el-rafa/CLionProjects/Rhythin//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 codegen
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/el-rafa/CLionProjects/Rythin/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/el-rafa/CLionProjects/Rhythin/CMakeFiles 0
 .PHONY : codegen
 
 # The main clean target
@@ -136,149 +136,149 @@ rhythin/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/build
 .PHONY : rhythin/fast
 
-log_errors.o: log_errors.cpp.o
-.PHONY : log_errors.o
+src/log_errors.o: src/log_errors.cpp.o
+.PHONY : src/log_errors.o
 
 # target to build an object file
-log_errors.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/log_errors.cpp.o
-.PHONY : log_errors.cpp.o
+src/log_errors.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/src/log_errors.cpp.o
+.PHONY : src/log_errors.cpp.o
 
-log_errors.i: log_errors.cpp.i
-.PHONY : log_errors.i
+src/log_errors.i: src/log_errors.cpp.i
+.PHONY : src/log_errors.i
 
 # target to preprocess a source file
-log_errors.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/log_errors.cpp.i
-.PHONY : log_errors.cpp.i
+src/log_errors.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/src/log_errors.cpp.i
+.PHONY : src/log_errors.cpp.i
 
-log_errors.s: log_errors.cpp.s
-.PHONY : log_errors.s
+src/log_errors.s: src/log_errors.cpp.s
+.PHONY : src/log_errors.s
 
 # target to generate assembly for a file
-log_errors.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/log_errors.cpp.s
-.PHONY : log_errors.cpp.s
+src/log_errors.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/src/log_errors.cpp.s
+.PHONY : src/log_errors.cpp.s
 
-r_inter.o: r_inter.cpp.o
-.PHONY : r_inter.o
+src/r_inter.o: src/r_inter.cpp.o
+.PHONY : src/r_inter.o
 
 # target to build an object file
-r_inter.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/r_inter.cpp.o
-.PHONY : r_inter.cpp.o
+src/r_inter.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/src/r_inter.cpp.o
+.PHONY : src/r_inter.cpp.o
 
-r_inter.i: r_inter.cpp.i
-.PHONY : r_inter.i
+src/r_inter.i: src/r_inter.cpp.i
+.PHONY : src/r_inter.i
 
 # target to preprocess a source file
-r_inter.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/r_inter.cpp.i
-.PHONY : r_inter.cpp.i
+src/r_inter.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/src/r_inter.cpp.i
+.PHONY : src/r_inter.cpp.i
 
-r_inter.s: r_inter.cpp.s
-.PHONY : r_inter.s
+src/r_inter.s: src/r_inter.cpp.s
+.PHONY : src/r_inter.s
 
 # target to generate assembly for a file
-r_inter.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/r_inter.cpp.s
-.PHONY : r_inter.cpp.s
+src/r_inter.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/src/r_inter.cpp.s
+.PHONY : src/r_inter.cpp.s
 
-r_lex.o: r_lex.cpp.o
-.PHONY : r_lex.o
+src/r_lex.o: src/r_lex.cpp.o
+.PHONY : src/r_lex.o
 
 # target to build an object file
-r_lex.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/r_lex.cpp.o
-.PHONY : r_lex.cpp.o
+src/r_lex.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/src/r_lex.cpp.o
+.PHONY : src/r_lex.cpp.o
 
-r_lex.i: r_lex.cpp.i
-.PHONY : r_lex.i
+src/r_lex.i: src/r_lex.cpp.i
+.PHONY : src/r_lex.i
 
 # target to preprocess a source file
-r_lex.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/r_lex.cpp.i
-.PHONY : r_lex.cpp.i
+src/r_lex.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/src/r_lex.cpp.i
+.PHONY : src/r_lex.cpp.i
 
-r_lex.s: r_lex.cpp.s
-.PHONY : r_lex.s
+src/r_lex.s: src/r_lex.cpp.s
+.PHONY : src/r_lex.s
 
 # target to generate assembly for a file
-r_lex.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/r_lex.cpp.s
-.PHONY : r_lex.cpp.s
+src/r_lex.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/src/r_lex.cpp.s
+.PHONY : src/r_lex.cpp.s
 
-r_parser.o: r_parser.cpp.o
-.PHONY : r_parser.o
+src/r_parser.o: src/r_parser.cpp.o
+.PHONY : src/r_parser.o
 
 # target to build an object file
-r_parser.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/r_parser.cpp.o
-.PHONY : r_parser.cpp.o
+src/r_parser.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/src/r_parser.cpp.o
+.PHONY : src/r_parser.cpp.o
 
-r_parser.i: r_parser.cpp.i
-.PHONY : r_parser.i
+src/r_parser.i: src/r_parser.cpp.i
+.PHONY : src/r_parser.i
 
 # target to preprocess a source file
-r_parser.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/r_parser.cpp.i
-.PHONY : r_parser.cpp.i
+src/r_parser.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/src/r_parser.cpp.i
+.PHONY : src/r_parser.cpp.i
 
-r_parser.s: r_parser.cpp.s
-.PHONY : r_parser.s
+src/r_parser.s: src/r_parser.cpp.s
+.PHONY : src/r_parser.s
 
 # target to generate assembly for a file
-r_parser.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/r_parser.cpp.s
-.PHONY : r_parser.cpp.s
+src/r_parser.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/src/r_parser.cpp.s
+.PHONY : src/r_parser.cpp.s
 
-rhythin.o: rhythin.cpp.o
-.PHONY : rhythin.o
+src/rhythin.o: src/rhythin.cpp.o
+.PHONY : src/rhythin.o
 
 # target to build an object file
-rhythin.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/rhythin.cpp.o
-.PHONY : rhythin.cpp.o
+src/rhythin.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/src/rhythin.cpp.o
+.PHONY : src/rhythin.cpp.o
 
-rhythin.i: rhythin.cpp.i
-.PHONY : rhythin.i
+src/rhythin.i: src/rhythin.cpp.i
+.PHONY : src/rhythin.i
 
 # target to preprocess a source file
-rhythin.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/rhythin.cpp.i
-.PHONY : rhythin.cpp.i
+src/rhythin.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/src/rhythin.cpp.i
+.PHONY : src/rhythin.cpp.i
 
-rhythin.s: rhythin.cpp.s
-.PHONY : rhythin.s
+src/rhythin.s: src/rhythin.cpp.s
+.PHONY : src/rhythin.s
 
 # target to generate assembly for a file
-rhythin.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/rhythin.cpp.s
-.PHONY : rhythin.cpp.s
+src/rhythin.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/src/rhythin.cpp.s
+.PHONY : src/rhythin.cpp.s
 
-t_tokens.o: t_tokens.cpp.o
-.PHONY : t_tokens.o
+src/t_tokens.o: src/t_tokens.cpp.o
+.PHONY : src/t_tokens.o
 
 # target to build an object file
-t_tokens.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/t_tokens.cpp.o
-.PHONY : t_tokens.cpp.o
+src/t_tokens.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/src/t_tokens.cpp.o
+.PHONY : src/t_tokens.cpp.o
 
-t_tokens.i: t_tokens.cpp.i
-.PHONY : t_tokens.i
+src/t_tokens.i: src/t_tokens.cpp.i
+.PHONY : src/t_tokens.i
 
 # target to preprocess a source file
-t_tokens.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/t_tokens.cpp.i
-.PHONY : t_tokens.cpp.i
+src/t_tokens.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/src/t_tokens.cpp.i
+.PHONY : src/t_tokens.cpp.i
 
-t_tokens.s: t_tokens.cpp.s
-.PHONY : t_tokens.s
+src/t_tokens.s: src/t_tokens.cpp.s
+.PHONY : src/t_tokens.s
 
 # target to generate assembly for a file
-t_tokens.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/t_tokens.cpp.s
-.PHONY : t_tokens.cpp.s
+src/t_tokens.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/src/t_tokens.cpp.s
+.PHONY : src/t_tokens.cpp.s
 
 # Help Target
 help:
@@ -290,24 +290,24 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... rhythin"
-	@echo "... log_errors.o"
-	@echo "... log_errors.i"
-	@echo "... log_errors.s"
-	@echo "... r_inter.o"
-	@echo "... r_inter.i"
-	@echo "... r_inter.s"
-	@echo "... r_lex.o"
-	@echo "... r_lex.i"
-	@echo "... r_lex.s"
-	@echo "... r_parser.o"
-	@echo "... r_parser.i"
-	@echo "... r_parser.s"
-	@echo "... rhythin.o"
-	@echo "... rhythin.i"
-	@echo "... rhythin.s"
-	@echo "... t_tokens.o"
-	@echo "... t_tokens.i"
-	@echo "... t_tokens.s"
+	@echo "... src/log_errors.o"
+	@echo "... src/log_errors.i"
+	@echo "... src/log_errors.s"
+	@echo "... src/r_inter.o"
+	@echo "... src/r_inter.i"
+	@echo "... src/r_inter.s"
+	@echo "... src/r_lex.o"
+	@echo "... src/r_lex.i"
+	@echo "... src/r_lex.s"
+	@echo "... src/r_parser.o"
+	@echo "... src/r_parser.i"
+	@echo "... src/r_parser.s"
+	@echo "... src/rhythin.o"
+	@echo "... src/rhythin.i"
+	@echo "... src/rhythin.s"
+	@echo "... src/t_tokens.o"
+	@echo "... src/t_tokens.i"
+	@echo "... src/t_tokens.s"
 .PHONY : help
 
 

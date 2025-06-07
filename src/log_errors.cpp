@@ -1,4 +1,4 @@
-#include "log.h"
+#include "../src/includes/log.h"
 #include <iostream>
 
 namespace Log

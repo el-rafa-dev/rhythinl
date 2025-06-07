@@ -5,13 +5,13 @@
 #include <optional>
 
 // local includes
-#include "ast.h"
-#include "t_tokens.h"
-#include "r_parser.h"
-#include "r_opcodes.h"
-#include "rexcept.h"
-#include "chunk.h"
-#include "log.h"
+#include "../src/includes/ast.h"
+#include "../src/includes/t_tokens.h"
+#include "../src/includes/r_parser.h"
+#include "../src/includes/r_opcodes.h"
+#include "../src/includes/rexcept.h"
+#include "../src/includes/chunk.h"
+#include "../src/includes/log.h"
 
 // using namespace std;
 using namespace Log;

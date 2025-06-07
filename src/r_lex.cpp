@@ -8,12 +8,12 @@
 #include <limits.h>
 
 // local includes
-#include "r_lex.h"
-#include "t_tokens.h"
-#include "lex_types.h"
-#include "rexcept.h"
-#include "log.h"
-#include "ast.h"
+#include "../src/includes/r_lex.h"
+#include "../src/includes/t_tokens.h"
+#include "../src/includes/lex_types.h"
+#include "../src/includes/rexcept.h"
+#include "../src/includes/log.h"
+#include "../src/includes/ast.h"
 
 using namespace Log;
 using namespace std;

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.31)
-project(Rythin)
+project(Rhythin/src)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-add_executable(rhythin chunk.h rexcept.h r_opcodes.h rhythin.cpp r_parser.h r_inst.h lex_types.h r_lex.h r_lex.cpp r_parser.cpp r_lex.h t_tokens.h t_tokens.cpp ast.h r_inter.cpp r_inter.h log.h log_errors.cpp semantic_visitor.h)
+add_executable(rhythin src/includes/chunk.h src/includes/rexcept.h src/includes/r_opcodes.h src/rhythin.cpp src/includes/r_parser.h src/includes/r_inst.h src/includes/lex_types.h src/includes/r_lex.h src/r_lex.cpp src/r_parser.cpp src/includes/r_lex.h src/includes/t_tokens.h src/t_tokens.cpp src/includes/ast.h src/r_inter.cpp src/includes/r_inter.h src/includes/log.h src/log_errors.cpp src/includes/semantic_visitor.h)

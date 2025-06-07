@@ -1,9 +1,9 @@
-#include "r_inter.h"
-#include "ast.h"
+#include "../src/includes/r_inter.h"
+#include "../src/includes/ast.h"
 #include "iostream"
 #include "fstream"
 #include "ctime"
-#include "chunk.h"
+#include "../src/includes/chunk.h"
 
 namespace Rythin
 {

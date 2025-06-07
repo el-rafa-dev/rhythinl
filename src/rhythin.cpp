@@ -1,14 +1,14 @@
 #include "vector"
-#include "t_tokens.h"
+#include "../src/includes/t_tokens.h"
 #include "fstream"
 #include "iostream"
-#include "r_lex.h"
-#include "r_inter.h"
-#include "r_parser.h"
+#include "../src/includes/r_lex.h"
+#include "../src/includes/r_inter.h"
+#include "../src/includes/r_parser.h"
 #include <cstring>
 #include <ctype.h>
-#include "r_opcodes.h"
-#include "log.h"
+#include "../src/includes/r_opcodes.h"
+#include "../src/includes/log.h"
 
 using namespace Log;
 std::fstream file;
