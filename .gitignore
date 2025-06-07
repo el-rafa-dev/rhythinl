@@ -3,8 +3,6 @@ rhythin
 build/
 CMakeFiles/
 cmake-build-debug/
-.vscode/
 .idea/
-MakeFile
 *.i
 *.ry
