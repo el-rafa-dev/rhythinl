@@ -1,4 +1,4 @@
-[Rhtyhin Logo](https://github.com/el-rafa-dev/rhythinl/blob/main/20250606_233111.png "Rhythin Logo Image")
+![Rhtyhin Logo](https://github.com/el-rafa-dev/rhythinl/blob/main/20250606_233111.png "Rhythin Logo Image")
 
 
 # Rhythin Programming Language
