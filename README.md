@@ -59,7 +59,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 ## Supporting
-See the [SUPPORT.md file](./SUPPORT.md) to see how support the project
+See the [support](./SUPPORT.md) to see how support the project
 
 ## Contact
 Contact with me via telegram! My user id: [@rafaprobr](https://t.me/rafaprobr)
