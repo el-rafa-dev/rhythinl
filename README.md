@@ -1,7 +1,6 @@
 [logo]: https://github.com/el-rafa-dev/rhythinl/blob/main/20250606_233111.png "Rhythin Logo Image"
 
-<div style="text-align=center; "display: block; margin-left: auto; margin-right: auto; ">
-
+<div style="text-align=center; display: block; margin-left: auto; margin-right: auto; ">
 <img width="240" height="240" src="https://github.com/el-rafa-dev/rhythinl/blob/main/20250606_233111.png" alt="Rhythin Lang Logo" style="/>
 
 </div>
