@@ -1,9 +1,12 @@
-[logo]: https://github.com/el-rafa-dev/rhythinl/blob/main/gitsrc/rhythin_logo.png "Rhythin Logo Image"
-
-![Rhythin Logo][logo]
+<div style="margin: auto;">
+    <div>
+    <img src="./gitsrc/rhythin_logo.png" alt="Rhythin Logo" style="display: block; margin-left: auto; margin-right:auto; width: 50%; height: 50%;">
+    </div>
+    <a href=""> </a>
+</div>
 
 # Rhythin Programming Language
-RhythinLang is a statically typed and compiled programming language focused on being objective and direct, facilitating learning for both beginners and programmers with experience in the area.
+RhythinLang is a statically typed and compiled programming language focused on being objective and direct to run on CLI terminals/console, facilitating learning for both beginners and programmers with experience in the area.
 
 ## Current Status
 
@@ -17,7 +20,8 @@ The first version for general use will be when it has the basic syntax of a lang
 
 ## How use/Exemple
 ```
-; the semicolon characther (;) is for comments
+; this is only a little example
+; the semicolon characther (;) is for comments or use (#) for comment inline
 ; here we will be create the main function 
 ; thats will be a int type which will receive a fin 0 to end the program
 ; (or use any number other than 0 to indicate to the system that the program was executed with errors)
