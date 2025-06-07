@@ -1,4 +1,4 @@
-[logo]: https://github.com/el-rafa-dev/rhythinl/blob/main/20250606_233111.png "Rhythin Logo Image"
+[logo]: https://github.com/el-rafa-dev/rhythinl/blob/main/gitsrc/20250606_233111.png "Rhythin Logo Image"
 
 ![Rhythin Logo][logo]
 
