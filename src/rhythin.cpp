@@ -64,6 +64,7 @@ void printHelp()
     std::cout << "[Help Arg.]\nUsage:\n\trhythin [option] [file]\nExample:\n\tE.g.:rhythin -f /home/user/rhythin_code.ry\nArguments list:" << std::endl;
     std::cout << "\t[-f] [--file] [file-path/file-name] to execute a rhythin file." << std::endl;
     std::cout << "\t[-h] [--help] to see this list." << std::endl;
+    std::cout << "\t[-v] [--version] to see the version of the Rhythin" << std::endl;
 }
 
 int executeRun(char *argv[])
@@ -134,6 +135,9 @@ int main(int argc, char *argv[])
         return executeRun(argv);
     }
     else if (argc > 1 && strcmp(argv[1], "-v") == 0) {
+        printVersion();
+    } 
+    else if (argc > 1 && strcmp(argv[1], "--version") == 0) {
         printVersion();
     }
     else

@@ -39,6 +39,7 @@ namespace Rythin {
         ASTPtr ParsePositiveVals(TokensTypes curr);
         ASTPtr ParseNegativeVals(TokensTypes curr);
         ASTPtr ParseVarDeclaration();
+        ASTPtr ParseIntVal(); /// to parse the int or arithmetic or others types of expressions like division or addition values
 
         bool isConditionOperator(TokensTypes type) {
             return type == TokensTypes::TOKEN_LESS_THAN || // < 
@@ -54,6 +55,12 @@ namespace Rythin {
                    tk == TokensTypes::TOKEN_FALSE ||
                    tk == TokensTypes::TOKEN_IDENTIFIER;
         }
+
+        bool isBinaryOperator(TokensTypes tk) {
+            return tk == TokensTypes::TOKEN_PLUS || tk == TokensTypes::TOKEN_MINUS || tk == TokensTypes::TOKEN_DIVIDE || tk == TokensTypes::TOKEN_MULTIPLY || tk == TokensTypes::TOKEN_MODULO || tk == TokensTypes::TOKEN_BIT_XOR;
+        }
+
+        
 
         bool isDivisor(TokensTypes tk) {
             return tk == TokensTypes::TOKEN_LOGICAL_OR ||

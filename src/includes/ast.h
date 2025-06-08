@@ -101,7 +101,9 @@ namespace Rythin
     struct IntNode : public ASTNode
     {
         int val;
-        IntNode(int v) : val(v) {}
+        IntNode(int v) : val(v) {
+            std::cout << "Int val: " << std::to_string(val) << std::endl;
+        }
     };
 
     struct InterpolationNode : public ASTNode
