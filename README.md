@@ -16,7 +16,7 @@ The first version for general use will be when it has the basic syntax of a lang
 ## How use/Exemple
 ```
 ; this is only a little example
-; the semicolon characther (;) is for comments or use (#) for comment inline
+; the semicolon characther (; or #) is for comments inline
 ; here we will be create the main function 
 ; thats will be a int type which will receive a finish(0) to end the program
 ; (or use any number other than 0 to indicate to the system that the program was executed with errors)
