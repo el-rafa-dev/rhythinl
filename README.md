@@ -1,12 +1,7 @@
-<div style="margin: auto;">
-    <div>
-    <img src="./gitsrc/rhythin_logo.png" alt="Rhythin Logo" style="display: block; margin-left: auto; margin-right:auto; width: 50%; height: 50%;">
-    </div>
-    <a href=""> </a>
-</div>
+<img src="./gitsrc/rhythin_logo.png" alt="Rhythin Logo" style="display: block; margin-left: auto; margin-right:auto; width: 50%; height: 50%;">
 
 # Rhythin Programming Language
-RhythinLang is a statically typed and compiled programming language focused on being objective and direct to run on CLI terminals/console, facilitating learning for both beginners and programmers with experience in the area.
+RhythinLang is a statically typed and compiled programming language focused on being objective and direct to execute on Command Line Interface (CLI?, facilitating learning for both beginners and programmers with experience in the area.
 
 ## Current Status
 
@@ -21,9 +16,9 @@ The first version for general use will be when it has the basic syntax of a lang
 ## How use/Exemple
 ```
 ; this is only a little example
-; the semicolon characther (;) is for comments or use (#) for comment inline
+; the semicolon characther (; or #) is for comments inline
 ; here we will be create the main function 
-; thats will be a int type which will receive a fin 0 to end the program
+; thats will be a int type which will receive a finish(0) to end the program
 ; (or use any number other than 0 to indicate to the system that the program was executed with errors)
 ```
 ```
@@ -58,5 +53,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
+## Supporting
+See the [support](./SUPPORT.md) to see how support the project
+
 ## Contact
 Contact with me via telegram! My user id: [@rafaprobr](https://t.me/rafaprobr)
