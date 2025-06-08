@@ -13,7 +13,7 @@ The first version for general use will be when it has the basic syntax of a lang
 
 
 
-## How use/Exemple
+## How use/Example
 ```
 ; this is only a little example
 ; the semicolon characther (; or #) is for comments inline
