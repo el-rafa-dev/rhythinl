@@ -2,12 +2,10 @@
 #include <string>
 #include <cctype>
 
-// Remova o namespace Rythin aqui!
-
 Tokens::Tokens(TokensTypes type, std::string value, int line, int column)
 {
     this->type = type;
-    this->value = value; // Use o nome correto do membro: value
+    this->value = value;
     this->line = line;
     this->column = column;
 }
