@@ -91,6 +91,8 @@ namespace Rythin
         case TokensTypes::TOKEN_LET:
             return ParseVarDeclaration();
         default:
+            // only for debug of errors
+            std::cout << "The invalid statement " << Tokens::tokenTypeToString(current().type) << std::endl;
             LogErrors::getInstance().addError("Invalid statement at line " + std::to_string(current().line) + " column " + std::to_string(current().column), 2);
             LogErrors::getInstance().printAll();
             throw Excepts::CompilationException("Invalid Statement");
@@ -137,7 +139,8 @@ namespace Rythin
                         else if (check(TokensTypes::TOKEN_LPAREN)) 
                         consume(TokensTypes::TOKEN_LPAREN);
                         do {
-                            return ParseIntVal();
+                            //return ParseIntVal();
+                            return std::make_shared<IntNode>(int_val + ParsedArith());
                         } while (!check(TokensTypes::TOKEN_RPAREN));
                         consume(TokensTypes::TOKEN_RPAREN);
                     case TokensTypes::TOKEN_MINUS:
@@ -147,7 +150,7 @@ namespace Rythin
                         else if (check(TokensTypes::TOKEN_LPAREN))                         
                         consume(TokensTypes::TOKEN_LPAREN);
                         do {
-                            return ParseIntVal();
+                            return std::make_shared<IntNode>(int_val - ParsedArith());
                         } while (!check(TokensTypes::TOKEN_RPAREN));
                         consume(TokensTypes::TOKEN_RPAREN);
                     case TokensTypes::TOKEN_DIVIDE:
@@ -157,9 +160,10 @@ namespace Rythin
                         else if (check(TokensTypes::TOKEN_LPAREN))                        
                         consume(TokensTypes::TOKEN_LPAREN);
                         do {
-                            return ParseIntVal();
+                            return std::make_shared<IntNode>(int_val / ParsedArith());
                         } while (!check(TokensTypes::TOKEN_RPAREN));
                         consume(TokensTypes::TOKEN_RPAREN);
+                        break;
                     case TokensTypes::TOKEN_MULTIPLY:
                         if (check(TokensTypes::TOKEN_INT)) return std::make_shared<IntNode>(int_val * std::stoi(consume(current().type).value));
                         else if (check(TokensTypes::TOKEN_FLOAT)) return std::make_shared<IntNode>(int_val * std::stof(consume(current().type).value));
@@ -167,7 +171,7 @@ namespace Rythin
                         else if (check(TokensTypes::TOKEN_LPAREN)) 
                         consume(TokensTypes::TOKEN_LPAREN);
                         do {
-                            return ParseIntVal();
+                            return std::make_shared<IntNode>(int_val * ParsedArith());
                         } while (!check(TokensTypes::TOKEN_RPAREN));
                         consume(TokensTypes::TOKEN_RPAREN);
                 }
@@ -179,6 +183,34 @@ namespace Rythin
             std::cerr << "[Error]: Current value out of range at line " << current().line << " column " << current().column << std::endl;
             throw std::out_of_range("Index out of range");
         }
+    }
+
+    int Parser::ParsedArith() 
+    {
+        int val = std::stoi(consume(current().type).value);
+        if (isBinaryOperator(current().type))
+        {
+            switch (consume(current().type).type)
+            {
+                case TokensTypes::TOKEN_PLUS:
+                    return val + std::stoi(consume(current().type).value);
+                case TokensTypes::TOKEN_MINUS:
+                    return val - std::stoi(consume(current().type).value);
+                case TokensTypes::TOKEN_DIVIDE:
+                    return val / std::stoi(consume(current().type).value);
+                case TokensTypes::TOKEN_MULTIPLY:
+                    return val * std::stoi(consume(current().type).value);
+                case TokensTypes::TOKEN_MODULO:
+                    return val % std::stoi(consume(current().type).value);
+                case TokensTypes::TOKEN_BIT_XOR:
+                    return val ^ std::stoi(consume(current().type).value);
+                default:
+                    LogErrors::getInstance().addError("Invalid type for arithmetic expression at line" + std::to_string(current().line) + " column " + std::to_string(current().column), 23);
+                    LogErrors::getInstance().printAll();
+                    throw Excepts::SyntaxException("Invalid expression");
+            }
+        }
+        return val;
     }
 
     ASTPtr Parser::ParseIfStatement()
