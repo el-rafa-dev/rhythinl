@@ -203,17 +203,90 @@ namespace Rythin
             switch (consume(current().type).type)
             {
                 case TokensTypes::TOKEN_PLUS:
-                    return val + std::stoi(consume(current().type).value);
+                {
+                    int value = val + std::stoi(consume(current().type).value);
+                    
+                    while (!check(TokensTypes::TOKEN_RPAREN))
+                    {
+                        while (check(TokensTypes::TOKEN_PLUS))
+                        {
+                            consume(TokensTypes::TOKEN_PLUS);
+                            value += std::stoi(consume(current().type).value);
+                        }
+                    }
+                    return value;
+                }
                 case TokensTypes::TOKEN_MINUS:
-                    return val - std::stoi(consume(current().type).value);
+                {
+                    int value = val - std::stoi(consume(current().type).value);
+                    
+                    while (!check(TokensTypes::TOKEN_RPAREN))
+                    {
+                        while (check(TokensTypes::TOKEN_MINUS))
+                        {
+                            consume(TokensTypes::TOKEN_MINUS);
+                            value -= std::stoi(consume(current().type).value);
+                        }
+                    }
+                    return value;
+                }
                 case TokensTypes::TOKEN_DIVIDE:
-                    return val / std::stoi(consume(current().type).value);
+                {
+                    int value = val / std::stoi(consume(current().type).value);
+                    
+                    while (!check(TokensTypes::TOKEN_RPAREN))
+                    {
+                        while (check(TokensTypes::TOKEN_DIVIDE))
+                        {
+                            consume(TokensTypes::TOKEN_DIVIDE);
+                            value /= std::stoi(consume(current().type).value);
+                        }
+                    }
+                    return value;
+                }
                 case TokensTypes::TOKEN_MULTIPLY:
-                    return val * std::stoi(consume(current().type).value);
+                {
+                    int value = val * std::stoi(consume(current().type).value);
+                    
+                    while (!check(TokensTypes::TOKEN_RPAREN))
+                    {
+                        while (check(TokensTypes::TOKEN_MULTIPLY))
+                        {
+                            consume(TokensTypes::TOKEN_MULTIPLY);
+                            value *= std::stoi(consume(current().type).value);
+                        }
+                    }
+                    return value;
+                }
                 case TokensTypes::TOKEN_MODULO:
-                    return val % std::stoi(consume(current().type).value);
+                    {
+                    int value = val % std::stoi(consume(current().type).value);
+                    
+                    while (!check(TokensTypes::TOKEN_RPAREN))
+                    {
+                        while (check(TokensTypes::TOKEN_MODULO))
+                        {
+                            consume(TokensTypes::TOKEN_MODULO);
+                            value %= std::stoi(consume(current().type).value);
+                        }
+                    }
+                    return value;
+                    }
                 case TokensTypes::TOKEN_BIT_XOR:
-                    return pow(val, stoi(consume(current().type).value));
+                {
+                    int value = pow(val, std::stoi(consume(current().type).value));
+                    //int value = val ^ std::stoi(consume(current().type).value);
+                    
+                    while (!check(TokensTypes::TOKEN_RPAREN))
+                    {
+                        while (check(TokensTypes::TOKEN_BIT_XOR))
+                        {
+                            consume(TokensTypes::TOKEN_DIVIDE);
+                            value ^= std::stoi(consume(current().type).value);
+                        }
+                    }
+                    return value;
+                }
                 default:
                     LogErrors::getInstance().addError("Invalid type for arithmetic expression at line" + std::to_string(current().line) + " column " + std::to_string(current().column), 23);
                     LogErrors::getInstance().printAll();
