@@ -3,6 +3,7 @@
 #include <string>
 #include <stdexcept>
 #include <optional>
+#include <math.h>
 
 // local includes
 #include "../src/includes/ast.h"
@@ -174,7 +175,16 @@ namespace Rythin
                             return std::make_shared<IntNode>(int_val * ParsedArith());
                         } while (!check(TokensTypes::TOKEN_RPAREN));
                         consume(TokensTypes::TOKEN_RPAREN);
+                    case TokensTypes::TOKEN_BIT_XOR:
+                        if (check(TokensTypes::TOKEN_INT)) return std::make_shared<IntNode>(pow(int_val, ParsedArith()));
+                        else if (check(TokensTypes::TOKEN_LPAREN)) 
+                        consume(TokensTypes::TOKEN_LPAREN);
+                        do {
+                            return std::make_shared<IntNode>(int_val ^ ParsedArith());
+                        } while (!check(TokensTypes::TOKEN_RPAREN));
+                        consume(TokensTypes::TOKEN_RPAREN);
                 }
+                
             }
             return std::make_shared<IntNode>(int_val);
         }
@@ -203,12 +213,13 @@ namespace Rythin
                 case TokensTypes::TOKEN_MODULO:
                     return val % std::stoi(consume(current().type).value);
                 case TokensTypes::TOKEN_BIT_XOR:
-                    return val ^ std::stoi(consume(current().type).value);
+                    return pow(val, stoi(consume(current().type).value));
                 default:
                     LogErrors::getInstance().addError("Invalid type for arithmetic expression at line" + std::to_string(current().line) + " column " + std::to_string(current().column), 23);
                     LogErrors::getInstance().printAll();
                     throw Excepts::SyntaxException("Invalid expression");
             }
+            consume(TokensTypes::TOKEN_RPAREN);
         }
         return val;
     }
@@ -457,7 +468,6 @@ namespace Rythin
         case TokensTypes::TOKEN_INT:
         {
             return ParseIntVal();
-            /**/
         }
         case TokensTypes::TOKEN_FLOAT:
             if (check(TokensTypes::TOKEN_FLOAT))
@@ -506,7 +516,7 @@ namespace Rythin
             }
             else
             {
-                return std::make_shared<LIntNode>(std::stoll(consume(current().type).value));
+                return ParseIntVal();
             }
 
         case TokensTypes::TOKEN_NIL:
