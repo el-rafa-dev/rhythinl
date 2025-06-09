@@ -604,7 +604,7 @@ namespace Rythin
         case TokensTypes::TOKEN_FLOAT:
             return std::make_shared<FloatNode>(-std::stof(consume(current().type).value));
         default:
-            throw Excepts::CompilationException("Invalid positive type");
+            throw Excepts::CompilationException("Invalid negative type");
         }
     }
 
