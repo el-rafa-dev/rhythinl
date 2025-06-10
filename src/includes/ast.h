@@ -63,13 +63,16 @@ namespace Rythin
         TokensTypes op; // operators
         ASTPtr left;
         ASTPtr right;
-        BinOp(TokensTypes op, ASTPtr left, ASTPtr right) : op(op), left(left), right(right) {}
+        //BinOp(TokensTypes op, ASTPtr left, ASTPtr right) : op(op), left(left), right(right) {}
     };
 
+    //the variable call node
     struct VariableNode : public ASTNode
     {
-        std::string val;
-        VariableNode(const std::string val) : val(val) {}
+        std::string name;
+        std::vector<ASTPtr> args;
+        /*VariableNode(const std::string& val) : val(val) {}
+        VariableNode(const std::string& val, std::vector<ASTPtr> args) : val(val), args(args) {}*/
     };
 
     struct LiteralNode : public ASTNode
@@ -102,6 +105,7 @@ namespace Rythin
     {
         int val;
         IntNode(int v) : val(v) {
+            //tests
             std::cout << "Int val: " << std::to_string(val) << std::endl;
         }
     };
@@ -121,7 +125,7 @@ namespace Rythin
     struct LLIntNode : public ASTNode
     {
         long long int val;
-        LLIntNode(int *val) : val(*val) {}
+        LLIntNode(int val) : val(val) {}
     };
 
     struct ByteNode : public ASTNode
@@ -154,13 +158,7 @@ namespace Rythin
         ASTPtr ifBranch;
         ASTPtr butBranch;
         ASTPtr butCondition;
-        IfStatement(ASTPtr ifCondition, ASTPtr ifBranch, ASTPtr butBranch, ASTPtr butCondition) : ifCondition(ifCondition), ifBranch(ifBranch), butBranch(butBranch), butCondition(butCondition)
-        {
-            if (auto var = std::dynamic_pointer_cast<TrueOrFalseNode>(ifCondition))
-            {
-                std::cout << "IfCondition Val: " << var->val << std::endl;
-            }
-        }
+        IfStatement(ASTPtr ifCondition, ASTPtr ifBranch, ASTPtr butBranch, ASTPtr butCondition) : ifCondition(ifCondition), ifBranch(ifBranch), butBranch(butBranch), butCondition(butCondition) {}
     };
 
     struct ObjectNode : public ASTNode
@@ -171,7 +169,7 @@ namespace Rythin
 
     struct ReturnNode : public ASTNode
     {
-        ASTPtr val; // return value (pode ser um int, float/double, string ou byte)
+        ASTPtr val; // return value (pode ser um int, float/double, string, byte e etc)
         ReturnNode(ASTPtr val) : val(val) {}
     };
 
@@ -195,7 +193,7 @@ namespace Rythin
     struct IfExpressionNode : public ASTNode
     {
         std::string var_name;      // name of the variable
-        TokensTypes type;          // type of expression (== or other types)
+        TokensTypes type;          // type of expression (== or other binary operators types)
         TokensTypes logic_divisor; // the divisor of the expressions like (&&, || and !)
         ASTPtr val;                // the value of the condition (like x > 2, the value of this expression is 2)
         // IfExpressionNode(std::string& var_name, TokensTypes type, TokensTypes logic_divisor, ASTPtr val) : var_name(var_name), type(type), logic_divisor(logic_divisor), val(val) {}

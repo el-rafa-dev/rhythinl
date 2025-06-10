@@ -198,6 +198,38 @@ namespace Rythin
     int Parser::ParsedArith() 
     {
         int val = std::stoi(consume(current().type).value);
+        auto bin = std::make_shared<BinOp>();
+        //consuming the left value
+        switch (current().type)
+        {
+            case TokensTypes::TOKEN_INT:
+                bin->left = std::make_shared<IntNode>(std::stoi(consume(TokensTypes::TOKEN_INT).value));
+                break;
+            case TokensTypes::TOKEN_LONG_INT:
+                bin->left = std::make_shared<LIntNode>(std::stoll(consume(TokensTypes::TOKEN_LONG_INT).value));
+                break;
+            case TokensTypes::TOKEN_FLOAT:
+                bin->left = std::make_shared<FloatNode>(std::stof(consume(TokensTypes::TOKEN_FLOAT).value));
+                break;
+            case TokensTypes::TOKEN_DOUBLE:
+                bin->left = std::make_shared<DoubleNode>(std::stod(consume(TokensTypes::TOKEN_DOUBLE).value));
+                break;
+            case TokensTypes::TOKEN_IDENTIFIER:
+            //check if is a variable call (like 'function()')
+            {
+                auto var_node = std::make_shared<VariableNode>();
+                std::string value = consume(TokensTypes::TOKEN_IDENTIFIER).value;
+                
+                if (check(TokensTypes::TOKEN_LPAREN)) {
+                    while (!check(TokensTypes::TOKEN_RPAREN))
+                    {
+                        
+                    }
+                }
+            }
+        }
+        
+        /*
         if (isBinaryOperator(current().type))
         {
             switch (consume(current().type).type)
@@ -294,7 +326,7 @@ namespace Rythin
             }
             consume(TokensTypes::TOKEN_RPAREN);
         }
-        return val;
+        return val;*/
     }
 
     ASTPtr Parser::ParseIfStatement()
