@@ -15,7 +15,7 @@ namespace Rythin {
         int position;
         std::vector<Tokens> tokens;
         public:
-        Parser(std::vector<Tokens> tokens);
+        Parser(std::vector<Tokens> tokens) : position(0), tokens(tokens){}
         Tokens current();
         Tokens consume(TokensTypes tk);
         std::vector<ASTPtr> Parse();
@@ -40,6 +40,7 @@ namespace Rythin {
         ASTPtr ParseNegativeVals(TokensTypes curr);
         ASTPtr ParseVarDeclaration();
         int ParsedArith();
+        bool llookAhead(TokensTypes tk); // exited from LL(1) to LL(*)
         //ASTPtr Parse
         ASTPtr ParseIntVal(); /// to parse the int or arithmetic or others types of expressions like division or addition values
 

@@ -20,10 +20,6 @@ using namespace Log;
 namespace Rythin
 {
 
-    Parser::Parser(std::vector<Tokens> tokens) : position(0), tokens(tokens)
-    {
-    }
-
     Tokens Parser::current()
     {
         if (position >= 0 && position < tokens.size())
@@ -64,10 +60,30 @@ namespace Rythin
         return node;
     }
 
-    //look the current type
+    // look the if current type is the expected token
     bool Parser::check(TokensTypes tk)
     {
         return current().type == tk;
+    }
+
+    //look ahead for expected token
+    bool Parser::llookAhead(TokensTypes tk)
+    {
+        int oldpos = position;
+        do
+        {
+            //consume(tk);
+            position++;
+            if (check(tk))
+            {
+                this->position = oldpos;
+                return true;
+            } else {
+                this->position = oldpos;
+                return false;
+            }
+        } while (!check(tk));
+        return false;
     }
 
     ASTPtr Parser::ParseDeclarations()
@@ -88,9 +104,29 @@ namespace Rythin
         case TokensTypes::TOKEN_PRINT_NEW_LINE:
             return ParsePrintNl();
         case TokensTypes::TOKEN_DEF:
-            return ParseFuncDeclaration();
-        case TokensTypes::TOKEN_LET:
-            return ParseVarDeclaration();
+        {
+            /*int oldpos = position; // save the current position to back again to oldposition
+            consume(TokensTypes::TOKEN_DEF);
+            consume(TokensTypes::TOKEN_IDENTIFIER);
+            consume(TokensTypes::TOKEN_COLON);
+            consume(current().type);
+            if (check(TokensTypes::TOKEN_ASSIGN))
+            {
+                position = oldpos; //set the position to the oldposition
+                return ParseVarDeclaration();
+            }
+            else
+            {
+                position = oldpos;
+                return ParseFuncDeclaration();
+            }*/
+           if (llookAhead(TokensTypes::TOKEN_ASSIGN))
+           {
+                return ParseVarDeclaration();
+           } else {
+                return ParseFuncDeclaration();
+           }
+        }
         default:
             // only for debug of errors
             std::cout << "The invalid statement " << Tokens::tokenTypeToString(current().type) << std::endl;
@@ -123,68 +159,87 @@ namespace Rythin
         return std::make_shared<FunctionDefinitionNode>(var_name, args, block);
     }
 
-    ASTPtr Parser::ParseIntVal() {
-    
-    try
+    ASTPtr Parser::ParseIntVal()
+    {
+
+        try
         {
             auto int_val = std::stoi(consume(TokensTypes::TOKEN_INT).value);
-            //check if have a binary operator (like +, /, -, *) after int value;
-            if (isBinaryOperator(current().type)) {
-                //TODO: add more binary types for the switch cases
+            // check if have a binary operator (like +, /, -, *) after int value;
+            if (isBinaryOperator(current().type))
+            {
+                // TODO: add more binary types for the switch cases
                 switch (consume(current().type).type)
                 {
-                    case TokensTypes::TOKEN_PLUS:
-                        if (check(TokensTypes::TOKEN_INT)) return std::make_shared<IntNode>(int_val + std::stoi(consume(current().type).value));
-                        else if (check(TokensTypes::TOKEN_FLOAT)) return std::make_shared<IntNode>(int_val + std::stof(consume(current().type).value));
-                        else if (check(TokensTypes::TOKEN_DOUBLE)) return std::make_shared<IntNode>(int_val + std::stod(consume(current().type).value));
-                        else if (check(TokensTypes::TOKEN_LPAREN)) 
+                case TokensTypes::TOKEN_PLUS:
+                    if (check(TokensTypes::TOKEN_INT))
+                        return std::make_shared<IntNode>(int_val + std::stoi(consume(current().type).value));
+                    else if (check(TokensTypes::TOKEN_FLOAT))
+                        return std::make_shared<IntNode>(int_val + std::stof(consume(current().type).value));
+                    else if (check(TokensTypes::TOKEN_DOUBLE))
+                        return std::make_shared<IntNode>(int_val + std::stod(consume(current().type).value));
+                    else if (check(TokensTypes::TOKEN_LPAREN))
                         consume(TokensTypes::TOKEN_LPAREN);
-                        do {
-                            //return ParseIntVal();
-                            return std::make_shared<IntNode>(int_val + ParsedArith());
-                        } while (!check(TokensTypes::TOKEN_RPAREN));
-                        consume(TokensTypes::TOKEN_RPAREN);
-                    case TokensTypes::TOKEN_MINUS:
-                        if (check(TokensTypes::TOKEN_INT)) return std::make_shared<IntNode>(int_val - std::stoi(consume(current().type).value));
-                        else if (check(TokensTypes::TOKEN_FLOAT)) return std::make_shared<IntNode>(int_val - std::stof(consume(current().type).value));
-                        else if (check(TokensTypes::TOKEN_DOUBLE)) return std::make_shared<IntNode>(int_val - std::stod(consume(current().type).value));
-                        else if (check(TokensTypes::TOKEN_LPAREN))                         
+                    do
+                    {
+                        // return ParseIntVal();
+                        return std::make_shared<IntNode>(int_val + ParsedArith());
+                    } while (!check(TokensTypes::TOKEN_RPAREN));
+                    consume(TokensTypes::TOKEN_RPAREN);
+                case TokensTypes::TOKEN_MINUS:
+                    if (check(TokensTypes::TOKEN_INT))
+                        return std::make_shared<IntNode>(int_val - std::stoi(consume(current().type).value));
+                    else if (check(TokensTypes::TOKEN_FLOAT))
+                        return std::make_shared<IntNode>(int_val - std::stof(consume(current().type).value));
+                    else if (check(TokensTypes::TOKEN_DOUBLE))
+                        return std::make_shared<IntNode>(int_val - std::stod(consume(current().type).value));
+                    else if (check(TokensTypes::TOKEN_LPAREN))
                         consume(TokensTypes::TOKEN_LPAREN);
-                        do {
-                            return std::make_shared<IntNode>(int_val - ParsedArith());
-                        } while (!check(TokensTypes::TOKEN_RPAREN));
-                        consume(TokensTypes::TOKEN_RPAREN);
-                    case TokensTypes::TOKEN_DIVIDE:
-                        if (check(TokensTypes::TOKEN_INT)) return std::make_shared<IntNode>(int_val * std::stoi(consume(current().type).value));
-                        else if (check(TokensTypes::TOKEN_FLOAT)) return std::make_shared<IntNode>(int_val * std::stof(consume(current().type).value));
-                        else if (check(TokensTypes::TOKEN_DOUBLE)) return std::make_shared<IntNode>(int_val * std::stod(consume(current().type).value));
-                        else if (check(TokensTypes::TOKEN_LPAREN))                        
+                    do
+                    {
+                        return std::make_shared<IntNode>(int_val - ParsedArith());
+                    } while (!check(TokensTypes::TOKEN_RPAREN));
+                    consume(TokensTypes::TOKEN_RPAREN);
+                case TokensTypes::TOKEN_DIVIDE:
+                    if (check(TokensTypes::TOKEN_INT))
+                        return std::make_shared<IntNode>(int_val * std::stoi(consume(current().type).value));
+                    else if (check(TokensTypes::TOKEN_FLOAT))
+                        return std::make_shared<IntNode>(int_val * std::stof(consume(current().type).value));
+                    else if (check(TokensTypes::TOKEN_DOUBLE))
+                        return std::make_shared<IntNode>(int_val * std::stod(consume(current().type).value));
+                    else if (check(TokensTypes::TOKEN_LPAREN))
                         consume(TokensTypes::TOKEN_LPAREN);
-                        do {
-                            return std::make_shared<IntNode>(int_val / ParsedArith());
-                        } while (!check(TokensTypes::TOKEN_RPAREN));
-                        consume(TokensTypes::TOKEN_RPAREN);
-                        break;
-                    case TokensTypes::TOKEN_MULTIPLY:
-                        if (check(TokensTypes::TOKEN_INT)) return std::make_shared<IntNode>(int_val * std::stoi(consume(current().type).value));
-                        else if (check(TokensTypes::TOKEN_FLOAT)) return std::make_shared<IntNode>(int_val * std::stof(consume(current().type).value));
-                        else if (check(TokensTypes::TOKEN_DOUBLE)) return std::make_shared<IntNode>(int_val * std::stod(consume(current().type).value));
-                        else if (check(TokensTypes::TOKEN_LPAREN)) 
+                    do
+                    {
+                        return std::make_shared<IntNode>(int_val / ParsedArith());
+                    } while (!check(TokensTypes::TOKEN_RPAREN));
+                    consume(TokensTypes::TOKEN_RPAREN);
+                    break;
+                case TokensTypes::TOKEN_MULTIPLY:
+                    if (check(TokensTypes::TOKEN_INT))
+                        return std::make_shared<IntNode>(int_val * std::stoi(consume(current().type).value));
+                    else if (check(TokensTypes::TOKEN_FLOAT))
+                        return std::make_shared<IntNode>(int_val * std::stof(consume(current().type).value));
+                    else if (check(TokensTypes::TOKEN_DOUBLE))
+                        return std::make_shared<IntNode>(int_val * std::stod(consume(current().type).value));
+                    else if (check(TokensTypes::TOKEN_LPAREN))
                         consume(TokensTypes::TOKEN_LPAREN);
-                        do {
-                            return std::make_shared<IntNode>(int_val * ParsedArith());
-                        } while (!check(TokensTypes::TOKEN_RPAREN));
-                        consume(TokensTypes::TOKEN_RPAREN);
-                    case TokensTypes::TOKEN_BIT_XOR:
-                        if (check(TokensTypes::TOKEN_INT)) return std::make_shared<IntNode>(pow(int_val, ParsedArith()));
-                        else if (check(TokensTypes::TOKEN_LPAREN)) 
+                    do
+                    {
+                        return std::make_shared<IntNode>(int_val * ParsedArith());
+                    } while (!check(TokensTypes::TOKEN_RPAREN));
+                    consume(TokensTypes::TOKEN_RPAREN);
+                case TokensTypes::TOKEN_BIT_XOR:
+                    if (check(TokensTypes::TOKEN_INT))
+                        return std::make_shared<IntNode>(pow(int_val, ParsedArith()));
+                    else if (check(TokensTypes::TOKEN_LPAREN))
                         consume(TokensTypes::TOKEN_LPAREN);
-                        do {
-                            return std::make_shared<IntNode>(int_val ^ ParsedArith());
-                        } while (!check(TokensTypes::TOKEN_RPAREN));
-                        consume(TokensTypes::TOKEN_RPAREN);
+                    do
+                    {
+                        return std::make_shared<IntNode>(int_val ^ ParsedArith());
+                    } while (!check(TokensTypes::TOKEN_RPAREN));
+                    consume(TokensTypes::TOKEN_RPAREN);
                 }
-                
             }
             return std::make_shared<IntNode>(int_val);
         }
@@ -195,40 +250,40 @@ namespace Rythin
         }
     }
 
-    int Parser::ParsedArith() 
+    int Parser::ParsedArith()
     {
         int val = std::stoi(consume(current().type).value);
         auto bin = std::make_shared<BinOp>();
-        //consuming the left value
+        // consuming the left value
         switch (current().type)
         {
-            case TokensTypes::TOKEN_INT:
-                bin->left = std::make_shared<IntNode>(std::stoi(consume(TokensTypes::TOKEN_INT).value));
-                break;
-            case TokensTypes::TOKEN_LONG_INT:
-                bin->left = std::make_shared<LIntNode>(std::stoll(consume(TokensTypes::TOKEN_LONG_INT).value));
-                break;
-            case TokensTypes::TOKEN_FLOAT:
-                bin->left = std::make_shared<FloatNode>(std::stof(consume(TokensTypes::TOKEN_FLOAT).value));
-                break;
-            case TokensTypes::TOKEN_DOUBLE:
-                bin->left = std::make_shared<DoubleNode>(std::stod(consume(TokensTypes::TOKEN_DOUBLE).value));
-                break;
-            case TokensTypes::TOKEN_IDENTIFIER:
-            //check if is a variable call (like 'function()')
+        case TokensTypes::TOKEN_INT:
+            bin->left = std::make_shared<IntNode>(std::stoi(consume(TokensTypes::TOKEN_INT).value));
+            break;
+        case TokensTypes::TOKEN_LONG_INT:
+            bin->left = std::make_shared<LIntNode>(std::stoll(consume(TokensTypes::TOKEN_LONG_INT).value));
+            break;
+        case TokensTypes::TOKEN_FLOAT:
+            bin->left = std::make_shared<FloatNode>(std::stof(consume(TokensTypes::TOKEN_FLOAT).value));
+            break;
+        case TokensTypes::TOKEN_DOUBLE:
+            bin->left = std::make_shared<DoubleNode>(std::stod(consume(TokensTypes::TOKEN_DOUBLE).value));
+            break;
+        case TokensTypes::TOKEN_IDENTIFIER:
+            // check if is a variable call (like 'function()')
             {
                 auto var_node = std::make_shared<VariableNode>();
                 std::string value = consume(TokensTypes::TOKEN_IDENTIFIER).value;
-                
-                if (check(TokensTypes::TOKEN_LPAREN)) {
+
+                if (check(TokensTypes::TOKEN_LPAREN))
+                {
                     while (!check(TokensTypes::TOKEN_RPAREN))
                     {
-                        
                     }
                 }
             }
         }
-        
+
         /*
         if (isBinaryOperator(current().type))
         {
@@ -237,7 +292,7 @@ namespace Rythin
                 case TokensTypes::TOKEN_PLUS:
                 {
                     int value = val + std::stoi(consume(current().type).value);
-                    
+
                     while (!check(TokensTypes::TOKEN_RPAREN))
                     {
                         while (check(TokensTypes::TOKEN_PLUS))
@@ -251,7 +306,7 @@ namespace Rythin
                 case TokensTypes::TOKEN_MINUS:
                 {
                     int value = val - std::stoi(consume(current().type).value);
-                    
+
                     while (!check(TokensTypes::TOKEN_RPAREN))
                     {
                         while (check(TokensTypes::TOKEN_MINUS))
@@ -265,7 +320,7 @@ namespace Rythin
                 case TokensTypes::TOKEN_DIVIDE:
                 {
                     int value = val / std::stoi(consume(current().type).value);
-                    
+
                     while (!check(TokensTypes::TOKEN_RPAREN))
                     {
                         while (check(TokensTypes::TOKEN_DIVIDE))
@@ -279,7 +334,7 @@ namespace Rythin
                 case TokensTypes::TOKEN_MULTIPLY:
                 {
                     int value = val * std::stoi(consume(current().type).value);
-                    
+
                     while (!check(TokensTypes::TOKEN_RPAREN))
                     {
                         while (check(TokensTypes::TOKEN_MULTIPLY))
@@ -293,7 +348,7 @@ namespace Rythin
                 case TokensTypes::TOKEN_MODULO:
                     {
                     int value = val % std::stoi(consume(current().type).value);
-                    
+
                     while (!check(TokensTypes::TOKEN_RPAREN))
                     {
                         while (check(TokensTypes::TOKEN_MODULO))
@@ -308,7 +363,7 @@ namespace Rythin
                 {
                     int value = pow(val, std::stoi(consume(current().type).value));
                     //int value = val ^ std::stoi(consume(current().type).value);
-                    
+
                     while (!check(TokensTypes::TOKEN_RPAREN))
                     {
                         while (check(TokensTypes::TOKEN_BIT_XOR))
@@ -509,7 +564,7 @@ namespace Rythin
 
     ASTPtr Parser::ParseVarDeclaration()
     {
-        consume(TokensTypes::TOKEN_LET);
+        consume(TokensTypes::TOKEN_DEF);
         std::string name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
         consume(TokensTypes::TOKEN_COLON);
         TokensTypes tk;
