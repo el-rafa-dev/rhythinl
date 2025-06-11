@@ -109,19 +109,22 @@ namespace Rythin
                 break;
             case ';':
                 advance_tk();
-                
+
                 while (current_input != '\0' && current_input != '\n')
                 {
                     advance_tk();
                 }
                 return next_tk();
-            
+
             case '#':
-                advance_tk();
-                while (current_input != '\0' && current_input != '\n') {
+
+            {
+                while (current_input != '\0' and current_input != '\n')
+                {
                     advance_tk();
                 }
                 return next_tk();
+            }
 
             case ':':
                 advance_tk();
@@ -446,7 +449,7 @@ namespace Rythin
                 {
                     ivalue += '\a';
                     advance_tk();
-                } 
+                }
                 else if (current_input == '"') // double quote
                 {
                     ivalue += '"';
