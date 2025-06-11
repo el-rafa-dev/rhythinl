@@ -39,8 +39,7 @@ namespace Rythin {
         ASTPtr ParsePositiveVals(TokensTypes curr);
         ASTPtr ParseNegativeVals(TokensTypes curr);
         ASTPtr ParseVarDeclaration();
-        int ParsedArith();
-        bool llookAhead(TokensTypes tk); // exited from LL(1) to LL(*)
+        ASTPtr ParsedArith();
         //ASTPtr Parse
         ASTPtr ParseIntVal(); /// to parse the int or arithmetic or others types of expressions like division or addition values
 

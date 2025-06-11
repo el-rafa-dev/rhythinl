@@ -1,6 +1,7 @@
 #include "../src/includes/t_tokens.h"
 #include <string>
 #include <cctype>
+#include <iostream>
 
 Tokens::Tokens(TokensTypes type, std::string value, int line, int column)
 {
