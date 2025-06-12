@@ -4,7 +4,7 @@
 #define LEX_TYPES_H
 
 enum class TokensTypes {
-    TOKEN_EOF,
+    TOKEN_EOF, //end of file or end of line (eol)
     TOKEN_IDENTIFIER,
     TOKEN_NUMBER,
     TOKEN_STRING_LITERAL,
@@ -81,7 +81,6 @@ enum class TokensTypes {
     TOKEN_PRINT_ERROR,
     TOKEN_PRINT_ERROR_LOG,
     TOKEN_CINPUT,
-    TOKEN_MULTILINE_COMMENT,
     TOKEN_TRUE,
     TOKEN_FALSE,
     TOKEN_NIL,

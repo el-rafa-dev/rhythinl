@@ -10,6 +10,8 @@
 #include "lex_types.h"
 #include "t_tokens.h"
 #include "rexcept.h"
+#include "t_tokens.h"
+#include <iostream>
 
 namespace Rythin
 {
@@ -61,8 +63,8 @@ namespace Rythin
     struct BinOp : public ASTNode
     {
         TokensTypes op; // operators
-        ASTPtr left;
-        ASTPtr right;
+        ASTPtr left;    //left value
+        ASTPtr right;   //right value
         //BinOp(TokensTypes op, ASTPtr left, ASTPtr right) : op(op), left(left), right(right) {}
     };
 
