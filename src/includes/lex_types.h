@@ -66,7 +66,8 @@ enum class TokensTypes {
     TOKEN_LEN,
     TOKEN_BOOL,
     TOKEN_STR,
-    TOKEN_INT_32, //i32
+    TOKEN_INT_32, //i32 bits
+    TOKEN_INT_64, //i64 bits
     TOKEN_FUNC,
     TOKEN_CHAR,
     TOKEN_FLOAT_32, //f32

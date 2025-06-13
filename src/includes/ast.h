@@ -118,7 +118,9 @@ namespace Rythin
     struct i64Node : public ASTNode
     {
         int64_t val;
-        i64Node(int64_t val) : val(val) {}
+        i64Node(int64_t val) : val(val) {
+            std::cout << "i64 value: " << std::to_string(val) << std::endl;
+        }
     };
 
     struct ByteNode : public ASTNode

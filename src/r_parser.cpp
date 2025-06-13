@@ -83,6 +83,9 @@ namespace Rythin
             return ParsePrintE();
         case TokensTypes::TOKEN_PRINT_NEW_LINE:
             return ParsePrintNl();
+        case TokensTypes::TOKEN_STRING_LITERAL:
+            consume(TokensTypes::TOKEN_STRING_LITERAL);
+            return nullptr;
         case TokensTypes::TOKEN_DEF:
         {
             // stores the current position on another int
@@ -624,26 +627,15 @@ namespace Rythin
         switch (current().type)
         {
         case TokensTypes::TOKEN_BOOL:
-            tk = consume(TokensTypes::TOKEN_BOOL).type;
-            break;
         case TokensTypes::TOKEN_INT_32:
-            tk = consume(TokensTypes::TOKEN_INT_32).type;
-            break;
         case TokensTypes::TOKEN_FLOAT_32:
-            tk = consume(TokensTypes::TOKEN_FLOAT_32).type;
-            break;
         case TokensTypes::TOKEN_FLOAT_64:
-            tk = consume(TokensTypes::TOKEN_FLOAT_64).type;
-            break;
         case TokensTypes::TOKEN_STR:
-            tk = consume(TokensTypes::TOKEN_STR).type;
-            break;
         case TokensTypes::TOKEN_BYTES:
-            tk = consume(TokensTypes::TOKEN_BYTES).type;
-            break;
         case TokensTypes::TOKEN_OBJECT:
-            tk = consume(TokensTypes::TOKEN_OBJECT).type;
+            tk = consume(current().type).type;
             break;
+
         default:
             //don't have support imediatelly for identifiers..
             std::cerr << "[Error] Invalid type for variable definition at line " << current().line << " column " << current().column << std::endl;
@@ -680,6 +672,7 @@ namespace Rythin
         {
             return ParseIntVal();
         }
+        
         case TokensTypes::TOKEN_FLOAT_32:
             if (check(TokensTypes::TOKEN_FLOAT_32))
             {
@@ -836,6 +829,9 @@ namespace Rythin
         case TokensTypes::TOKEN_INT_32:
             type = consume(TokensTypes::TOKEN_INT_32).type;
             break;
+        case TokensTypes::TOKEN_INT_64:
+            type = consume(TokensTypes::TOKEN_INT_64).type;
+            break;
         case TokensTypes::TOKEN_FLOAT_32:
             type = consume(TokensTypes::TOKEN_FLOAT_32).type;
             break;
@@ -852,6 +848,9 @@ namespace Rythin
         {
         case TokensTypes::TOKEN_INT_32:
             val = std::make_shared<i32Node>(std::stoi(consume(TokensTypes::TOKEN_INT_32).value));
+            break;
+        case TokensTypes::TOKEN_INT_64:
+            val = std::make_shared<i64Node>(std::stoi(consume(TokensTypes::TOKEN_INT_64).value));
             break;
         case TokensTypes::TOKEN_FLOAT_32:
             val = std::make_shared<f32Node>(std::stof(consume(TokensTypes::TOKEN_FLOAT_32).value));

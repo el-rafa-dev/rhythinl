@@ -141,6 +141,8 @@ std::string Tokens::tokenTypeToString(TokensTypes type)
         return "len";
     case TokensTypes::TOKEN_INT_32:
         return "i32";
+    case TokensTypes::TOKEN_INT_64:
+        return "i64";
     case TokensTypes::TOKEN_BOOL:
         return "bool";
     case TokensTypes::TOKEN_STR:

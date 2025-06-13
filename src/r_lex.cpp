@@ -115,7 +115,6 @@ namespace Rythin
                     advance_tk();
                 }
                 return next_tk();
-
             case '#':
 
             {
@@ -375,6 +374,7 @@ namespace Rythin
             {"mkdir", TokensTypes::TOKEN_MKDIR},
             {"len", TokensTypes::TOKEN_LEN},
             {"i32", TokensTypes::TOKEN_INT_32},
+            {"i64", TokensTypes::TOKEN_INT_64},
             {"f", TokensTypes::TOKEN_FLOAT_IND},
             {"bool", TokensTypes::TOKEN_BOOL},
             {"str", TokensTypes::TOKEN_STR},
