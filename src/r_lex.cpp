@@ -65,7 +65,7 @@ namespace Rythin
                     advance_tk();
                 }
 
-                return Tokens(isFloat ? TokensTypes::TOKEN_FLOAT : TokensTypes::TOKEN_DOUBLE, numberStr, line, column);
+                return Tokens(isFloat ? TokensTypes::TOKEN_FLOAT_32 : TokensTypes::TOKEN_FLOAT_64, numberStr, line, column);
             }
 
             numberStr += digits();
@@ -94,11 +94,11 @@ namespace Rythin
             }
 
             if (isFloat)
-                return Tokens(TokensTypes::TOKEN_FLOAT, numberStr, line, column);
+                return Tokens(TokensTypes::TOKEN_FLOAT_32, numberStr, line, column);
             else if (isDouble)
-                return Tokens(TokensTypes::TOKEN_DOUBLE, numberStr, line, column);
+                return Tokens(TokensTypes::TOKEN_FLOAT_64, numberStr, line, column);
             else
-                return Tokens(TokensTypes::TOKEN_INT, numberStr, line, column);
+                return Tokens(TokensTypes::TOKEN_INT_32, numberStr, line, column);
         }
         else
         {
@@ -374,16 +374,15 @@ namespace Rythin
             {"fread", TokensTypes::TOKEN_FREAD},
             {"mkdir", TokensTypes::TOKEN_MKDIR},
             {"len", TokensTypes::TOKEN_LEN},
-            {"int", TokensTypes::TOKEN_INT},
+            {"i32", TokensTypes::TOKEN_INT_32},
             {"f", TokensTypes::TOKEN_FLOAT_IND},
             {"bool", TokensTypes::TOKEN_BOOL},
             {"str", TokensTypes::TOKEN_STR},
-            {"lint", TokensTypes::TOKEN_LONG_INT},
             {"obj", TokensTypes::TOKEN_OBJECT},
             {"func", TokensTypes::TOKEN_FUNC},
             {"char", TokensTypes::TOKEN_CHAR},
-            {"float", TokensTypes::TOKEN_FLOAT},
-            {"double", TokensTypes::TOKEN_DOUBLE},
+            {"f32", TokensTypes::TOKEN_FLOAT_32},
+            {"f64", TokensTypes::TOKEN_FLOAT_64},
             {"byte", TokensTypes::TOKEN_BYTES},
             {"print", TokensTypes::TOKEN_PRINT},
             {"printnl", TokensTypes::TOKEN_PRINT_NEW_LINE},
@@ -481,8 +480,9 @@ namespace Rythin
         }
         if (current_input == '\0')
         {
-            std::cerr << "[Error]: Unterminated string literal at line " << line << std::endl;
-            throw Excepts::SyntaxException("Unterminated string literal");
+            LogErrors::getInstance().addError("Unterminated string literal at line " + std::to_string(line) + " column " + std::to_string(column), 14);
+            LogErrors::getInstance().printAll();
+            throw std::runtime_error("Unterminated string literal");
         }
         advance_tk(); // skipping closing quotes
         return Tokens(TokensTypes::TOKEN_STRING_LITERAL, ivalue, line, column);
@@ -510,7 +510,9 @@ namespace Rythin
         }
         else
         {
-            std::cerr << "[Error]Unterminated interpolation at line " << line << " Column " << column << std::endl;
+            //std::cerr << "[Error]Unterminated interpolation at line " << line << " Column " << column << std::endl;
+            LogErrors::getInstance().addError("Unterminated interpolation at line " + std::to_string(line) + " column " + std::to_string(column), 14);
+            LogErrors::getInstance().printAll();
             throw std::runtime_error("Unterminated interpolation");
         }
     }

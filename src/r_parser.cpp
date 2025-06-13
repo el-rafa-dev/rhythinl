@@ -145,9 +145,9 @@ namespace Rythin
     ASTPtr Parser::ParseIntVal()
     {
         auto binop = std::make_shared<BinOp>();
-        if (check(TokensTypes::TOKEN_INT))
+        if (check(TokensTypes::TOKEN_INT_32))
         {
-            binop->left = std::make_shared<IntNode>(std::stoi(consume(TokensTypes::TOKEN_INT).value));
+            binop->left = std::make_shared<i32Node>(std::stoi(consume(TokensTypes::TOKEN_INT_32).value));
         }
         // check if have a binary operator (like +, /, -, *) after int value
         if (isBinaryOperator(current().type))
@@ -158,24 +158,24 @@ namespace Rythin
             {
 
             case TokensTypes::TOKEN_PLUS:
-                if (check(TokensTypes::TOKEN_INT))
+                if (check(TokensTypes::TOKEN_INT_32))
                 {
                     binop->op = TokensTypes::TOKEN_PLUS;
-                    binop->right = std::make_shared<IntNode>(std::stoi(consume(TokensTypes::TOKEN_INT).value));
+                    binop->right = std::make_shared<i32Node>(std::stoi(consume(TokensTypes::TOKEN_INT_32).value));
                     break;
                 }
 
-                else if (check(TokensTypes::TOKEN_FLOAT))
+                else if (check(TokensTypes::TOKEN_FLOAT_32))
                 {
                     binop->op = TokensTypes::TOKEN_PLUS;
-                    binop->right = std::make_shared<FloatNode>(std::stof(consume(TokensTypes::TOKEN_FLOAT).value));
+                    binop->right = std::make_shared<f32Node>(std::stof(consume(TokensTypes::TOKEN_FLOAT_32).value));
                     break;
                 }
 
-                else if (check(TokensTypes::TOKEN_DOUBLE))
+                else if (check(TokensTypes::TOKEN_FLOAT_64))
                 {
                     binop->op = TokensTypes::TOKEN_PLUS;
-                    binop->right = std::make_shared<DoubleNode>(std::stod(consume(TokensTypes::TOKEN_DOUBLE).value));
+                    binop->right = std::make_shared<f64Node>(std::stod(consume(TokensTypes::TOKEN_FLOAT_64).value));
                     break;
                 }
                 else if (check(TokensTypes::TOKEN_LPAREN))
@@ -204,24 +204,24 @@ namespace Rythin
                 }
 
             case TokensTypes::TOKEN_MINUS:
-                if (check(TokensTypes::TOKEN_INT))
+                if (check(TokensTypes::TOKEN_INT_32))
                 {
                     binop->op = TokensTypes::TOKEN_MINUS;
-                    binop->right = std::make_shared<IntNode>(std::stoi(consume(TokensTypes::TOKEN_INT).value));
+                    binop->right = std::make_shared<i32Node>(std::stoi(consume(TokensTypes::TOKEN_INT_32).value));
                     break;
                 }
 
-                else if (check(TokensTypes::TOKEN_FLOAT))
+                else if (check(TokensTypes::TOKEN_FLOAT_32))
                 {
                     binop->op = TokensTypes::TOKEN_MINUS;
-                    binop->right = std::make_shared<FloatNode>(std::stof(consume(TokensTypes::TOKEN_FLOAT).value));
+                    binop->right = std::make_shared<f32Node>(std::stof(consume(TokensTypes::TOKEN_FLOAT_32).value));
                     break;
                 }
 
-                else if (check(TokensTypes::TOKEN_DOUBLE))
+                else if (check(TokensTypes::TOKEN_FLOAT_64))
                 {
                     binop->op = TokensTypes::TOKEN_MINUS;
-                    binop->right = std::make_shared<DoubleNode>(std::stod(consume(TokensTypes::TOKEN_DOUBLE).value));
+                    binop->right = std::make_shared<f64Node>(std::stod(consume(TokensTypes::TOKEN_FLOAT_64).value));
                     break;
                 }
 
@@ -251,24 +251,24 @@ namespace Rythin
                 }
 
             case TokensTypes::TOKEN_DIVIDE:
-                if (check(TokensTypes::TOKEN_INT))
+                if (check(TokensTypes::TOKEN_INT_32))
                 {
                     binop->op = TokensTypes::TOKEN_MINUS;
-                    binop->right = std::make_shared<IntNode>(std::stoi(consume(TokensTypes::TOKEN_INT).value));
+                    binop->right = std::make_shared<i32Node>(std::stoi(consume(TokensTypes::TOKEN_INT_32).value));
                     break;
                 }
 
-                else if (check(TokensTypes::TOKEN_FLOAT))
+                else if (check(TokensTypes::TOKEN_FLOAT_32))
                 {
                     binop->op = TokensTypes::TOKEN_DIVIDE;
-                    binop->right = std::make_shared<FloatNode>(std::stof(consume(TokensTypes::TOKEN_FLOAT).value));
+                    binop->right = std::make_shared<f32Node>(std::stof(consume(TokensTypes::TOKEN_FLOAT_32).value));
                     break;
                 }
 
-                else if (check(TokensTypes::TOKEN_DOUBLE))
+                else if (check(TokensTypes::TOKEN_FLOAT_64))
                 {
                     binop->op = TokensTypes::TOKEN_DIVIDE;
-                    binop->right = std::make_shared<DoubleNode>(std::stod(consume(TokensTypes::TOKEN_DOUBLE).value));
+                    binop->right = std::make_shared<f64Node>(std::stod(consume(TokensTypes::TOKEN_FLOAT_64).value));
                     break;
                 }
 
@@ -298,23 +298,23 @@ namespace Rythin
                 }
 
             case TokensTypes::TOKEN_MULTIPLY:
-                if (check(TokensTypes::TOKEN_INT))
+                if (check(TokensTypes::TOKEN_INT_32))
                 {
                     binop->op = TokensTypes::TOKEN_MULTIPLY;
-                    binop->right = std::make_shared<IntNode>(std::stoi(consume(TokensTypes::TOKEN_INT).value));
+                    binop->right = std::make_shared<i32Node>(std::stoi(consume(TokensTypes::TOKEN_INT_32).value));
                     break;
                 }
-                else if (check(TokensTypes::TOKEN_FLOAT))
+                else if (check(TokensTypes::TOKEN_FLOAT_32))
                 {
                     binop->op = TokensTypes::TOKEN_MULTIPLY;
-                    binop->right = std::make_shared<FloatNode>(std::stof(consume(TokensTypes::TOKEN_FLOAT).value));
+                    binop->right = std::make_shared<f32Node>(std::stof(consume(TokensTypes::TOKEN_FLOAT_32).value));
                     break;
                 }
 
-                else if (check(TokensTypes::TOKEN_DOUBLE))
+                else if (check(TokensTypes::TOKEN_FLOAT_64))
                 {
                     binop->op = TokensTypes::TOKEN_MULTIPLY;
-                    binop->right = std::make_shared<DoubleNode>(std::stod(consume(TokensTypes::TOKEN_DOUBLE).value));
+                    binop->right = std::make_shared<f64Node>(std::stod(consume(TokensTypes::TOKEN_FLOAT_64).value));
                     break;
                 }
 
@@ -357,18 +357,15 @@ namespace Rythin
         // consuming the left value
         switch (current().type)
         {
-        case TokensTypes::TOKEN_INT:
-            bin->left = std::make_shared<IntNode>(std::stoi(consume(TokensTypes::TOKEN_INT).value));
+        case TokensTypes::TOKEN_INT_32:
+            bin->left = std::make_shared<i32Node>(std::stoi(consume(TokensTypes::TOKEN_INT_32).value));
             // bin->left = ParseIntVal();
             break;
-        case TokensTypes::TOKEN_LONG_INT:
-            bin->left = std::make_shared<LIntNode>(std::stoll(consume(TokensTypes::TOKEN_LONG_INT).value));
+        case TokensTypes::TOKEN_FLOAT_32:
+            bin->left = std::make_shared<f32Node>(std::stof(consume(TokensTypes::TOKEN_FLOAT_32).value));
             break;
-        case TokensTypes::TOKEN_FLOAT:
-            bin->left = std::make_shared<FloatNode>(std::stof(consume(TokensTypes::TOKEN_FLOAT).value));
-            break;
-        case TokensTypes::TOKEN_DOUBLE:
-            bin->left = std::make_shared<DoubleNode>(std::stod(consume(TokensTypes::TOKEN_DOUBLE).value));
+        case TokensTypes::TOKEN_FLOAT_64:
+            bin->left = std::make_shared<f64Node>(std::stod(consume(TokensTypes::TOKEN_FLOAT_64).value));
             break;
         case TokensTypes::TOKEN_IDENTIFIER:
 
@@ -403,17 +400,14 @@ namespace Rythin
             // now will parse the right value if have the binary operator, if don't have, throw a exception like SyntaxeException or other avaliable types
             switch (current().type)
             {
-            case TokensTypes::TOKEN_INT:
-                bin->right = std::make_shared<IntNode>(std::stoi(consume(TokensTypes::TOKEN_INT).value));
+            case TokensTypes::TOKEN_INT_32:
+                bin->right = std::make_shared<i32Node>(std::stoi(consume(TokensTypes::TOKEN_INT_32).value));
                 break;
-            case TokensTypes::TOKEN_LONG_INT:
-                bin->right = std::make_shared<LIntNode>(std::stoll(consume(TokensTypes::TOKEN_LONG_INT).value));
+            case TokensTypes::TOKEN_FLOAT_32:
+                bin->right = std::make_shared<f32Node>(std::stof(consume(TokensTypes::TOKEN_FLOAT_32).value));
                 break;
-            case TokensTypes::TOKEN_FLOAT:
-                bin->right = std::make_shared<FloatNode>(std::stof(consume(TokensTypes::TOKEN_FLOAT).value));
-                break;
-            case TokensTypes::TOKEN_DOUBLE:
-                bin->right = std::make_shared<DoubleNode>(std::stod(consume(TokensTypes::TOKEN_DOUBLE).value));
+            case TokensTypes::TOKEN_FLOAT_64:
+                bin->right = std::make_shared<f64Node>(std::stod(consume(TokensTypes::TOKEN_FLOAT_64).value));
                 break;
             case TokensTypes::TOKEN_IDENTIFIER:
                 // check if is a variable call (like 'function()')
@@ -499,14 +493,14 @@ namespace Rythin
                     exp_node->type = consume(current().type).type;
                     switch (consume(current().type).type)
                     {
-                    case TokensTypes::TOKEN_INT:
-                        exp_node->val = std::make_shared<IntNode>(std::stoi(consume(current().type).value));
+                    case TokensTypes::TOKEN_INT_32:
+                        exp_node->val = std::make_shared<i32Node>(std::stoi(consume(current().type).value));
                         break;
-                    case TokensTypes::TOKEN_FLOAT:
-                        exp_node->val = std::make_shared<FloatNode>(std::stof(consume(current().type).value));
+                    case TokensTypes::TOKEN_FLOAT_32:
+                        exp_node->val = std::make_shared<f32Node>(std::stof(consume(current().type).value));
                         break;
-                    case TokensTypes::TOKEN_DOUBLE:
-                        exp_node->val = std::make_shared<DoubleNode>(std::stod(consume(current().type).value));
+                    case TokensTypes::TOKEN_FLOAT_64:
+                        exp_node->val = std::make_shared<f64Node>(std::stod(consume(current().type).value));
                         break;
                     }
                 }
@@ -560,7 +554,7 @@ namespace Rythin
 
             if (check(TokensTypes::TOKEN_COMMA))
             {
-                return std::make_shared<CinputNode>(msg, std::stoi(consume(TokensTypes::TOKEN_INT).value));
+                return std::make_shared<CinputNode>(msg, std::stoi(consume(TokensTypes::TOKEN_INT_32).value));
             }
         }
         consume(TokensTypes::TOKEN_RPAREN);
@@ -632,14 +626,14 @@ namespace Rythin
         case TokensTypes::TOKEN_BOOL:
             tk = consume(TokensTypes::TOKEN_BOOL).type;
             break;
-        case TokensTypes::TOKEN_INT:
-            tk = consume(TokensTypes::TOKEN_INT).type;
+        case TokensTypes::TOKEN_INT_32:
+            tk = consume(TokensTypes::TOKEN_INT_32).type;
             break;
-        case TokensTypes::TOKEN_FLOAT:
-            tk = consume(TokensTypes::TOKEN_FLOAT).type;
+        case TokensTypes::TOKEN_FLOAT_32:
+            tk = consume(TokensTypes::TOKEN_FLOAT_32).type;
             break;
-        case TokensTypes::TOKEN_DOUBLE:
-            tk = consume(TokensTypes::TOKEN_DOUBLE).type;
+        case TokensTypes::TOKEN_FLOAT_64:
+            tk = consume(TokensTypes::TOKEN_FLOAT_64).type;
             break;
         case TokensTypes::TOKEN_STR:
             tk = consume(TokensTypes::TOKEN_STR).type;
@@ -649,9 +643,6 @@ namespace Rythin
             break;
         case TokensTypes::TOKEN_OBJECT:
             tk = consume(TokensTypes::TOKEN_OBJECT).type;
-            break;
-        case TokensTypes::TOKEN_LONG_INT:
-            tk = consume(TokensTypes::TOKEN_LONG_INT).type;
             break;
         default:
             //don't have support imediatelly for identifiers..
@@ -685,30 +676,30 @@ namespace Rythin
         case TokensTypes::TOKEN_MINUS:
             consume(TokensTypes::TOKEN_MINUS);
             return ParseNegativeVals(consume(current().type).type);
-        case TokensTypes::TOKEN_INT:
+        case TokensTypes::TOKEN_INT_32:
         {
             return ParseIntVal();
         }
-        case TokensTypes::TOKEN_FLOAT:
-            if (check(TokensTypes::TOKEN_FLOAT))
+        case TokensTypes::TOKEN_FLOAT_32:
+            if (check(TokensTypes::TOKEN_FLOAT_32))
             {
-                return std::make_shared<FloatNode>(std::stof(consume(TokensTypes::TOKEN_FLOAT).value));
+                return std::make_shared<f32Node>(std::stof(consume(TokensTypes::TOKEN_FLOAT_32).value));
             }
-            else if (check(TokensTypes::TOKEN_DOUBLE))
+            else if (check(TokensTypes::TOKEN_FLOAT_64))
             {
                 LogErrors::getInstance().addWarning("Using double as float at line " + std::to_string(current().line) + " column " + std::to_string(current().column), 6);
-                return std::make_shared<FloatNode>(std::stof(consume(TokensTypes::TOKEN_DOUBLE).value));
+                return std::make_shared<f64Node>(std::stof(consume(TokensTypes::TOKEN_FLOAT_64).value));
             }
 
-        case TokensTypes::TOKEN_DOUBLE:
-            if (check(TokensTypes::TOKEN_DOUBLE))
+        case TokensTypes::TOKEN_FLOAT_64:
+            if (check(TokensTypes::TOKEN_FLOAT_64))
             {
-                return std::make_shared<DoubleNode>(std::stod(consume(TokensTypes::TOKEN_DOUBLE).value));
+                return std::make_shared<f64Node>(std::stod(consume(TokensTypes::TOKEN_FLOAT_64).value));
             }
-            else if (check(TokensTypes::TOKEN_FLOAT))
+            else if (check(TokensTypes::TOKEN_FLOAT_32))
             {
                 LogErrors::getInstance().addWarning("Using float as double at line " + std::to_string(current().line) + " column " + std::to_string(current().column), 7);
-                return std::make_shared<DoubleNode>(std::stod(consume(TokensTypes::TOKEN_FLOAT).value));
+                return std::make_shared<f64Node>(std::stod(consume(TokensTypes::TOKEN_FLOAT_32).value));
             }
         case TokensTypes::TOKEN_BYTES:
         {
@@ -723,34 +714,24 @@ namespace Rythin
             {
                 val = static_cast<unsigned char>(lit_val);
             }
-            if (!check(TokensTypes::TOKEN_INT))
+            if (!check(TokensTypes::TOKEN_INT_32))
                 LogErrors::getInstance().addError("", 26);
-            consume(TokensTypes::TOKEN_INT);
+            consume(TokensTypes::TOKEN_INT_32);
             return std::make_shared<ByteNode>(val);
         }
-        case TokensTypes::TOKEN_LONG_INT:
-            if (std::stoll(current().value) < (-9223372036854775807) || std::stoll(current().value) > (9223372036854775807))
-            {
-                std::cerr << "[Warning]: Value " << std::stoll(current().value) << " out of range at line " << current().line << " column " << current().column << std::endl;
-                throw Excepts::CompilationException("Index out of range");
-            }
-            else
-            {
-                return ParseIntVal();
-            }
 
         case TokensTypes::TOKEN_NIL:
             consume(TokensTypes::TOKEN_NIL);
             return std::make_shared<NilNode>();
         case TokensTypes::TOKEN_OBJECT:
-            if (check(TokensTypes::TOKEN_INT))
+            if (check(TokensTypes::TOKEN_INT_32))
             {
-                auto ptr = std::make_shared<IntNode>(std::stoi(consume(current().type).value));
+                auto ptr = std::make_shared<i32Node>(std::stoi(consume(current().type).value));
                 return std::make_shared<ObjectNode>(ptr);
             }
-            else if (check(TokensTypes::TOKEN_DOUBLE))
+            else if (check(TokensTypes::TOKEN_FLOAT_64))
             {
-                auto ptr = std::make_shared<DoubleNode>(std::stod(consume(current().type).value));
+                auto ptr = std::make_shared<f64Node>(std::stod(consume(current().type).value));
                 return std::make_shared<ObjectNode>(ptr);
             }
             else if (check(TokensTypes::TOKEN_STR))
@@ -758,9 +739,9 @@ namespace Rythin
                 auto ptr = std::make_shared<LiteralNode>(consume(current().type).value);
                 return std::make_shared<ObjectNode>(ptr);
             }
-            else if (check(TokensTypes::TOKEN_FLOAT))
+            else if (check(TokensTypes::TOKEN_FLOAT_32))
             {
-                auto ptr = std::make_shared<FloatNode>(std::stof(consume(current().type).value));
+                auto ptr = std::make_shared<f32Node>(std::stof(consume(current().type).value));
                 return std::make_shared<ObjectNode>(ptr);
             }
         case TokensTypes::TOKEN_BOOL:
@@ -784,10 +765,10 @@ namespace Rythin
     {
         switch (curr)
         {
-        case TokensTypes::TOKEN_INT:
+        case TokensTypes::TOKEN_INT_32:
             try
             {
-                return std::make_shared<IntNode>(+std::stoi(consume(TokensTypes::TOKEN_INT).value));
+                return std::make_shared<i32Node>(+std::stoi(consume(TokensTypes::TOKEN_INT_32).value));
             }
             catch (std::out_of_range e)
             {
@@ -795,10 +776,10 @@ namespace Rythin
                 throw std::out_of_range("Index out of range");
             }
 
-        case TokensTypes::TOKEN_DOUBLE:
-            return std::make_shared<DoubleNode>(+std::stod(consume(current().type).value));
-        case TokensTypes::TOKEN_FLOAT:
-            return std::make_shared<FloatNode>(+std::stof(consume(current().type).value));
+        case TokensTypes::TOKEN_FLOAT_64:
+            return std::make_shared<f64Node>(+std::stod(consume(current().type).value));
+        case TokensTypes::TOKEN_FLOAT_32:
+            return std::make_shared<f32Node>(+std::stof(consume(current().type).value));
         default:
             throw Excepts::CompilationException("Invalid positive type");
         }
@@ -808,10 +789,10 @@ namespace Rythin
     {
         switch (tks)
         {
-        case TokensTypes::TOKEN_INT:
+        case TokensTypes::TOKEN_INT_32:
             try
             {
-                return std::make_shared<IntNode>(-std::stoi(consume(TokensTypes::TOKEN_INT).value));
+                return std::make_shared<i32Node>(-std::stoi(consume(TokensTypes::TOKEN_INT_32).value));
             }
             catch (std::out_of_range e)
             {
@@ -819,10 +800,10 @@ namespace Rythin
                 throw std::out_of_range("Index out of range");
             }
 
-        case TokensTypes::TOKEN_DOUBLE:
-            return std::make_shared<DoubleNode>(-std::stod(consume(current().type).value));
-        case TokensTypes::TOKEN_FLOAT:
-            return std::make_shared<FloatNode>(-std::stof(consume(current().type).value));
+        case TokensTypes::TOKEN_FLOAT_64:
+            return std::make_shared<f64Node>(-std::stod(consume(current().type).value));
+        case TokensTypes::TOKEN_FLOAT_32:
+            return std::make_shared<f32Node>(-std::stof(consume(current().type).value));
         default:
             throw Excepts::CompilationException("Invalid negative type");
         }
@@ -852,14 +833,14 @@ namespace Rythin
         TokensTypes type;
         switch (current().type)
         {
-        case TokensTypes::TOKEN_INT:
-            type = consume(TokensTypes::TOKEN_INT).type;
+        case TokensTypes::TOKEN_INT_32:
+            type = consume(TokensTypes::TOKEN_INT_32).type;
             break;
-        case TokensTypes::TOKEN_FLOAT:
-            type = consume(TokensTypes::TOKEN_FLOAT).type;
+        case TokensTypes::TOKEN_FLOAT_32:
+            type = consume(TokensTypes::TOKEN_FLOAT_32).type;
             break;
-        case TokensTypes::TOKEN_DOUBLE:
-            type = consume(TokensTypes::TOKEN_DOUBLE).type;
+        case TokensTypes::TOKEN_FLOAT_64:
+            type = consume(TokensTypes::TOKEN_FLOAT_64).type;
             break;
         default:
             LogErrors::getInstance().addError("Loop expression only accepts number types (int, float, double)", 23);
@@ -869,14 +850,14 @@ namespace Rythin
         ASTPtr val;
         switch (current().type)
         {
-        case TokensTypes::TOKEN_INT:
-            val = std::make_shared<IntNode>(std::stoi(consume(TokensTypes::TOKEN_INT).value));
+        case TokensTypes::TOKEN_INT_32:
+            val = std::make_shared<i32Node>(std::stoi(consume(TokensTypes::TOKEN_INT_32).value));
             break;
-        case TokensTypes::TOKEN_FLOAT:
-            val = std::make_shared<FloatNode>(std::stof(consume(TokensTypes::TOKEN_FLOAT).value));
+        case TokensTypes::TOKEN_FLOAT_32:
+            val = std::make_shared<f32Node>(std::stof(consume(TokensTypes::TOKEN_FLOAT_32).value));
             break;
-        case TokensTypes::TOKEN_DOUBLE:
-            val = std::make_shared<DoubleNode>(std::stod(consume(TokensTypes::TOKEN_DOUBLE).value));
+        case TokensTypes::TOKEN_FLOAT_64:
+            val = std::make_shared<f64Node>(std::stod(consume(TokensTypes::TOKEN_FLOAT_64).value));
             break;
         default:
             LogErrors::getInstance().addError("Invalid type for loop expression", 23);

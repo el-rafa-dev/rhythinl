@@ -65,7 +65,6 @@ namespace Rythin
         TokensTypes op; // operators
         ASTPtr left;    //left value
         ASTPtr right;   //right value
-        //BinOp(TokensTypes op, ASTPtr left, ASTPtr right) : op(op), left(left), right(right) {}
     };
 
     //the variable call node
@@ -73,8 +72,6 @@ namespace Rythin
     {
         std::string name;
         std::vector<ASTPtr> args;
-        /*VariableNode(const std::string& val) : val(val) {}
-        VariableNode(const std::string& val, std::vector<ASTPtr> args) : val(val), args(args) {}*/
     };
 
     struct LiteralNode : public ASTNode
@@ -103,31 +100,25 @@ namespace Rythin
         LoopNode(std::string var_name, TokensTypes type, ASTPtr value, ASTPtr block) : var_name(var_name), type(type), block(block) {}
     };
 
-    struct IntNode : public ASTNode
+    struct InterpolationNode : public ASTNode
     {
-        int val;
-        IntNode(int v) : val(v) {
-            //tests
-            std::cout << "Int val: " << std::to_string(val) << std::endl;
+        std::string val; // <-
+        std::string var_name; // gets the var/function and return the value to the val
+    };
+
+
+    struct i32Node : public ASTNode
+    {
+        int32_t val;
+        i32Node(int32_t val) : val(val) {
+            std::cout << "i32 value: " << std::to_string(val) << std::endl;
         }
     };
 
-    struct InterpolationNode : public ASTNode
+    struct i64Node : public ASTNode
     {
-        std::string val;
-        std::string var_name;
-    };
-
-    struct LIntNode : public ASTNode
-    {
-        long int val;
-        LIntNode(int val) : val(val) {}
-    };
-
-    struct LLIntNode : public ASTNode
-    {
-        long long int val;
-        LLIntNode(int val) : val(val) {}
+        int64_t val;
+        i64Node(int64_t val) : val(val) {}
     };
 
     struct ByteNode : public ASTNode
@@ -136,16 +127,18 @@ namespace Rythin
         ByteNode(unsigned char by) : byte(by) {}
     };
 
-    struct DoubleNode : public ASTNode
+
+    struct f64Node : public ASTNode
     {
+        //double is a float thats supports 8 bytes (or 64 bits)
         double val;
-        DoubleNode(double val) : val(val) {}
+        f64Node(double val) : val(val) {}
     };
 
-    struct FloatNode : public ASTNode
+    struct f32Node : public ASTNode
     {
         float val;
-        FloatNode(float val) : val(val) {}
+        f32Node(float val) : val(val) {}
     };
 
     struct TrueOrFalseNode : public ASTNode

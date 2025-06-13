@@ -139,22 +139,20 @@ std::string Tokens::tokenTypeToString(TokensTypes type)
         return "mkdir";
     case TokensTypes::TOKEN_LEN:
         return "len";
-    case TokensTypes::TOKEN_INT:
-        return "int";
+    case TokensTypes::TOKEN_INT_32:
+        return "i32";
     case TokensTypes::TOKEN_BOOL:
         return "bool";
     case TokensTypes::TOKEN_STR:
         return "str";
-    case TokensTypes::TOKEN_LONG_INT:
-        return "lint";
     case TokensTypes::TOKEN_FUNC:
         return "func";
     case TokensTypes::TOKEN_CHAR:
         return "char";
-    case TokensTypes::TOKEN_FLOAT:
-        return "float";
-    case TokensTypes::TOKEN_DOUBLE:
-        return "double";
+    case TokensTypes::TOKEN_FLOAT_32:
+        return "f32";
+    case TokensTypes::TOKEN_FLOAT_64:
+        return "f64";
     case TokensTypes::TOKEN_OBJECT:
         return "obj";
     case TokensTypes::TOKEN_BYTES:
