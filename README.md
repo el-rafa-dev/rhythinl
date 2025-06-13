@@ -27,9 +27,6 @@ def main:func() -> [
 ]
 ```
 
-## Supporting
-Go to [support.md](./SUPPORT.md) to see how support the project
-
 ## Building on Linux
 To build and run the project on linux, do this below:
 ```
@@ -44,6 +41,8 @@ make
 ```
 The build will be finished and you can run the Rhythin file with ```./rhythin```
 
+## Supporting
+Go to [support.md](./SUPPORT.md) to see how support the project
 
 ## License
 
