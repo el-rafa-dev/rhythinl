@@ -27,6 +27,24 @@ def main:func() -> [
 ]
 ```
 
+## Supporting
+Go to [support.md](./SUPPORT.md) to see how support the project
+
+## Building on Linux
+To build and run the project on linux, do this below:
+```
+mkdir CLionProjects && cd CLionProjects
+git clone https://github.com/el-rafa-dev/rhythinl.git
+
+//use mv to rename the folder or rename manually
+mv ./rhythinl Rhythin && cd Rhythin
+cmake CMakeLists.txt
+make
+
+```
+The build will be finished and you can run the Rhythin file with ```./rhythin```
+
+
 ## License
 
 ```
@@ -52,23 +70,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
-## Supporting
-Go to [support.md](./SUPPORT.md) to see how support the project
-
-## Building on Linux
-To build and run the project on linux, do this below:
-```
-mkdir CLionProjects && cd CLionProjects
-git clone https://github.com/el-rafa-dev/rhythinl.git
-
-//use mv to rename the folder or rename manually
-mv ./rhythinl Rhythin && cd Rhythin
-cmake CMakeLists.txt
-make
-
-```
-The build will be finished and you can run the Rhythin file with ```./rhythin```
-
 
 ## Contact
 Contact with me via telegram! My user id: [@rafaprobr](https://t.me/rafaprobr)
