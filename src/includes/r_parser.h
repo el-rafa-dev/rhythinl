@@ -40,6 +40,7 @@ namespace Rythin {
         ASTPtr ParseNegativeVals(TokensTypes curr);
         ASTPtr ParseVarDeclaration();
         ASTPtr ParsedArith();
+        ASTPtr ParseNumeralExpression();
         //ASTPtr Parse
         ASTPtr ParseIntVal(); /// to parse the int or arithmetic or others types of expressions like division or addition values
 

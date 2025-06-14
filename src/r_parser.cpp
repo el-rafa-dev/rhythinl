@@ -128,6 +128,7 @@ namespace Rythin
         auto type = consume(current().type).type;
         consume(TokensTypes::TOKEN_LPAREN);
         std::vector<ASTPtr> args;
+
         while (!check(TokensTypes::TOKEN_RPAREN))
         {
             args.push_back(ParseFuncExpressions());
@@ -147,297 +148,76 @@ namespace Rythin
 
     ASTPtr Parser::ParseIntVal()
     {
-        auto binop = std::make_shared<BinOp>();
-        if (check(TokensTypes::TOKEN_INT_32))
+       
+        ASTPtr left;
+        TokensTypes tk;
+        ASTPtr right;
+
+        while (check(TokensTypes::TOKEN_INT_32) or check(TokensTypes::TOKEN_INT_64))
         {
-            binop->left = std::make_shared<i32Node>(std::stoi(consume(TokensTypes::TOKEN_INT_32).value));
+            left = ParseNumeralExpression();
+            break;
         }
         // check if have a binary operator (like +, /, -, *) after int value
         if (isBinaryOperator(current().type))
         {
             // TODO: add more binary types for the switch cases
-
+            TokensTypes ctk;
             switch (consume(current().type).type)
             {
-
             case TokensTypes::TOKEN_PLUS:
-                if (check(TokensTypes::TOKEN_INT_32))
-                {
-                    binop->op = TokensTypes::TOKEN_PLUS;
-                    binop->right = std::make_shared<i32Node>(std::stoi(consume(TokensTypes::TOKEN_INT_32).value));
-                    break;
-                }
-
-                else if (check(TokensTypes::TOKEN_FLOAT_32))
-                {
-                    binop->op = TokensTypes::TOKEN_PLUS;
-                    binop->right = std::make_shared<f32Node>(std::stof(consume(TokensTypes::TOKEN_FLOAT_32).value));
-                    break;
-                }
-
-                else if (check(TokensTypes::TOKEN_FLOAT_64))
-                {
-                    binop->op = TokensTypes::TOKEN_PLUS;
-                    binop->right = std::make_shared<f64Node>(std::stod(consume(TokensTypes::TOKEN_FLOAT_64).value));
-                    break;
-                }
-                else if (check(TokensTypes::TOKEN_LPAREN))
-                {
-                    consume(TokensTypes::TOKEN_LPAREN);
-                    do
-                    {
-
-                        binop->op = TokensTypes::TOKEN_PLUS;
-                        binop->right = ParsedArith();
-                        while (isBinaryOperator(current().type))
-                        {
-                            binop->right = ParsedArith();
-                        }
-
-                    } while (!check(TokensTypes::TOKEN_RPAREN));
-                    consume(TokensTypes::TOKEN_RPAREN);
-                    break;
-                }
-
-                else
-                {
-                    LogErrors::getInstance().addError("Expected a number/variable name after binary operator", 1);
-                    LogErrors::getInstance().printAll();
-                    throw Excepts::SyntaxException("Invalid expression");
-                }
-
+                ctk = TokensTypes::TOKEN_PLUS;
+                break;
             case TokensTypes::TOKEN_MINUS:
-                if (check(TokensTypes::TOKEN_INT_32))
-                {
-                    binop->op = TokensTypes::TOKEN_MINUS;
-                    binop->right = std::make_shared<i32Node>(std::stoi(consume(TokensTypes::TOKEN_INT_32).value));
-                    break;
-                }
-
-                else if (check(TokensTypes::TOKEN_FLOAT_32))
-                {
-                    binop->op = TokensTypes::TOKEN_MINUS;
-                    binop->right = std::make_shared<f32Node>(std::stof(consume(TokensTypes::TOKEN_FLOAT_32).value));
-                    break;
-                }
-
-                else if (check(TokensTypes::TOKEN_FLOAT_64))
-                {
-                    binop->op = TokensTypes::TOKEN_MINUS;
-                    binop->right = std::make_shared<f64Node>(std::stod(consume(TokensTypes::TOKEN_FLOAT_64).value));
-                    break;
-                }
-
-                else if (check(TokensTypes::TOKEN_LPAREN))
-                {
-                    consume(TokensTypes::TOKEN_LPAREN);
-                    do
-                    {
-
-                        binop->op = TokensTypes::TOKEN_MINUS;
-                        binop->right = ParsedArith();
-                        while (isBinaryOperator(current().type))
-                        {
-                            binop->right = ParsedArith();
-                        }
-
-                    } while (!check(TokensTypes::TOKEN_RPAREN));
-                    consume(TokensTypes::TOKEN_RPAREN);
-                    break;
-                }
-
-                else
-                {
-                    LogErrors::getInstance().addError("Expected a number/variable name after binary operator", 1);
-                    LogErrors::getInstance().printAll();
-                    throw Excepts::SyntaxException("Invalid expression");
-                }
-
-            case TokensTypes::TOKEN_DIVIDE:
-                if (check(TokensTypes::TOKEN_INT_32))
-                {
-                    binop->op = TokensTypes::TOKEN_MINUS;
-                    binop->right = std::make_shared<i32Node>(std::stoi(consume(TokensTypes::TOKEN_INT_32).value));
-                    break;
-                }
-
-                else if (check(TokensTypes::TOKEN_FLOAT_32))
-                {
-                    binop->op = TokensTypes::TOKEN_DIVIDE;
-                    binop->right = std::make_shared<f32Node>(std::stof(consume(TokensTypes::TOKEN_FLOAT_32).value));
-                    break;
-                }
-
-                else if (check(TokensTypes::TOKEN_FLOAT_64))
-                {
-                    binop->op = TokensTypes::TOKEN_DIVIDE;
-                    binop->right = std::make_shared<f64Node>(std::stod(consume(TokensTypes::TOKEN_FLOAT_64).value));
-                    break;
-                }
-
-                else if (check(TokensTypes::TOKEN_LPAREN))
-                {
-                    consume(TokensTypes::TOKEN_LPAREN);
-                    do
-                    {
-
-                        binop->op = TokensTypes::TOKEN_DIVIDE;
-                        binop->right = ParsedArith();
-                        while (isBinaryOperator(current().type))
-                        {
-                            binop->right = ParsedArith();
-                        }
-
-                    } while (!check(TokensTypes::TOKEN_RPAREN));
-                    consume(TokensTypes::TOKEN_RPAREN);
-                    break;
-                }
-
-                else
-                {
-                    LogErrors::getInstance().addError("Expected a number/variable name after binary operator", 1);
-                    LogErrors::getInstance().printAll();
-                    throw Excepts::SyntaxException("Invalid expression");
-                }
-
+                ctk = TokensTypes::TOKEN_MINUS;
+                break;
             case TokensTypes::TOKEN_MULTIPLY:
-                if (check(TokensTypes::TOKEN_INT_32))
-                {
-                    binop->op = TokensTypes::TOKEN_MULTIPLY;
-                    binop->right = std::make_shared<i32Node>(std::stoi(consume(TokensTypes::TOKEN_INT_32).value));
-                    break;
-                }
-                else if (check(TokensTypes::TOKEN_FLOAT_32))
-                {
-                    binop->op = TokensTypes::TOKEN_MULTIPLY;
-                    binop->right = std::make_shared<f32Node>(std::stof(consume(TokensTypes::TOKEN_FLOAT_32).value));
-                    break;
-                }
+                ctk = TokensTypes::TOKEN_MULTIPLY;
+                break;
+            case TokensTypes::TOKEN_DIVIDE:
+                ctk = TokensTypes::TOKEN_DIVIDE;
+                break;
+            }
 
-                else if (check(TokensTypes::TOKEN_FLOAT_64))
-                {
-                    binop->op = TokensTypes::TOKEN_MULTIPLY;
-                    binop->right = std::make_shared<f64Node>(std::stod(consume(TokensTypes::TOKEN_FLOAT_64).value));
-                    break;
-                }
+            // debug
+            // std::cout << "Current type " << Tokens::tokenTypeToString(ctk) << std::endl;
 
-                else if (check(TokensTypes::TOKEN_LPAREN))
+            switch (current().type)
+            {
+            case TokensTypes::TOKEN_INT_32:
+            case TokensTypes::TOKEN_INT_64:
+            case TokensTypes::TOKEN_FLOAT_32:
+            case TokensTypes::TOKEN_FLOAT_64:
+                tk = ctk;
+                right = ParseNumeralExpression();
+                break;
+            case TokensTypes::TOKEN_LPAREN:
+                consume(TokensTypes::TOKEN_LPAREN);
+                do
                 {
-                    consume(TokensTypes::TOKEN_LPAREN);
-                    do
+                    tk = ctk;
+                    right = ParseIntVal();
+                    while (isBinaryOperator(current().type))
                     {
+                        tk = consume(current().type).type;;
+                        right = ParseIntVal();
+                        //binop->right = ParsedArith();
+                    }
 
-                        binop->op = TokensTypes::TOKEN_MULTIPLY;
-                        binop->right = ParsedArith();
-                        while (isBinaryOperator(current().type))
-                        {
-                            binop->right = ParsedArith();
-                        }
-
-                    } while (!check(TokensTypes::TOKEN_RPAREN));
-                    consume(TokensTypes::TOKEN_RPAREN);
-                    break;
-                }
-                else
-                {
-                    LogErrors::getInstance().addError("Expected a number/variable name after binary operator", 1);
-                    LogErrors::getInstance().printAll();
-                    throw Excepts::SyntaxException("Invalid expression");
-                }
+                } while (!check(TokensTypes::TOKEN_RPAREN));
+                consume(TokensTypes::TOKEN_RPAREN);
+                break;
+            default:
+                LogErrors::getInstance().addError("Expected a number/variable name after binary operator", 1);
+                LogErrors::getInstance().printAll();
+                throw Excepts::SyntaxException("Invalid expression");
             }
         }
         while (isBinaryOperator(current().type))
         {
             return ParseIntVal();
         }
-        return binop;
-    }
-
-    ASTPtr Parser::ParsedArith()
-    {
-        // int val = std::stoi(consume(current().type).value);
-        auto bin = std::make_shared<BinOp>();
-        // consuming the left value
-        switch (current().type)
-        {
-        case TokensTypes::TOKEN_INT_32:
-            bin->left = std::make_shared<i32Node>(std::stoi(consume(TokensTypes::TOKEN_INT_32).value));
-            // bin->left = ParseIntVal();
-            break;
-        case TokensTypes::TOKEN_FLOAT_32:
-            bin->left = std::make_shared<f32Node>(std::stof(consume(TokensTypes::TOKEN_FLOAT_32).value));
-            break;
-        case TokensTypes::TOKEN_FLOAT_64:
-            bin->left = std::make_shared<f64Node>(std::stod(consume(TokensTypes::TOKEN_FLOAT_64).value));
-            break;
-        case TokensTypes::TOKEN_IDENTIFIER:
-
-            // check if is a variable call (like 'function()'). this will passed to variablenode that is the node of variablecall
-            {
-                auto var_node = std::make_shared<VariableNode>();
-                var_node->name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
-
-                if (check(TokensTypes::TOKEN_LPAREN))
-                {
-                    consume(TokensTypes::TOKEN_LPAREN);
-                    while (!check(TokensTypes::TOKEN_RPAREN))
-                    {
-                        // add the parse func expression to args vector list. this will parse the expressions like (function("call") for the defined function(arg:str) by example)
-                        var_node->args.push_back(ParseFuncExpressions());
-                        if (check(TokensTypes::TOKEN_COMMA))
-                        {
-                            var_node->args.push_back(ParseFuncExpressions());
-                            consume(TokensTypes::TOKEN_RPAREN);
-                        }
-                        
-                    }
-                }
-                // transfer the variablenode to the Node left and break the switch
-                bin->left = var_node;
-                break;
-            }
-        }
-        if (isBinaryOperator(current().type))
-        {
-            bin->op = consume(current().type).type;
-            // now will parse the right value if have the binary operator, if don't have, throw a exception like SyntaxeException or other avaliable types
-            switch (current().type)
-            {
-            case TokensTypes::TOKEN_INT_32:
-                bin->right = std::make_shared<i32Node>(std::stoi(consume(TokensTypes::TOKEN_INT_32).value));
-                break;
-            case TokensTypes::TOKEN_FLOAT_32:
-                bin->right = std::make_shared<f32Node>(std::stof(consume(TokensTypes::TOKEN_FLOAT_32).value));
-                break;
-            case TokensTypes::TOKEN_FLOAT_64:
-                bin->right = std::make_shared<f64Node>(std::stod(consume(TokensTypes::TOKEN_FLOAT_64).value));
-                break;
-            case TokensTypes::TOKEN_IDENTIFIER:
-                // check if is a variable call (like 'function()')
-                {
-                    auto var_node = std::make_shared<VariableNode>();
-                    var_node->name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
-
-                    if (check(TokensTypes::TOKEN_LPAREN))
-                    {
-                        while (!check(TokensTypes::TOKEN_RPAREN))
-                        {
-                            // add the parse func expression to args vector list. this will parse the expressions like (function("call") for the defined function(arg:str) by example)
-                            var_node->args.push_back(ParseFuncExpressions());
-                            if (check(TokensTypes::TOKEN_COMMA))
-                            {
-                                var_node->args.push_back(ParseFuncExpressions());
-                                consume(TokensTypes::TOKEN_RPAREN);
-                            }
-                        }
-                    }
-                    // transfer the variablenode to the Node left and break the switch
-                    bin->right = var_node;
-                    break;
-                }
-            }
-        }
-        return bin;
+        return std::make_shared<BinOp>(left, tk, right);
     }
 
     ASTPtr Parser::ParseIfStatement()
@@ -626,20 +406,21 @@ namespace Rythin
         TokensTypes tk;
         switch (current().type)
         {
-        case TokensTypes::TOKEN_BOOL:
-        case TokensTypes::TOKEN_INT_32:
-        case TokensTypes::TOKEN_FLOAT_32:
-        case TokensTypes::TOKEN_FLOAT_64:
-        case TokensTypes::TOKEN_STR:
-        case TokensTypes::TOKEN_BYTES:
-        case TokensTypes::TOKEN_OBJECT:
-            tk = consume(current().type).type;
-            break;
-
-        default:
-            //don't have support imediatelly for identifiers..
-            std::cerr << "[Error] Invalid type for variable definition at line " << current().line << " column " << current().column << std::endl;
-            throw Excepts::CompilationException("Invalid type definition");
+            case TokensTypes::TOKEN_BOOL:
+            case TokensTypes::TOKEN_INT_32:
+            case TokensTypes::TOKEN_INT_64:
+            case TokensTypes::TOKEN_FLOAT_32:
+            case TokensTypes::TOKEN_FLOAT_64:
+            case TokensTypes::TOKEN_STR:
+            case TokensTypes::TOKEN_BYTES:
+            case TokensTypes::TOKEN_OBJECT:
+                tk = consume(current().type).type;
+                break;
+            default:
+                // don't have support imediatelly for identifiers..
+                LogErrors::getInstance().addError("Invalid type for variable definition at line " + std::to_string(current().line) + " column " + std::to_string(current().column), 54);
+                LogErrors::getInstance().printAll();
+                throw Excepts::CompilationException("Invalid type definition");
         }
         consume(TokensTypes::TOKEN_ASSIGN); // consome o '=' para pegar o valor ou expressão
         auto val = ParseExpression(tk);
@@ -653,6 +434,27 @@ namespace Rythin
         consume(TokensTypes::TOKEN_COLON);
         exp_node->type = consume(current().type).type;
         return exp_node;
+    }
+
+    ASTPtr Parser::ParseNumeralExpression()
+    {
+        ASTPtr val;
+        switch (current().type)
+        {
+        case TokensTypes::TOKEN_INT_32:
+            val = std::make_shared<i32Node>(std::stoi(consume(TokensTypes::TOKEN_INT_32).value));
+            break;
+        case TokensTypes::TOKEN_INT_64:
+            val = std::make_shared<i64Node>(std::stoll(consume(TokensTypes::TOKEN_INT_64).value));
+            break;
+        case TokensTypes::TOKEN_FLOAT_32:
+            val = std::make_shared<f32Node>(std::stof(consume(TokensTypes::TOKEN_FLOAT_32).value));
+            break;
+        case TokensTypes::TOKEN_FLOAT_64:
+            val = std::make_shared<f32Node>(std::stod(consume(TokensTypes::TOKEN_FLOAT_64).value));
+            break;
+        }
+        return val;
     }
 
     ASTPtr Parser::ParseExpression(TokensTypes types)
@@ -669,10 +471,8 @@ namespace Rythin
             consume(TokensTypes::TOKEN_MINUS);
             return ParseNegativeVals(consume(current().type).type);
         case TokensTypes::TOKEN_INT_32:
-        {
+        case TokensTypes::TOKEN_INT_64:
             return ParseIntVal();
-        }
-        
         case TokensTypes::TOKEN_FLOAT_32:
             if (check(TokensTypes::TOKEN_FLOAT_32))
             {
@@ -694,6 +494,7 @@ namespace Rythin
                 LogErrors::getInstance().addWarning("Using float as double at line " + std::to_string(current().line) + " column " + std::to_string(current().column), 7);
                 return std::make_shared<f64Node>(std::stod(consume(TokensTypes::TOKEN_FLOAT_32).value));
             }
+
         case TokensTypes::TOKEN_BYTES:
         {
             auto lit_val = std::stoll(current().value);

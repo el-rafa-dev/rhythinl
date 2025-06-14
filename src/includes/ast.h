@@ -60,14 +60,7 @@ namespace Rythin
         std::string from_name, from_src, get_var_name;
     };
 
-    struct BinOp : public ASTNode
-    {
-        TokensTypes op; // operators
-        ASTPtr left;    //left value
-        ASTPtr right;   //right value
-    };
-
-    //the variable call node
+    // the variable call node
     struct VariableNode : public ASTNode
     {
         std::string name;
@@ -102,25 +95,20 @@ namespace Rythin
 
     struct InterpolationNode : public ASTNode
     {
-        std::string val; // <-
+        std::string val;      // <-
         std::string var_name; // gets the var/function and return the value to the val
     };
-
 
     struct i32Node : public ASTNode
     {
         int32_t val;
-        i32Node(int32_t val) : val(val) {
-            std::cout << "i32 value: " << std::to_string(val) << std::endl;
-        }
+        i32Node(int32_t val) : val(val) {}
     };
 
     struct i64Node : public ASTNode
     {
         int64_t val;
-        i64Node(int64_t val) : val(val) {
-            std::cout << "i64 value: " << std::to_string(val) << std::endl;
-        }
+        i64Node(int64_t val) : val(val) {}
     };
 
     struct ByteNode : public ASTNode
@@ -129,10 +117,9 @@ namespace Rythin
         ByteNode(unsigned char by) : byte(by) {}
     };
 
-
     struct f64Node : public ASTNode
     {
-        //double is a float thats supports 8 bytes (or 64 bits)
+        // double is a float thats supports 8 bytes (or 64 bits)
         double val;
         f64Node(double val) : val(val) {}
     };
@@ -185,6 +172,28 @@ namespace Rythin
     {
         std::string var_name;
         TokensTypes type;
+    };
+
+    struct BinOp : public ASTNode
+    {
+        TokensTypes op; // operators
+        ASTPtr left;    // left value
+        ASTPtr right;   // right value
+        BinOp(ASTPtr left, TokensTypes &op, ASTPtr right) : left(left), op(op), right(right)
+        {
+            while (auto var = std::dynamic_pointer_cast<i32Node>(left))
+            {
+                std::cout << "Left Value: " << std::to_string(var->val) << std::endl;
+                break;
+            }
+            std::cout << "Current token from binOp Node: " << Tokens::tokenTypeToString(op) << std::endl;
+            while (auto var = std::dynamic_pointer_cast<i32Node>(right))
+            {
+                
+                std::cout << "Right Value: " << std::to_string(var->val) << std::endl;
+                break;
+            }
+        }
     };
 
     struct IfExpressionNode : public ASTNode
