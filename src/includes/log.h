@@ -5,10 +5,11 @@
 #include <vector>
 #include <string>
 #include <cstring>
+#include <exception>
 
 namespace Log
 {
-    class LogErrors
+    class LogErrors : std::exception
     {
     private:
         LogErrors() = default;

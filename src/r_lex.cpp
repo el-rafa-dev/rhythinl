@@ -52,7 +52,7 @@ namespace Rythin
                 if (fractional.empty())
                 {
                     LogErrors::getInstance().addError("Invalid float/double format at line " + to_string(line) + " column " + to_string(column), 23);
-                    throw Excepts::SyntaxException("\f\fInvalid float/double format at line: " + line);
+                    //throw Excepts::SyntaxException("\f\fInvalid float/double format at line: " + line);
                 }
 
                 numberStr += fractional;
@@ -79,7 +79,7 @@ namespace Rythin
                 if (fractional.empty())
                 {
                     LogErrors::getInstance().addError("Invalid float/double format at line " + to_string(line) + " column " + to_string(column), 23);
-                    throw std::runtime_error("Invalid float/double format");
+                    //throw std::runtime_error("Invalid float/double format");
                 }
 
                 numberStr += fractional;
@@ -106,7 +106,6 @@ namespace Rythin
             {
             case '\0':
                 return Tokens(TokensTypes::TOKEN_EOF, std::string("\0"), line, column);
-                break;
             case ';':
                 advance_tk();
 
@@ -134,12 +133,12 @@ namespace Rythin
                 {
                     advance_tk();
                     return Tokens(TokensTypes::TOKEN_EQUAL, "==", line, column);
-                    break;
+
                 }
                 else
                 {
                     return Tokens(TokensTypes::TOKEN_ASSIGN, "=", line, column);
-                    break;
+
                 }
             case '!':
                 advance_tk();
@@ -147,12 +146,12 @@ namespace Rythin
                 {
                     advance_tk();
                     return Tokens(TokensTypes::TOKEN_NOT_EQUAL, "!=", line, column);
-                    break;
+
                 }
                 else
                 {
                     return Tokens(TokensTypes::TOKEN_NOT_EQUAL, "!", line, column);
-                    break;
+
                 }
             case '-':
                 advance_tk();
@@ -160,115 +159,115 @@ namespace Rythin
                 {
                     advance_tk();
                     return Tokens(TokensTypes::TOKEN_ARROW_SET, "->", line, column);
-                    break;
+
                 }
                 else if (current_input == '=')
                 {
                     advance_tk();
                     return Tokens(TokensTypes::TOKEN_ATTR_MINUS, "-=", line, column);
-                    break;
+
                 }
                 else
                 {
                     return Tokens(TokensTypes::TOKEN_MINUS, "-", line, column);
-                    break;
+
                 }
             case '[':
                 advance_tk();
                 return Tokens(TokensTypes::TOKEN_LBRACKET, "[", line, column);
-                break;
+
             case ']':
                 advance_tk();
                 return Tokens(TokensTypes::TOKEN_RBRACKET, "]", line, column);
-                break;
+
             case '(':
                 advance_tk();
                 return Tokens(TokensTypes::TOKEN_LPAREN, "(", line, column);
-                break;
+
             case ')':
                 advance_tk();
                 return Tokens(TokensTypes::TOKEN_RPAREN, ")", line, column);
-                break;
+
             case '+':
                 advance_tk();
                 if (current_input == '+')
                 {
                     advance_tk();
                     return Tokens(TokensTypes::TOKEN_PLUSPLUS, "++", line, column);
-                    break;
+
                 }
                 else if (current_input == '=')
                 {
                     advance_tk();
                     return Tokens(TokensTypes::TOKEN_ATTR_PLUS, "+=", line, column);
-                    break;
+
                 }
                 else
                 {
                     return Tokens(TokensTypes::TOKEN_PLUS, "+", line, column);
-                    break;
+
                 }
             case '.':
                 advance_tk();
                 return Tokens(TokensTypes::TOKEN_DOT, ".", line, column);
-                break;
+
             case '/':
                 advance_tk();
                 if (current_input == '=')
                 {
                     advance_tk();
                     return Tokens(TokensTypes::TOKEN_ATTR_DIVIDE, "/=", line, column);
-                    break;
+
                 }
                 return Tokens(TokensTypes::TOKEN_DIVIDE, "/", line, column);
-                break;
+
             case '&':
                 advance_tk();
                 if (current_input == '&')
                 {
                     advance_tk();
                     return Tokens(TokensTypes::TOKEN_LOGICAL_AND, "&&", line, column);
-                    break;
+
                 }
                 return Tokens(TokensTypes::TOKEN_REF, "&", line, column);
-                break;
+
             case '$':
                 advance_tk();
                 return Tokens(TokensTypes::TOKEN_DEREF, "$", line, column);
-                break;
+
             case ',':
                 advance_tk();
                 return Tokens(TokensTypes::TOKEN_COMMA, ",", line, column);
-                break;
+
             case '*':
                 advance_tk();
                 if (current_input == '=')
                 {
                     advance_tk();
                     return Tokens(TokensTypes::TOKEN_ATTR_MULTIPLY, "*=", line, column);
-                    break;
+
                 }
                 return Tokens(TokensTypes::TOKEN_MULTIPLY, "*", line, column);
-                break;
+
             case '>':
                 advance_tk();
                 if (current_input == '>')
                 {
                     advance_tk();
                     return Tokens(TokensTypes::TOKEN_SHIFT_RIGHT, ">>", line, column);
-                    break;
+
                 }
                 else if (current_input == '=')
                 {
                     advance_tk();
                     return Tokens(TokensTypes::TOKEN_GREATER_EQUAL, ">=", line, column);
-                    break;
+
                 }
                 else
                 {
                     advance_tk();
                     return Tokens(TokensTypes::TOKEN_GREATER_THAN, ">", line, column);
-                    break;
+
                 }
             case '<':
                 advance_tk();
@@ -276,41 +275,40 @@ namespace Rythin
                 {
                     advance_tk();
                     return Tokens(TokensTypes::TOKEN_LESS_EQUAL, "<=", line, column);
-                    break;
+
                 }
                 else if (current_input == '<')
                 {
                     advance_tk();
                     return Tokens(TokensTypes::TOKEN_SHIFT_LEFT, "<<", line, column);
-                    break;
+
                 }
                 return Tokens(TokensTypes::TOKEN_LESS_THAN, "<", line, column);
-                break;
+
             case '|':
                 advance_tk();
                 if (current_input == '|')
                 {
                     advance_tk();
                     return Tokens(TokensTypes::TOKEN_LOGICAL_OR, "||", line, column);
-                    break;
+
                 }
                 return Tokens(TokensTypes::TOKEN_BIT_OR, "|", line, column);
-                break;
+
             case '%':
                 advance_tk();
                 return Tokens(TokensTypes::TOKEN_MODULO, "%", line, column);
-                break;
+
             case '~':
                 advance_tk();
                 return Tokens(TokensTypes::TOKEN_BIT_NOT, "~", line, column);
-                break;
+
             case '^':
                 advance_tk();
                 return Tokens(TokensTypes::TOKEN_BIT_XOR, "^", line, column);
-                break;
             default:
-                std::cerr << "Unexpected character: '" << current_input << "' at line " << line << " column " << column << std::endl;
-                throw std::runtime_error("Unexpected character");
+                LogErrors::getInstance().addError("Unexpected character: '" + to_string(current_input) + " at line " + to_string(line) + " column " + to_string(column), 76);
+                throw nullptr;
             }
         }
     }
@@ -462,8 +460,10 @@ namespace Rythin
                 else
                 {
                     // LogErrors
-                    std::cerr << "Unknown escape sequence \\" << current_input << " at line " << line << ", column " << column << std::endl;
-                    throw std::runtime_error("Unknown escape sequence");
+                    LogErrors::getInstance().addError("Unknown escape sequence \\" + to_string(current_input) + " at line " + to_string(line) + " column " + to_string(column), 34);
+                    //std::cerr << "Unknown escape sequence \\" << current_input << " at line " << line << ", column " << column << std::endl;
+                    continue;
+                    //throw std::runtime_error("Unknown escape sequence");
                 }
             }
             else if (current_input == '$' && peekNextChar() == '[')
@@ -482,7 +482,7 @@ namespace Rythin
         {
             LogErrors::getInstance().addError("Unterminated string literal at line " + std::to_string(line) + " column " + std::to_string(column), 14);
             LogErrors::getInstance().printAll();
-            throw std::runtime_error("Unterminated string literal");
+            throw Excepts::SyntaxException("Unterminated string literal");
         }
         advance_tk(); // skipping closing quotes
         return Tokens(TokensTypes::TOKEN_STRING_LITERAL, ivalue, line, column);
@@ -512,8 +512,7 @@ namespace Rythin
         {
             //std::cerr << "[Error]Unterminated interpolation at line " << line << " Column " << column << std::endl;
             LogErrors::getInstance().addError("Unterminated interpolation at line " + std::to_string(line) + " column " + std::to_string(column), 14);
-            LogErrors::getInstance().printAll();
-            throw std::runtime_error("Unterminated interpolation");
+            throw nullptr;
         }
     }
 

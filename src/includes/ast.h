@@ -176,22 +176,33 @@ namespace Rythin
 
     struct BinOp : public ASTNode
     {
-        TokensTypes op; // operators
-        ASTPtr left;    // left value
-        ASTPtr right;   // right value
+        TokensTypes op;     // operators
+        ASTPtr left, right; // left value and right value
         BinOp(ASTPtr left, TokensTypes &op, ASTPtr right) : left(left), op(op), right(right)
         {
-            while (auto var = std::dynamic_pointer_cast<i32Node>(left))
+            if (auto var = std::dynamic_pointer_cast<i32Node>(left))
             {
-                std::cout << "Left Value: " << std::to_string(var->val) << std::endl;
-                break;
-            }
-            std::cout << "Current token from binOp Node: " << Tokens::tokenTypeToString(op) << std::endl;
-            while (auto var = std::dynamic_pointer_cast<i32Node>(right))
-            {
-                
-                std::cout << "Right Value: " << std::to_string(var->val) << std::endl;
-                break;
+                //std::cout << "Left value: " << var->val << std::endl;
+                //std::cout << "Operator: " << Tokens::tokenTypeToString(op) << std::endl;
+                if (auto var2 = std::dynamic_pointer_cast<i32Node>(right))
+                {
+                    //std::cout << "Right value: " << var2->val << std::endl;
+                    switch (op)
+                    {
+                        case TokensTypes::TOKEN_PLUS:
+                            std::cout << "Valor somado: " << var->val + var2->val << std::endl;
+                            break;
+                        case TokensTypes::TOKEN_MINUS:
+                            std::cout << "Valor subtraido: " << var->val - var2->val << std::endl;
+                            break;
+                        case TokensTypes::TOKEN_MULTIPLY:
+                            std::cout << "Valor multiplicado: " << var->val * var2->val << std::endl;
+                            break;
+                        case TokensTypes::TOKEN_DIVIDE:
+                            std::cout << "Valor divido: " << var->val / var2->val << std::endl;
+                            break;
+                    }
+                }
             }
         }
     };
@@ -202,7 +213,6 @@ namespace Rythin
         TokensTypes type;          // type of expression (== or other binary operators types)
         TokensTypes logic_divisor; // the divisor of the expressions like (&&, || and !)
         ASTPtr val;                // the value of the condition (like x > 2, the value of this expression is 2)
-        // IfExpressionNode(std::string& var_name, TokensTypes type, TokensTypes logic_divisor, ASTPtr val) : var_name(var_name), type(type), logic_divisor(logic_divisor), val(val) {}
     };
 
     struct FunctionDefinitionNode : public ASTNode

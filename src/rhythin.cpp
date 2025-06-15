@@ -73,15 +73,15 @@ int executeRun(char *argv[])
     {
         Rythin::MainExecutor a;
         a.Run(argv[2]);
-        if (LogErrors::getInstance().hasErrorsAndWarns())
+        if (LogErrors::getInstance().hasErrorsAndWarns() or LogErrors::getInstance().getErrSize() != 0)
         {
             LogErrors::getInstance().printErrors();
-            std::cerr << "\x1b[1m\x1b[31m[Bad compilation]:\x1b[0m " << std::to_string(LogErrors::getInstance().getErrSize()) << " errors and " << std::to_string(LogErrors::getInstance().getWarnsSize()) << " warnings. But compiled. Exited with code: " << LogErrors::getInstance().exitCode() << std::endl;
+            std::cerr << "\x1b[1m\x1b[31m[Bad compilation]:>\x1b[0m " << std::to_string(LogErrors::getInstance().getErrSize()) << " errors and " << std::to_string(LogErrors::getInstance().getWarnsSize()) << " warnings. Exited with code: " << LogErrors::getInstance().exitCode() << std::endl;
             return LogErrors::getInstance().exitCode();
         }
         else
         {
-            std::cout << "\x1b[1m\x1b[32m[Sucess]:\x1b[0m Compiled without errors or warnings. Exit code: " << std::to_string(LogErrors::getInstance().exitCode()) << std::endl;
+            std::cout << "\x1b[1m\x1b[32m[Sucess]:>\x1b[0m Compiled without errors or warnings. Exit code: " << std::to_string(LogErrors::getInstance().exitCode()) << std::endl;
             return 0;
         }
     }
