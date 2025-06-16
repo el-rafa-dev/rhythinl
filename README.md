@@ -29,15 +29,22 @@ def main:func() -> [
 
 ## Building on Linux
 To build and run the project on linux, do this below:
+clone the repository with:
 ```
-mkdir CLionProjects && cd CLionProjects
 git clone https://github.com/el-rafa-dev/rhythinl.git
-
-//use mv to rename the folder or rename manually
-mv ./rhythinl Rhythin && cd Rhythin
+```
+Use to generate the CMakeCache.txt in the current directory
+```
+python gencmake.py 
+```
+Or use this instead:
+```
+chmod +x gencmake.py && ./gencmake.py
+```
+Finally, execute:
+```
 cmake CMakeLists.txt
 make
-
 ```
 The build will be finished and you can run the Rhythin file with ```./rhythin```
 
