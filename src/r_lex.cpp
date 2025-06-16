@@ -51,7 +51,7 @@ namespace Rythin
                 std::string fractional = digits();
                 if (fractional.empty())
                 {
-                    LogErrors::getInstance().addError("Invalid float/double format at line " + to_string(line) + " column " + to_string(column), 23);
+                    LogErrors::getInstance().addError("Invalid float/double format", 23, line, column);
                     //throw Excepts::SyntaxException("\f\fInvalid float/double format at line: " + line);
                 }
 
@@ -78,7 +78,7 @@ namespace Rythin
                 std::string fractional = digits();
                 if (fractional.empty())
                 {
-                    LogErrors::getInstance().addError("Invalid float/double format at line " + to_string(line) + " column " + to_string(column), 23);
+                    LogErrors::getInstance().addError("Invalid float/double format", 23, line, column);
                     //throw std::runtime_error("Invalid float/double format");
                 }
 
@@ -307,8 +307,9 @@ namespace Rythin
                 advance_tk();
                 return Tokens(TokensTypes::TOKEN_BIT_XOR, "^", line, column);
             default:
-                LogErrors::getInstance().addError("Unexpected character: '" + to_string(current_input) + " at line " + to_string(line) + " column " + to_string(column), 76);
-                throw nullptr;
+                LogErrors::getInstance().addError("Unexpected character: '" + to_string(current_input) + "'", 76, line, column);
+                LogErrors::getInstance().printAll();
+                exit(76);
             }
         }
     }
@@ -460,7 +461,7 @@ namespace Rythin
                 else
                 {
                     // LogErrors
-                    LogErrors::getInstance().addError("Unknown escape sequence \\" + to_string(current_input) + " at line " + to_string(line) + " column " + to_string(column), 34);
+                    LogErrors::getInstance().addError("Unknown escape sequence \\" + to_string(current_input), 34, line, column);
                     //std::cerr << "Unknown escape sequence \\" << current_input << " at line " << line << ", column " << column << std::endl;
                     continue;
                     //throw std::runtime_error("Unknown escape sequence");
@@ -480,7 +481,7 @@ namespace Rythin
         }
         if (current_input == '\0')
         {
-            LogErrors::getInstance().addError("Unterminated string literal at line " + std::to_string(line) + " column " + std::to_string(column), 14);
+            LogErrors::getInstance().addError("Unterminated string literal", 14, line, column);
             LogErrors::getInstance().printAll();
             throw Excepts::SyntaxException("Unterminated string literal");
         }
@@ -511,8 +512,9 @@ namespace Rythin
         else
         {
             //std::cerr << "[Error]Unterminated interpolation at line " << line << " Column " << column << std::endl;
-            LogErrors::getInstance().addError("Unterminated interpolation at line " + std::to_string(line) + " column " + std::to_string(column), 14);
-            throw nullptr;
+            LogErrors::getInstance().addError("Unterminated interpolation", 14, line, column);
+            LogErrors::getInstance().printAll();
+            exit(14);
         }
     }
 

@@ -34,19 +34,16 @@ namespace Rythin
         if (current().type == TokensTypes::TOKEN_EOF)
         {
             // checa se o token atual é o EOF (end of file), se for retorna o erro abaixo
-            LogErrors::getInstance().addError("Expected a statement but reached the end of file.... Are you forget anything?", 1);
+            LogErrors::getInstance().addError("Expected a statement but reached the end of file and left early.... Are you forget anything?", 1, 0, 0);
             LogErrors::getInstance().printAll();
-            throw Excepts::CompilationException("Left early");
+            exit(1);
         }
 
         if (current().type != tk)
         {
-            // checa se o tipo não é igual ao tk e retorna o erro abaixo
-            LogErrors::getInstance().addError("Expected '" + Tokens::tokenTypeToString(tk) + "' but got: '" + Tokens::tokenTypeToString(current().type) + "' at line " + std::to_string(current().line) + " column " + std::to_string(current().column), 4);
-            //LogErrors::getInstance().printAll();
+            // check if the current type matches the expected token
             
-            
-            //throw Excepts::CompilationException("Invalid token");
+            LogErrors::getInstance().addError("Expected '" + Tokens::tokenTypeToString(tk) + "' but got: '" + Tokens::tokenTypeToString(current().type), 4, current().line, current().column);
         }
         position++;
         return tokens[position - 1];
@@ -116,7 +113,7 @@ namespace Rythin
         default:
             // if the current type don't have the valid statements keywords,
             // throw a compilation excption
-            LogErrors::getInstance().addError("Invalid statement/keyword '" + Tokens::tokenTypeToString(current().type) + "' at line " + std::to_string(current().line) + " column " + std::to_string(current().column), 2);
+            LogErrors::getInstance().addError("Invalid statement/keyword '" + Tokens::tokenTypeToString(current().type) + "'", 2, current().line, current().column);
             LogErrors::getInstance().printAll();
             exit(2);
         }
@@ -171,14 +168,14 @@ namespace Rythin
                     auto l = right;
                     auto tk = consume(current().type).type;
                     auto r = ParseNumeralExpression();
-                    //pass the right value to left operation
-                    // right -> left value
+                    // pass the right value to left operation
+                    //  right -> left value
                     right = std::make_shared<BinOp>(l, tk, r);
                     std::cout << "Current token: " << Tokens::tokenTypeToString(current().type) << std::endl;
                     break;
                 }
                 break;
-            
+
             case TokensTypes::TOKEN_LPAREN:
             {
                 TokensTypes op;
@@ -194,19 +191,18 @@ namespace Rythin
                         break;
                     }
                     right = std::make_shared<BinOp>(l, op, r);
-                    //right = ParseIntVal();
+                    // right = ParseIntVal();
                 }
                 consume(TokensTypes::TOKEN_RPAREN);
-               break;
+                break;
             }
             default:
-                LogErrors::getInstance().addError("Expected a number or variable name after binary operator", 1);
+                LogErrors::getInstance().addError("Expected a number or variable name after binary operator", 1, current().line, current().column);
                 return nullptr; // return a nullptr to continue the error progression
             }
         }
         return std::make_shared<BinOp>(left, tk, right);
     }
-
 
     ASTPtr Parser::ParseNumeralExpression()
     {
@@ -327,7 +323,7 @@ namespace Rythin
             }
             else
             {
-                LogErrors::getInstance().addError("Concatenation needs a predominant value (like str, int or others types)", 3);
+                LogErrors::getInstance().addError("Concatenation needs a predominant value (like str, int or others types)", 3, current().line, current().column);
                 continue;
             }
         }
@@ -376,7 +372,7 @@ namespace Rythin
             }
             else
             {
-                LogErrors::getInstance().addError("Concatenation needs a predominant value to concats with other values types", 3);
+                LogErrors::getInstance().addError("Concatenation needs a predominant value to concats with other values types", 3, current().line, current().column);
                 continue;
             }
         }
@@ -429,11 +425,12 @@ namespace Rythin
             break;
         default:
             // don't have support imediatelly for identifiers..
-            LogErrors::getInstance().addError("Invalid type for variable definition at line " + std::to_string(current().line) + " column " + std::to_string(current().column), 54);
-            LogErrors::getInstance().printAll();
+            LogErrors::getInstance().addError("Invalid type for variable definition ", 54, current().line, current().column);
             return nullptr;
         }
-        consume(TokensTypes::TOKEN_ASSIGN); // consome o '=' para pegar o valor ou expressão
+        // consome o '=' para pegar o valor ou expressão
+        consume(TokensTypes::TOKEN_ASSIGN); 
+        // parse value after assign based on the defined type on tk
         auto val = ParseExpression(tk);
         return std::make_shared<VariableDefinitionNode>(name, tk, val);
     }
@@ -466,24 +463,7 @@ namespace Rythin
         case TokensTypes::TOKEN_FLOAT_64:
             return ParseIntVal();
         case TokensTypes::TOKEN_BYTES:
-        {
-            auto lit_val = std::stoll(current().value);
-            unsigned char val;
-            if (lit_val < 0 || lit_val > 255)
-            {
-                LogErrors::getInstance().addWarning("Value " + std::to_string(lit_val) + " is out of range for byte type. It will be truncated to: " + std::to_string(static_cast<unsigned char>(lit_val)), 5);
-                val = static_cast<unsigned char>(lit_val);
-            }
-            else
-            {
-                val = static_cast<unsigned char>(lit_val);
-            }
-            if (!check(TokensTypes::TOKEN_INT_32))
-                LogErrors::getInstance().addError("", 26);
-            consume(TokensTypes::TOKEN_INT_32);
-            return std::make_shared<ByteNode>(val);
-        }
-
+            return ParseByteVal();
         case TokensTypes::TOKEN_NIL:
             consume(TokensTypes::TOKEN_NIL);
             return std::make_shared<NilNode>();
@@ -522,7 +502,7 @@ namespace Rythin
         default:
             std::cerr << "[Error]: Invalid variable value type at line " << current().line << " column " << current().column << std::endl;
             return nullptr;
-            //throw Excepts::CompilationException("Invalid Variable Value Type");
+            // throw Excepts::CompilationException("Invalid Variable Value Type");
         }
     }
 
@@ -539,7 +519,7 @@ namespace Rythin
             {
                 std::cerr << "[Error]: Current value out of range at line " << current().line << " column " << current().column << std::endl;
                 return nullptr;
-                //throw std::out_of_range("Index out of range");
+                // throw std::out_of_range("Index out of range");
             }
 
         case TokensTypes::TOKEN_FLOAT_64:
@@ -613,9 +593,9 @@ namespace Rythin
             type = consume(TokensTypes::TOKEN_FLOAT_64).type;
             break;
         default:
-            LogErrors::getInstance().addError("Loop expression only accepts number types (int, float, double)", 23);
+            LogErrors::getInstance().addError("Loop expression only accepts number types (int, float, double)", 23, current().line, current().column);
             return nullptr;
-            //throw Excepts::SyntaxException("Loop Expression");
+            // throw Excepts::SyntaxException("Loop Expression");
         }
         consume(TokensTypes::TOKEN_IN);
         ASTPtr val;
@@ -634,7 +614,7 @@ namespace Rythin
             val = std::make_shared<f64Node>(std::stod(consume(TokensTypes::TOKEN_FLOAT_64).value));
             break;
         default:
-            LogErrors::getInstance().addError("Invalid type for loop expression", 23);
+            LogErrors::getInstance().addError("Invalid type for loop expression", 23, current().line, current().column);
             // throw Excepts::SyntaxException("Invalid loop type");
             return nullptr;
         }
@@ -656,6 +636,35 @@ namespace Rythin
         node->body = ParseBlock();
 
         return node;
+    }
+
+    ASTPtr Parser::ParseByteVal()
+    {
+        long long lit_val;
+        unsigned char val;
+        if (check(TokensTypes::TOKEN_INT_32))
+        {
+            lit_val = std::stoll(consume(current().type).value);
+        }
+        
+        if (lit_val < 0 || lit_val > 255)
+        {
+            LogErrors::getInstance().addWarning("Value " + std::to_string(lit_val) + " is out of range for byte type. It will be truncated to: " + std::to_string(static_cast<unsigned char>(lit_val)), 5, current().line, current().column);
+            val = static_cast<unsigned char>(lit_val);
+        }
+        else
+        {
+            val = static_cast<unsigned char>(lit_val);
+        }
+        if (check(TokensTypes::TOKEN_NIL))
+        //nil cannot be assigned with number values (int32, int64, float32, flat64 and others), throw a error pls
+        {
+            //this error wil be repeated with ParseIntValues
+            LogErrors::getInstance().addError("'nil' keyword cannot be assigned with number values", 89, current().line, current().column);
+        } else {
+            consume(TokensTypes::TOKEN_INT_32);
+        }
+        return std::make_shared<ByteNode>(val);
     }
 
     ASTPtr Parser::ParseBlock()

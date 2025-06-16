@@ -25,8 +25,8 @@ namespace Log
         }
         int getWarnsSize();
         int getErrSize();
-        void addError(const std::string &error, int exit_code);
-        void addWarning(const std::string &err, int exit);
+        void addError(const std::string &error, int exit_code, int line, int column);
+        void addWarning(const std::string &err, int exit, int line, int column);
         bool hasErrorsAndWarns();
         int exitCode();
         void printErrors();

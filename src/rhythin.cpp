@@ -55,7 +55,7 @@ namespace Rythin
             }
             else
             {
-                LogErrors::getInstance().addError("could not open the file", 5);
+                LogErrors::getInstance().addError("could not open the file", 5, 0, 0);
             }
         }
     };
@@ -91,7 +91,7 @@ int executeRun(char *argv[])
     }
     else
     {
-        LogErrors::getInstance().addError("A file must be specified to execute", 1);
+        LogErrors::getInstance().addError("A file must be specified to execute", 1, 0, 0);
         LogErrors::getInstance().printAll();
         return LogErrors::getInstance().exitCode();
     }
@@ -126,7 +126,7 @@ int main(int argc, char *argv[])
 {
     if (argc < 0 && argv == 0)
     {
-        LogErrors::getInstance().addError("No argument specified. See --help or -h to see the list of options.", 6);
+        LogErrors::getInstance().addError("No argument specified. See --help or -h to see the list of options.", 6, 0, 0);
         LogErrors::getInstance().printAll();
         exit(LogErrors::getInstance().exitCode());
     }
@@ -157,7 +157,7 @@ int main(int argc, char *argv[])
     }
     else
     {
-        LogErrors::getInstance().addError("Invalid argument! See --help or -h to see the list of options!", 6);
+        LogErrors::getInstance().addError("Invalid argument! See --help or -h to see the list of options!", 6, 0, 0);
         LogErrors::getInstance().printAll();
         return LogErrors::getInstance().exitCode();
     }

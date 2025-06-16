@@ -102,7 +102,9 @@ namespace Rythin
     struct i32Node : public ASTNode
     {
         int32_t val;
-        i32Node(int32_t val) : val(val) {}
+        i32Node(int32_t val) : val(val) {
+            std::cout << "Int32 Value " << std::to_string(val) << std::endl;
+        }
     };
 
     struct i64Node : public ASTNode
