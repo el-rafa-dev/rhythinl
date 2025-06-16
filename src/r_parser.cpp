@@ -118,8 +118,7 @@ namespace Rythin
             // throw a compilation excption
             LogErrors::getInstance().addError("Invalid statement/keyword '" + Tokens::tokenTypeToString(current().type) + "' at line " + std::to_string(current().line) + " column " + std::to_string(current().column), 2);
             LogErrors::getInstance().printAll();
-            throw Excepts::CompilationException("Invalid Statement");
-            //return nullptr;
+            exit(2);
         }
     }
 
@@ -149,34 +148,6 @@ namespace Rythin
         return std::make_shared<FunctionDefinitionNode>(var_name, args, block);
     }
 
-    /*ASTPtr Parser::ParseIntVal()
-    {
-        TokensTypes op;
-        ASTPtr left, right;
-
-        left = ParseNumeralExpression();
-        while (isBinaryOperator(current().type))
-        {
-            op = consume(current().type).type;
-            right = ParseNumeralExpression();
-
-            while (isBinaryOperator(current().type))
-            {
-                auto l = ParseNumeralExpression();
-                TokensTypes tk;
-                ASTPtr r;
-                if (isBinaryOperator(current().type))
-                {
-                    tk = consume(current().type).type;
-                    r = ParseNumeralExpression();   
-                }
-                right = std::make_shared<BinOp>(l, tk, r);
-                //std::cout << "is binary operator" << std::endl;
-            }
-        }
-        return std::make_shared<BinOp>(left, op, right);
-    }*/
-
     ASTPtr Parser::ParseIntVal()
     {
 
@@ -200,11 +171,14 @@ namespace Rythin
                     auto l = right;
                     auto tk = consume(current().type).type;
                     auto r = ParseNumeralExpression();
+                    //pass the right value to left operation
                     // right -> left value
                     right = std::make_shared<BinOp>(l, tk, r);
+                    std::cout << "Current token: " << Tokens::tokenTypeToString(current().type) << std::endl;
                     break;
                 }
                 break;
+            
             case TokensTypes::TOKEN_LPAREN:
             {
                 TokensTypes op;
@@ -217,6 +191,7 @@ namespace Rythin
                     {
                         op = consume(current().type).type;
                         r = ParseNumeralExpression();
+                        break;
                     }
                     right = std::make_shared<BinOp>(l, op, r);
                     //right = ParseIntVal();
@@ -226,8 +201,7 @@ namespace Rythin
             }
             default:
                 LogErrors::getInstance().addError("Expected a number or variable name after binary operator", 1);
-                LogErrors::getInstance().printAll();
-                throw Excepts::SyntaxException("Invalid expression");
+                return nullptr; // return a nullptr to continue the error progression
             }
         }
         return std::make_shared<BinOp>(left, tk, right);
@@ -458,7 +432,6 @@ namespace Rythin
             LogErrors::getInstance().addError("Invalid type for variable definition at line " + std::to_string(current().line) + " column " + std::to_string(current().column), 54);
             LogErrors::getInstance().printAll();
             return nullptr;
-            //throw Excepts::CompilationException("Invalid type definition");
         }
         consume(TokensTypes::TOKEN_ASSIGN); // consome o '=' para pegar o valor ou expressão
         auto val = ParseExpression(tk);

@@ -1,12 +1,14 @@
-#include "vector"
+#include <cstring>
+#include <ctype.h>
+#include <fstream>
+#include <iostream>
+#include <stdlib.h>
+#include <vector>
+// local includes
 #include "../src/includes/t_tokens.h"
-#include "fstream"
-#include "iostream"
 #include "../src/includes/r_lex.h"
 #include "../src/includes/r_inter.h"
 #include "../src/includes/r_parser.h"
-#include <cstring>
-#include <ctype.h>
 #include "../src/includes/r_opcodes.h"
 #include "../src/includes/log.h"
 
@@ -48,11 +50,12 @@ namespace Rythin
                 }
                 Rythin::Parser parser(tokens);
                 std::vector<ASTPtr> nodes = parser.Parse();
+                // only for tests
                 Interpreter interpreter(nodes);
             }
             else
             {
-                LogErrors::getInstance().addError("Não foi possível abrir o arquivo.", 5);
+                LogErrors::getInstance().addError("could not open the file", 5);
             }
         }
     };
@@ -73,8 +76,9 @@ int executeRun(char *argv[])
     {
         Rythin::MainExecutor a;
         a.Run(argv[2]);
-        if (LogErrors::getInstance().hasErrorsAndWarns() or LogErrors::getInstance().getErrSize() != 0)
+        if (LogErrors::getInstance().hasErrorsAndWarns())
         {
+
             LogErrors::getInstance().printErrors();
             std::cerr << "\x1b[1m\x1b[31m[Bad compilation]:>\x1b[0m " << std::to_string(LogErrors::getInstance().getErrSize()) << " errors and " << std::to_string(LogErrors::getInstance().getWarnsSize()) << " warnings. Exited with code: " << LogErrors::getInstance().exitCode() << std::endl;
             return LogErrors::getInstance().exitCode();
@@ -93,33 +97,40 @@ int executeRun(char *argv[])
     }
 }
 
-void printVersion() 
+void printVersion()
 {
-    std::cout << "\x1b[1m\x1b[31m               ...:::::^:::..                         \x1b[0m\x1b[1m\x1b[31m[Rhythin] :: [Version] :: [0.0.0.1-01]\x1b[0m" << std::endl;
-    std::cout << "\x1b[1m\x1b[31m             ...::^~7J5PGGBBBG57::.                   \x1b[0m\x1b[1m\x1b[31m[Author]  :: [Rafael de Sousa]\x1b[0m" << std::endl;
+    std::cout << "\x1b[1m\x1b[31m               ...:::::^:::..                         \x1b[0m\x1b[1m\x1b[31m[Rhythin] :: [Version] :: [0.0.0.1-01]\x1b[0m      " << std::endl;
+    std::cout << "\x1b[1m\x1b[31m             ...::^~7J5PGGBBBG57::.                   \x1b[0m\x1b[1m\x1b[31m[Author]  :: [Rafael de Sousa]\x1b[0m              " << std::endl;
     std::cout << "\x1b[1m\x1b[31m           .::^!?Y5B&@@@@@@@@@@@@B7::.                \x1b[0m\x1b[1m\x1b[31m[Copyright] (C) [2025] [Rafael de Sousa]\x1b[0m    " << std::endl;
-    std::cout << "\x1b[1m\x1b[31m         .:^~75#&@@@@@@@@@@@@@@@@@@@Y::                                       " << std::endl;
-    std::cout << "\x1b[1m\x1b[31m        .^^Y#@@@@@@@@&#G5Y?7!~J@@@@@&^:.                                      " << std::endl;
-    std::cout << "\x1b[1m\x1b[31m        ^^J@@@@@@B5J7~:...... .?#@@@@@5..                                     " << std::endl;
-    std::cout << "\x1b[1m\x1b[31m        ^^7&@@@@P::..    ..:7B@@@@@@Y...                                      " << std::endl;
-    std::cout << "\x1b[1m\x1b[31m        .^^B@@@@J::    ..:?B@@@@@@#7..                                        " << std::endl;
-    std::cout << "\x1b[1m\x1b[31m        .^^#@@@@7::.....:~Y#@@@@@@&Y:                                         " << std::endl;
-    std::cout << "\x1b[1m\x1b[31m        :^~&@@@@!::  ::JG@@@@@@@#J:                                           " << std::endl;
-    std::cout << "\x1b[1m\x1b[31m        :^!@@@@&!?G&@@@@@@&G!@@@.                                             " << std::endl;
-    std::cout << "\x1b[1m\x1b[31m        :^7@@@@@&@@@@@@#P?^@@@.                                               " << std::endl;
-    std::cout << "\x1b[1m\x1b[31m        ^^J@@@@@@@@@@@B7@@^:..                                                " << std::endl;
-    std::cout << "\x1b[1m\x1b[31m        ^^Y@@@@@@@@@@@@@&&BG5Y?7~^:..                                         " << std::endl;
-    std::cout << "\x1b[1m\x1b[31m        ^^5@@@@@GB&@@@@@@@@@@@@@&@@@@@J!^:...                                " << std::endl;
-    std::cout << "\x1b[1m\x1b[31m        .^^P@@@@@!:^7JPB&@@@@@@@@@@@@@@@@@&#5!:.                              " << std::endl;
-    std::cout << "\x1b[1m\x1b[31m        .^^P@@@@@5::...:^~7J5PGB##&@@@@@@@@@@#::.                             " << std::endl;
-    std::cout << "\x1b[1m\x1b[31m        ^^7&@@@@PP:^.         ::^~!7?JJJJJ?!::                                " << std::endl;
-    std::cout << "\x1b[1m\x1b[31m        .^^!J5PY@^^.                                                          " << std::endl;
-    std::cout << "\x1b[1m\x1b[31m          ^^@@@@^^·                                                           " << std::endl;
-    std::cout << "\x1b[1m\x1b[31m                                                                       \x1b[0m" << std::endl;                                                                                                                                        
+    std::cout << "\x1b[1m\x1b[31m         .:^~75#&@@@@@@@@@@@@@@@@@@@Y::                                                                                        " << std::endl;
+    std::cout << "\x1b[1m\x1b[31m        .^^Y#@@@@@@@@&#G5Y?7!~J@@@@@&^:.                                                                                       " << std::endl;
+    std::cout << "\x1b[1m\x1b[31m        ^^J@@@@@@B5J7~:...... .?#@@@@@5..                                                                                      " << std::endl;
+    std::cout << "\x1b[1m\x1b[31m        ^^7&@@@@P::..    ..:7B@@@@@@Y...                                                                                       " << std::endl;
+    std::cout << "\x1b[1m\x1b[31m        .^^B@@@@J::    ..:?B@@@@@@#7..                                                                                         " << std::endl;
+    std::cout << "\x1b[1m\x1b[31m        .^^#@@@@7::.....:~Y#@@@@@@&Y:                                                                                          " << std::endl;
+    std::cout << "\x1b[1m\x1b[31m        :^~&@@@@!::  ::JG@@@@@@@#J:                                                                                            " << std::endl;
+    std::cout << "\x1b[1m\x1b[31m        :^!@@@@&!?G&@@@@@@&G!@@@.                                                                                              " << std::endl;
+    std::cout << "\x1b[1m\x1b[31m        :^7@@@@@&@@@@@@#P?^@@@.                                                                                                " << std::endl;
+    std::cout << "\x1b[1m\x1b[31m        ^^J@@@@@@@@@@@B7@@^:..                                                                                                 " << std::endl;
+    std::cout << "\x1b[1m\x1b[31m        ^^Y@@@@@@@@@@@@@&&BG5Y?7~^:..                                                                                          " << std::endl;
+    std::cout << "\x1b[1m\x1b[31m        ^^5@@@@@GB&@@@@@@@@@@@@@&@@@@@J!^:...                                                                                  " << std::endl;
+    std::cout << "\x1b[1m\x1b[31m        .^^P@@@@@!:^7JPB&@@@@@@@@@@@@@@@@@&#5!:.                                                                               " << std::endl;
+    std::cout << "\x1b[1m\x1b[31m        .^^P@@@@@5::...:^~7J5PGB##&@@@@@@@@@@#::.                                                                              " << std::endl;
+    std::cout << "\x1b[1m\x1b[31m        ^^7&@@@@PP:^.         ::^~!7?JJJJJ?!::                                                                                 " << std::endl;
+    std::cout << "\x1b[1m\x1b[31m        .^^!J5PY@^^.                                                                                                           " << std::endl;
+    std::cout << "\x1b[1m\x1b[31m          ^^@@@@^^·                                                                                                            " << std::endl;
+    std::cout << "\x1b[1m\x1b[31m                                                                                                                        \x1b[0m" << std::endl;
 }
 
 int main(int argc, char *argv[])
 {
+    if (argc < 0 && argv == 0)
+    {
+        LogErrors::getInstance().addError("No argument specified. See --help or -h to see the list of options.", 6);
+        LogErrors::getInstance().printAll();
+        exit(LogErrors::getInstance().exitCode());
+    }
+
     if (argc > 1 && strcmp(argv[1], "-h") == 0)
     {
         printHelp();
@@ -131,13 +142,17 @@ int main(int argc, char *argv[])
     else if (argc > 1 && strcmp(argv[1], "-f") == 0)
     {
         return executeRun(argv);
-    } else if (argc > 1 && strcmp(argv[1], "--file") == 0) {
+    }
+    else if (argc > 1 && strcmp(argv[1], "--file") == 0)
+    {
         return executeRun(argv);
     }
-    else if (argc > 1 && strcmp(argv[1], "-v") == 0) {
+    else if (argc > 1 && strcmp(argv[1], "-v") == 0)
+    {
         printVersion();
-    } 
-    else if (argc > 1 && strcmp(argv[1], "--version") == 0) {
+    }
+    else if (argc > 1 && strcmp(argv[1], "--version") == 0)
+    {
         printVersion();
     }
     else
