@@ -29,6 +29,7 @@ def main:func() -> [
 
 ## Building on Linux
 To build and run the project on linux, do this below:
+
 clone the repository with:
 ```
 git clone https://github.com/el-rafa-dev/rhythinl.git
