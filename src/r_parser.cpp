@@ -680,6 +680,7 @@ namespace Rythin
         // {
         //     LogErrors::getInstance().addError("Function scope not closed", 57, current().line, current().column);
         // }
+        
         consume(TokensTypes::TOKEN_RBRACKET); // ']'
         return block;
     }
