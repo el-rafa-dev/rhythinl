@@ -505,7 +505,19 @@ namespace Rythin
         if (current_input == ']')
         {
             auto inter_node = std::make_shared<InterpolationNode>();
-            inter_node->var_name = code_input.substr(start, position - start);
+            auto val = code_input.substr(start, position - start);
+            for (char i : val)
+            {
+                if (std::isdigit(i))
+                {
+                    inter_node->val = val;
+                    break;
+                } else {
+                    inter_node->var_name = val;
+                    break;
+                }
+            }
+            
             advance_tk(); // Skip ]
             return inter_node->val;
         }

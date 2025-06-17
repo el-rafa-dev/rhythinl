@@ -43,7 +43,7 @@ namespace Rythin
         {
             // check if the current type matches the expected token
             
-            LogErrors::getInstance().addError("Expected '" + Tokens::tokenTypeToString(tk) + "' but got: '" + Tokens::tokenTypeToString(current().type), 4, current().line, current().column);
+            LogErrors::getInstance().addError("Expected " + Tokens::tokenTypeToString(tk) + " token but got: " + Tokens::tokenTypeToString(current().type), 4, current().line, current().column);
         }
         position++;
         return tokens[position - 1];
@@ -674,9 +674,12 @@ namespace Rythin
 
         while (!check(TokensTypes::TOKEN_RBRACKET))
         {
-            block->statements.push_back(ParseDeclarations());
+            block->statements.push_back(ParseDeclarations());  
         }
-
+        // if (!check(TokensTypes::TOKEN_RBRACKET))
+        // {
+        //     LogErrors::getInstance().addError("Function scope not closed", 57, current().line, current().column);
+        // }
         consume(TokensTypes::TOKEN_RBRACKET); // ']'
         return block;
     }
