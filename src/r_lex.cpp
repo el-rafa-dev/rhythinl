@@ -126,6 +126,12 @@ namespace Rythin
 
             case ':':
                 advance_tk();
+                if (current_input == '=')
+                {
+                    advance_tk();
+                    return Tokens(TokensTypes::TOKEN_ASSIGN, ":=", line, column);
+
+                }
                 return Tokens(TokensTypes::TOKEN_COLON, ":", line, column);
             case '=':
                 advance_tk();
@@ -133,12 +139,6 @@ namespace Rythin
                 {
                     advance_tk();
                     return Tokens(TokensTypes::TOKEN_EQUAL, "==", line, column);
-
-                }
-                else
-                {
-                    return Tokens(TokensTypes::TOKEN_ASSIGN, "=", line, column);
-
                 }
             case '!':
                 advance_tk();

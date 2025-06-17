@@ -170,8 +170,7 @@ namespace Rythin
                     auto r = ParseNumeralExpression();
                     // pass the right value to left operation
                     //  right -> left value
-                    right = std::make_shared<BinOp>(l, tk, r);
-                    std::cout << "Current token: " << Tokens::tokenTypeToString(current().type) << std::endl;
+                    return std::make_shared<BinOp>(l, tk, r);
                     break;
                 }
                 break;
@@ -190,18 +189,17 @@ namespace Rythin
                         r = ParseNumeralExpression();
                         break;
                     }
-                    right = std::make_shared<BinOp>(l, op, r);
-                    // right = ParseIntVal();
+                    return std::make_shared<BinOp>(l, op, r);
                 }
                 consume(TokensTypes::TOKEN_RPAREN);
-                break;
             }
             default:
-                LogErrors::getInstance().addError("Expected a number or variable name after binary operator", 1, current().line, current().column);
+                LogErrors::getInstance().addError("Expected a number or variable name after binary operator", 197, current().line, current().column);
                 return nullptr; // return a nullptr to continue the error progression
             }
         }
-        return std::make_shared<BinOp>(left, tk, right);
+        //by default, return que astptr according with the type
+        return left;
     }
 
     ASTPtr Parser::ParseNumeralExpression()
@@ -674,14 +672,15 @@ namespace Rythin
 
         while (!check(TokensTypes::TOKEN_RBRACKET))
         {
-            block->statements.push_back(ParseDeclarations());  
+            block->statements.push_back(ParseDeclarations());
         }
-        // if (!check(TokensTypes::TOKEN_RBRACKET))
-        // {
-        //     LogErrors::getInstance().addError("Function scope not closed", 57, current().line, current().column);
-        // }
+        if (!check(TokensTypes::TOKEN_RBRACKET))
+        {
+            LogErrors::getInstance().addError("Function scope not closed yet", 57, current().line, current().column);
+        } else {
+            consume(TokensTypes::TOKEN_RBRACKET); // ']'
+        }
         
-        consume(TokensTypes::TOKEN_RBRACKET); // ']'
         return block;
     }
 }

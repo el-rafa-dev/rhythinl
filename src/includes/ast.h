@@ -16,6 +16,7 @@
 namespace Rythin
 {
 
+    typedef signed long int int32;
     class ASTNode
     {
     public:
@@ -102,9 +103,7 @@ namespace Rythin
     struct i32Node : public ASTNode
     {
         int32_t val;
-        i32Node(int32_t val) : val(val) {
-            std::cout << "Int32 Value " << std::to_string(val) << std::endl;
-        }
+        i32Node(int32_t val) : val(val) {}
     };
 
     struct i64Node : public ASTNode
@@ -121,7 +120,7 @@ namespace Rythin
 
     struct f64Node : public ASTNode
     {
-        // double is a float thats supports 8 bytes (or 64 bits)
+        // double is a float thats supports 8 bytes (or 64 bits), one byte = 8 bits, 8x8 = 64
         double val;
         f64Node(double val) : val(val) {}
     };
@@ -182,27 +181,29 @@ namespace Rythin
         ASTPtr left, right; // left value and right value
         BinOp(ASTPtr left, TokensTypes &op, ASTPtr right) : left(left), op(op), right(right)
         {
+            //debug only
+
             if (auto var = std::dynamic_pointer_cast<i32Node>(left))
             {
-                //std::cout << "Left value: " << var->val << std::endl;
-                //std::cout << "Operator: " << Tokens::tokenTypeToString(op) << std::endl;
+                // std::cout << "Left value: " << var->val << std::endl;
+                // std::cout << "Operator: " << Tokens::tokenTypeToString(op) << std::endl;
                 if (auto var2 = std::dynamic_pointer_cast<i32Node>(right))
                 {
-                    //std::cout << "Right value: " << var2->val << std::endl;
+                    // std::cout << "Right value: " << var2->val << std::endl;
                     switch (op)
                     {
-                        case TokensTypes::TOKEN_PLUS:
-                            std::cout << "Valor somado: " << var->val + var2->val << std::endl;
-                            break;
-                        case TokensTypes::TOKEN_MINUS:
-                            std::cout << "Valor subtraido: " << var->val - var2->val << std::endl;
-                            break;
-                        case TokensTypes::TOKEN_MULTIPLY:
-                            std::cout << "Valor multiplicado: " << var->val * var2->val << std::endl;
-                            break;
-                        case TokensTypes::TOKEN_DIVIDE:
-                            std::cout << "Valor divido: " << var->val / var2->val << std::endl;
-                            break;
+                    case TokensTypes::TOKEN_PLUS:
+                        std::cout << "Valor somado: " << var->val + var2->val << std::endl;
+                        break;
+                    case TokensTypes::TOKEN_MINUS:
+                        std::cout << "Valor subtraido: " << var->val - var2->val << std::endl;
+                        break;
+                    case TokensTypes::TOKEN_MULTIPLY:
+                        std::cout << "Valor multiplicado: " << var->val * var2->val << std::endl;
+                        break;
+                    case TokensTypes::TOKEN_DIVIDE:
+                        std::cout << "Valor divido: " << var->val / var2->val << std::endl;
+                        break;
                     }
                 }
             }
@@ -230,7 +231,7 @@ namespace Rythin
         std::string var_name;
         TokensTypes type;
         ASTPtr val;
-        VariableDefinitionNode(const std::string var, TokensTypes type, ASTPtr val) : var_name(var), type(type), val(val) {}
+        VariableDefinitionNode(const std::string var, TokensTypes type, ASTPtr val) : var_name(var), type(type), val(val){}
     };
 }
 
