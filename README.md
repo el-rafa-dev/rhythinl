@@ -1,4 +1,4 @@
-<img src="./gitsrc/rhythin_logo.png" alt="Rhythin Logo" style="display: block; margin-left: auto; margin-right:auto; width: 100%; height: 20%;">
+<img src="./gitsrc/rhythin_logo.png" alt="Rhythin Logo" style="display: block; margin-left: auto; margin-right:auto; width: 100%; height: 20px;">
 
 # Rhythin Programming Language
 RhythinLang is a statically typed and compiled programming language focused on being objective and direct to execute on Command Line Interface (CLI), facilitating learning for both beginners and programmers with experience in the area.
