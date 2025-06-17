@@ -8,7 +8,7 @@ def repl():
     cmake_path = os.getcwd() + "/CMakeCache.txt"
 
     with open(cmake_path, "r", encoding="utf-8") as f:
-        txt = "\n#Generated with gencmake.py\n" + f.read()
+        txt = "\n# Generated with gencmake.py\n" + f.read()
         txto = txt.replace("/home/el-rafa/VSCode/Rhythin", os.getcwd())
         
     if (exec_times < 1):
