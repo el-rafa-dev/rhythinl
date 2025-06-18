@@ -101,7 +101,7 @@ namespace Rythin
 
     struct InterpolationNode : public ASTNode
     {
-        std::string val;      // <-
+        std::string val;      // <- set the value of var/function name
         std::string var_name; // gets the var/function and return the value to the val
     };
 
@@ -236,7 +236,21 @@ namespace Rythin
         std::string var_name;
         TokensTypes type;
         ASTPtr val;
-        VariableDefinitionNode(const std::string var, TokensTypes type, ASTPtr val) : var_name(var), type(type), val(val){}
+        VariableDefinitionNode(const std::string var, TokensTypes type, ASTPtr val) : var_name(var), type(type), val(val){
+            //debug only
+            if (auto var = std::dynamic_pointer_cast<f32Node>(val))
+            {
+                if (type == TokensTypes::TOKEN_FLOAT_32)
+                {
+                    std::cout << "Name: " << var_name << " Type: " << Tokens::tokenTypeToString(type) << " Value: " << var->val << std::endl;
+                }
+            } else if (auto var = std::dynamic_pointer_cast<f64Node>(val)) {
+                if (type == TokensTypes::TOKEN_FLOAT_64)
+                {
+                    std::cout << "Name: " << var_name << " Type: " << Tokens::tokenTypeToString(type) << " Value: " << var->val << std::endl;
+                }
+            }
+        }
     };
 }
 

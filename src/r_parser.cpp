@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <optional>
 #include <math.h>
+#include <iomanip>
 
 // local includes
 #include "../src/includes/ast.h"
@@ -236,6 +237,7 @@ namespace Rythin
             val = std::make_shared<f32Node>(std::stof(consume(TokensTypes::TOKEN_FLOAT_32).value));
             break;
         case TokensTypes::TOKEN_FLOAT_64:
+            std::cout << "Value in int: " << std::fixed << std::setprecision(current().value.size() - 1) << std::stod(current().value) << std::endl;
             val = std::make_shared<f64Node>(std::stod(consume(TokensTypes::TOKEN_FLOAT_64).value));
             break;
         }
