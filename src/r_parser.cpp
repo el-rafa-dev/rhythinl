@@ -236,7 +236,7 @@ namespace Rythin
             val = std::make_shared<f32Node>(std::stof(consume(TokensTypes::TOKEN_FLOAT_32).value));
             break;
         case TokensTypes::TOKEN_FLOAT_64:
-            val = std::make_shared<f32Node>(std::stod(consume(TokensTypes::TOKEN_FLOAT_64).value));
+            val = std::make_shared<f64Node>(std::stod(consume(TokensTypes::TOKEN_FLOAT_64).value));
             break;
         }
         return val;
