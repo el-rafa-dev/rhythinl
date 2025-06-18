@@ -28,7 +28,7 @@ std::string Tokens::tokenTypeToString(TokensTypes type)
     case TokensTypes::TOKEN_FLOAT_IND:
         return "f";
     case TokensTypes::TOKEN_ASSIGN:
-        return "=";
+        return ":=";
     case TokensTypes::TOKEN_EQUAL:
         return "==";
     case TokensTypes::TOKEN_NOT_EQUAL:

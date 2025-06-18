@@ -10,7 +10,7 @@
 using Value = std::variant<int, double, std::string>;
 
 enum class OpCode : uint8_t {
-    OP_ASSIGN,       //assignment [=]
+    OP_ASSIGN,       //assignment [:=]
     OP_FIN,         //finish [fin FINISH_CODE (0 or a diferent number greeter or less than zero)]
     OP_RETURN,      //return
     OP_CONST,       //const var

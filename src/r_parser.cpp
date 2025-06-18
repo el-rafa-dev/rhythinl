@@ -96,6 +96,12 @@ namespace Rythin
             return ParseIfStatement();
         case TokensTypes::TOKEN_LOOP:
             return ParseLoopExpression();
+            // if (lookAhead(TokensTypes::TOKEN_IN))
+            // {
+            //     return ParseLoopExpression();
+            // } else {
+            //     return ParseLoopCond();
+            // }
         case TokensTypes::TOKEN_PRINT:
             return ParsePrint();
         case TokensTypes::TOKEN_PRINT_ERROR:
@@ -371,6 +377,7 @@ namespace Rythin
 
     ASTPtr Parser::ParsePrintE()
     {
+        //TODO: remove the printe, print and cinput
         auto node = std::make_shared<PrintE>();
         consume(TokensTypes::TOKEN_PRINT_ERROR);
         consume(TokensTypes::TOKEN_LPAREN);
@@ -443,11 +450,12 @@ namespace Rythin
             tk = consume(current().type).type;
             break;
         default:
-            // don't have support imediatelly for identifiers..
+            // don't have support imediatelly for identifiers.. before i will put a support, not now.]
+            // but is easy to set the support but a i need to create a function to parse variables names and args (if the variable is a function)
             LogErrors::getInstance().addError("Invalid type for variable definition ", 54, current().line, current().column);
             return nullptr;
         }
-        // consome o '=' para pegar o valor ou expressão
+        // consume the ':=' to get the value
         consume(TokensTypes::TOKEN_ASSIGN); 
         // parse value after assign based on the defined type on tk
         auto val = ParseExpression(tk);
@@ -466,6 +474,7 @@ namespace Rythin
     ASTPtr Parser::ParseExpression(TokensTypes types)
     {
         // consume the value based on the type of the variable
+        // this helps the semantic analysis
         switch (types)
         {
         case TokensTypes::TOKEN_STR:
@@ -483,6 +492,8 @@ namespace Rythin
             return ParseIntVal();
         case TokensTypes::TOKEN_BYTES:
             return ParseByteVal();
+        case TokensTypes::TOKEN_BOOL:
+            return ParseLoopCondition();
         case TokensTypes::TOKEN_OBJECT:
             switch (current().type)
             {
@@ -511,7 +522,7 @@ namespace Rythin
                 case TokensTypes::TOKEN_IDENTIFIER:
                 {
                     ASTPtr ptr;
-                    if (lookAhead(TokensTypes::TOKEN_LPAREN))
+                    if (check(TokensTypes::TOKEN_LPAREN))
                     {
                         auto id = std::make_shared<IdentifierNode>();
                         id->name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
@@ -616,15 +627,13 @@ namespace Rythin
     {
         consume(TokensTypes::TOKEN_LOOP);
         consume(TokensTypes::TOKEN_LPAREN);
-        if (check(TokensTypes::TOKEN_TRUE))
-        {
+        std::string var_name;
+        if (check(TokensTypes::TOKEN_TRUE) or check(TokensTypes::TOKEN_FALSE)) {
             return ParseLoopCond();
-        }
-        else if (check(TokensTypes::TOKEN_FALSE))
+        } else if (check(TokensTypes::TOKEN_IDENTIFIER))
         {
-            return ParseLoopCond();
+            var_name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
         }
-        auto var_name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
         // consome o : para em seguida consumir o tipo da variavel
         consume(TokensTypes::TOKEN_COLON);
         // switch para verificação de tipos da variavel
@@ -638,9 +647,8 @@ namespace Rythin
             type = consume(current().type).type;
             break;
         default:
-            LogErrors::getInstance().addError("Loop expression only accepts number types (int, float, double)", 23, current().line, current().column);
+            LogErrors::getInstance().addError("Loop expression only accepts number types (int(32 or 64), float(32/64))", 23, current().line, current().column);
             return nullptr;
-            // throw Excepts::SyntaxException("Loop Expression");
         }
         consume(TokensTypes::TOKEN_IN);
         ASTPtr val;
@@ -654,7 +662,6 @@ namespace Rythin
             break;
         default:
             LogErrors::getInstance().addError("Invalid type for loop expression", 23, current().line, current().column);
-            // throw Excepts::SyntaxException("Invalid loop type");
             return nullptr;
         }
         consume(TokensTypes::TOKEN_RPAREN);
@@ -715,13 +722,11 @@ namespace Rythin
         {
             block->statements.push_back(ParseDeclarations());
         }
-        if (!check(TokensTypes::TOKEN_RBRACKET))
+        /*if (!lookAhead(TokensTypes::TOKEN_RBRACKET))
         {
             LogErrors::getInstance().addError("Function scope not closed yet", 57, current().line, current().column);
-        } else {
-            consume(TokensTypes::TOKEN_RBRACKET); // ']'
-        }
-        
+        }*/
+        consume(TokensTypes::TOKEN_RBRACKET); // ']'
         return block;
     }
 }

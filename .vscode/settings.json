@@ -91,6 +91,6 @@
     
     "editor.fontSize": 15,
     "editor.lineHeight": 22,
-    "editor.fontFamily": "Operator Mono Lig",
+    "editor.fontFamily": "JetBrains Mono",
     "cmake.sourceDirectory": "/home/el-rafa/CLionProjects/Rhythin",
 }
