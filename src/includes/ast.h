@@ -65,7 +65,12 @@ namespace Rythin
     struct VariableNode : public ASTNode
     {
         std::string name;
-        std::vector<ASTPtr> args;
+    };
+
+    struct IdentifierNode : public ASTNode
+    {
+        std::string name;
+        std::vector <ASTPtr> args;
     };
 
     struct LiteralNode : public ASTNode

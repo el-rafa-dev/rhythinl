@@ -66,6 +66,26 @@ namespace Rythin
         return current().type == tk;
     }
 
+    bool Parser::lookAhead(TokensTypes tk)
+    {
+        int oldpos = position;
+        while (!check(tk))
+        {
+            consume(current().type);
+            if (check(tk))
+            {
+                position = oldpos;
+                std::cout << "Is the expected token: true" << std::endl;
+                return true;
+            } else {
+                position = oldpos;
+                std::cout << "Is the expected token: false" << std::endl;
+                return false;
+            }
+        }
+        return false;
+    }
+
     ASTPtr Parser::ParseDeclarations()
     {
         switch (current().type)
@@ -462,43 +482,75 @@ namespace Rythin
             return ParseIntVal();
         case TokensTypes::TOKEN_BYTES:
             return ParseByteVal();
-        case TokensTypes::TOKEN_NIL:
-            consume(TokensTypes::TOKEN_NIL);
-            return std::make_shared<NilNode>();
         case TokensTypes::TOKEN_OBJECT:
-            if (check(TokensTypes::TOKEN_INT_32))
+            switch (current().type)
             {
-                auto ptr = std::make_shared<i32Node>(std::stoi(consume(current().type).value));
-                return std::make_shared<ObjectNode>(ptr);
-            }
-            else if (check(TokensTypes::TOKEN_FLOAT_64))
-            {
-                auto ptr = std::make_shared<f64Node>(std::stod(consume(current().type).value));
-                return std::make_shared<ObjectNode>(ptr);
-            }
-            else if (check(TokensTypes::TOKEN_STR))
-            {
-                auto ptr = std::make_shared<LiteralNode>(consume(current().type).value);
-                return std::make_shared<ObjectNode>(ptr);
-            }
-            else if (check(TokensTypes::TOKEN_FLOAT_32))
-            {
-                auto ptr = std::make_shared<f32Node>(std::stof(consume(current().type).value));
-                return std::make_shared<ObjectNode>(ptr);
-            }
-        case TokensTypes::TOKEN_BOOL:
-            if (check(TokensTypes::TOKEN_TRUE))
-            {
-                consume(TokensTypes::TOKEN_TRUE);
-                return std::make_shared<TrueOrFalseNode>(true);
-            }
-            else if (check(TokensTypes::TOKEN_FALSE))
-            {
-                consume(TokensTypes::TOKEN_FALSE);
-                return std::make_shared<TrueOrFalseNode>(false);
+                case TokensTypes::TOKEN_INT_32:
+                case TokensTypes::TOKEN_INT_64:
+                case TokensTypes::TOKEN_FLOAT_32:
+                case TokensTypes::TOKEN_FLOAT_64:
+                    return std::make_shared<ObjectNode>(ParseNumeralExpression());
+                case TokensTypes::TOKEN_TRUE:
+                {
+                    consume(TokensTypes::TOKEN_TRUE);
+                    auto ptr = std::make_shared<TrueOrFalseNode>(true);
+                    return std::make_shared<ObjectNode>(ptr);
+                }
+                case TokensTypes::TOKEN_FALSE:
+                {
+                    consume(TokensTypes::TOKEN_FALSE);
+                    auto ptr = std::make_shared<TrueOrFalseNode>(false);
+                    return std::make_shared<ObjectNode>(ptr);
+                }
+                case TokensTypes::TOKEN_STRING_LITERAL:
+                {
+                    auto ptr = std::make_shared<LiteralNode>(consume(TokensTypes::TOKEN_STRING_LITERAL).value);
+                    return std::make_shared<ObjectNode>(ptr);
+                }
+                case TokensTypes::TOKEN_IDENTIFIER:
+                {
+                    ASTPtr ptr;
+                    if (lookAhead(TokensTypes::TOKEN_LPAREN))
+                    {
+                        auto id = std::make_shared<IdentifierNode>();
+                        id->name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
+                        consume(TokensTypes::TOKEN_LPAREN);
+                        while (!check(TokensTypes::TOKEN_RPAREN))
+                        {
+                            switch (current().type)
+                            {
+                                case TokensTypes::TOKEN_IDENTIFIER:
+                                    consume(TokensTypes::TOKEN_IDENTIFIER);
+                                    std::cout << "Identifier podi n man" << std::endl;
+                                    break;
+                                case TokensTypes::TOKEN_INT_32:
+                                case TokensTypes::TOKEN_INT_64:
+                                case TokensTypes::TOKEN_FLOAT_32:
+                                case TokensTypes::TOKEN_FLOAT_64:
+                                    id->args.push_back(ParseNumeralExpression());
+                                    break;
+                                case TokensTypes::TOKEN_TRUE:
+                                case TokensTypes::TOKEN_FALSE:
+                                    id->args.push_back(ParseLoopCond());
+                                    break;
+                            }
+                            consume(TokensTypes::TOKEN_RPAREN);
+                            ptr = id; 
+                        }
+                        
+                    } else {
+                        auto id = std::make_shared<VariableNode>();
+                        id->name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
+                        ptr = id;
+                    }
+                    return std::make_shared<ObjectNode>(ptr);
+                }
+                default:
+                    LogErrors::getInstance().addError("Invalid variable value for 'obj' type", 95, current().line, current().column);
+                    return nullptr;
             }
         default:
-            std::cerr << "[Error]: Invalid variable value type at line " << current().line << " column " << current().column << std::endl;
+            LogErrors::getInstance().addError("Invalid variable value type", 97, current().line, current().column);
             return nullptr;
             // throw Excepts::CompilationException("Invalid Variable Value Type");
         }
@@ -579,16 +631,10 @@ namespace Rythin
         switch (current().type)
         {
         case TokensTypes::TOKEN_INT_32:
-            type = consume(TokensTypes::TOKEN_INT_32).type;
-            break;
         case TokensTypes::TOKEN_INT_64:
-            type = consume(TokensTypes::TOKEN_INT_64).type;
-            break;
         case TokensTypes::TOKEN_FLOAT_32:
-            type = consume(TokensTypes::TOKEN_FLOAT_32).type;
-            break;
         case TokensTypes::TOKEN_FLOAT_64:
-            type = consume(TokensTypes::TOKEN_FLOAT_64).type;
+            type = consume(current().type).type;
             break;
         default:
             LogErrors::getInstance().addError("Loop expression only accepts number types (int, float, double)", 23, current().line, current().column);
@@ -600,16 +646,10 @@ namespace Rythin
         switch (current().type)
         {
         case TokensTypes::TOKEN_INT_32:
-            val = std::make_shared<i32Node>(std::stoi(consume(TokensTypes::TOKEN_INT_32).value));
-            break;
         case TokensTypes::TOKEN_INT_64:
-            val = std::make_shared<i64Node>(std::stoi(consume(TokensTypes::TOKEN_INT_64).value));
-            break;
         case TokensTypes::TOKEN_FLOAT_32:
-            val = std::make_shared<f32Node>(std::stof(consume(TokensTypes::TOKEN_FLOAT_32).value));
-            break;
         case TokensTypes::TOKEN_FLOAT_64:
-            val = std::make_shared<f64Node>(std::stod(consume(TokensTypes::TOKEN_FLOAT_64).value));
+            val = ParseNumeralExpression();
             break;
         default:
             LogErrors::getInstance().addError("Invalid type for loop expression", 23, current().line, current().column);

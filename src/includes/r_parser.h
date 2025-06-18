@@ -20,6 +20,7 @@ namespace Rythin {
         Tokens consume(TokensTypes tk);
         std::vector<ASTPtr> Parse();
         bool check(TokensTypes tk);
+        bool lookAhead(TokensTypes tk);
         //private functions
         private:
         ASTPtr ParsePrint();
