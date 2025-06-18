@@ -75,11 +75,10 @@ namespace Rythin
             if (check(tk))
             {
                 position = oldpos;
-                std::cout << "Is the expected token: true" << std::endl;
+                //return true if is the expected tk
                 return true;
             } else {
                 position = oldpos;
-                std::cout << "Is the expected token: false" << std::endl;
                 return false;
             }
         }
