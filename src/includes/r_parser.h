@@ -15,6 +15,7 @@ namespace Rythin {
         int position;
         std::vector<Tokens> tokens;
         public:
+        inline static std::vector<std::string> codes;
         Parser(std::vector<Tokens> tokens) : position(0), tokens(tokens){}
         Tokens current();
         Tokens consume(TokensTypes tk);
@@ -40,6 +41,8 @@ namespace Rythin {
         ASTPtr ParsePositiveVals(TokensTypes curr);
         ASTPtr ParseNegativeVals(TokensTypes curr);
         ASTPtr ParseVarDeclaration();
+
+        std::string getCode();
 
         ASTPtr ParseByteVal();
         ASTPtr ParseNumeralExpression();

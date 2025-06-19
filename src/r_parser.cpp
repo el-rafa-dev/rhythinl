@@ -32,6 +32,9 @@ namespace Rythin
 
     Tokens Parser::consume(TokensTypes tk)
     {
+        codes.push_back(current().value);
+        //std::cout << "Code: " <<  << std::endl;
+
         if (current().type == TokensTypes::TOKEN_EOF)
         {
             // checa se o token atual é o EOF (end of file), se for retorna o erro abaixo
@@ -43,9 +46,9 @@ namespace Rythin
         if (current().type != tk)
         {
             // check if the current type matches the expected token
-            
             LogErrors::getInstance().addError("Expected " + Tokens::tokenTypeToString(tk) + " token but got: " + Tokens::tokenTypeToString(current().type), 4, current().line, current().column);
         }
+
         position++;
         return tokens[position - 1];
     }
@@ -76,9 +79,11 @@ namespace Rythin
             if (check(tk))
             {
                 position = oldpos;
-                //return true if is the expected tk
+                // return true if is the expected tk
                 return true;
-            } else {
+            }
+            else
+            {
                 position = oldpos;
                 return false;
             }
@@ -224,7 +229,7 @@ namespace Rythin
                 return nullptr; // return a nullptr to continue the error progression
             }
         }
-        //by default, return que astptr according with the type
+        // by default, return que astptr according with the type
         return left;
     }
 
@@ -243,7 +248,7 @@ namespace Rythin
             val = std::make_shared<f32Node>(std::stof(consume(TokensTypes::TOKEN_FLOAT_32).value));
             break;
         case TokensTypes::TOKEN_FLOAT_64:
-            //std::cout << "Value in int: " << std::fixed << std::setprecision(current().value.size() - 1) << std::stod(current().value) << std::endl;
+            // std::cout << "Value in int: " << std::fixed << std::setprecision(current().value.size() - 1) << std::stod(current().value) << std::endl;
             val = std::make_shared<f64Node>(std::stod(consume(TokensTypes::TOKEN_FLOAT_64).value));
             break;
         }
@@ -377,7 +382,7 @@ namespace Rythin
 
     ASTPtr Parser::ParsePrintE()
     {
-        //TODO: remove the printe, print and cinput
+        // TODO: remove the printe, print and cinput
         auto node = std::make_shared<PrintE>();
         consume(TokensTypes::TOKEN_PRINT_ERROR);
         consume(TokensTypes::TOKEN_LPAREN);
@@ -456,7 +461,7 @@ namespace Rythin
             return nullptr;
         }
         // consume the ':=' to get the value
-        consume(TokensTypes::TOKEN_ASSIGN); 
+        consume(TokensTypes::TOKEN_ASSIGN);
         // parse value after assign based on the defined type on tk
         auto val = ParseExpression(tk);
         return std::make_shared<VariableDefinitionNode>(name, tk, val);
@@ -497,69 +502,70 @@ namespace Rythin
         case TokensTypes::TOKEN_OBJECT:
             switch (current().type)
             {
-                case TokensTypes::TOKEN_INT_32:
-                case TokensTypes::TOKEN_INT_64:
-                case TokensTypes::TOKEN_FLOAT_32:
-                case TokensTypes::TOKEN_FLOAT_64:
-                    return std::make_shared<ObjectNode>(ParseNumeralExpression());
-                case TokensTypes::TOKEN_TRUE:
+            case TokensTypes::TOKEN_INT_32:
+            case TokensTypes::TOKEN_INT_64:
+            case TokensTypes::TOKEN_FLOAT_32:
+            case TokensTypes::TOKEN_FLOAT_64:
+                return std::make_shared<ObjectNode>(ParseNumeralExpression());
+            case TokensTypes::TOKEN_TRUE:
+            {
+                consume(TokensTypes::TOKEN_TRUE);
+                auto ptr = std::make_shared<TrueOrFalseNode>(true);
+                return std::make_shared<ObjectNode>(ptr);
+            }
+            case TokensTypes::TOKEN_FALSE:
+            {
+                consume(TokensTypes::TOKEN_FALSE);
+                auto ptr = std::make_shared<TrueOrFalseNode>(false);
+                return std::make_shared<ObjectNode>(ptr);
+            }
+            case TokensTypes::TOKEN_STRING_LITERAL:
+            {
+                auto ptr = std::make_shared<LiteralNode>(consume(TokensTypes::TOKEN_STRING_LITERAL).value);
+                return std::make_shared<ObjectNode>(ptr);
+            }
+            case TokensTypes::TOKEN_IDENTIFIER:
+            {
+                ASTPtr ptr;
+                if (check(TokensTypes::TOKEN_LPAREN))
                 {
-                    consume(TokensTypes::TOKEN_TRUE);
-                    auto ptr = std::make_shared<TrueOrFalseNode>(true);
-                    return std::make_shared<ObjectNode>(ptr);
-                }
-                case TokensTypes::TOKEN_FALSE:
-                {
-                    consume(TokensTypes::TOKEN_FALSE);
-                    auto ptr = std::make_shared<TrueOrFalseNode>(false);
-                    return std::make_shared<ObjectNode>(ptr);
-                }
-                case TokensTypes::TOKEN_STRING_LITERAL:
-                {
-                    auto ptr = std::make_shared<LiteralNode>(consume(TokensTypes::TOKEN_STRING_LITERAL).value);
-                    return std::make_shared<ObjectNode>(ptr);
-                }
-                case TokensTypes::TOKEN_IDENTIFIER:
-                {
-                    ASTPtr ptr;
-                    if (check(TokensTypes::TOKEN_LPAREN))
+                    auto id = std::make_shared<IdentifierNode>();
+                    id->name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
+                    consume(TokensTypes::TOKEN_LPAREN);
+                    while (!check(TokensTypes::TOKEN_RPAREN))
                     {
-                        auto id = std::make_shared<IdentifierNode>();
-                        id->name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
-                        consume(TokensTypes::TOKEN_LPAREN);
-                        while (!check(TokensTypes::TOKEN_RPAREN))
+                        switch (current().type)
                         {
-                            switch (current().type)
-                            {
-                                case TokensTypes::TOKEN_IDENTIFIER:
-                                    consume(TokensTypes::TOKEN_IDENTIFIER);
-                                    std::cout << "Identifier podi n man" << std::endl;
-                                    break;
-                                case TokensTypes::TOKEN_INT_32:
-                                case TokensTypes::TOKEN_INT_64:
-                                case TokensTypes::TOKEN_FLOAT_32:
-                                case TokensTypes::TOKEN_FLOAT_64:
-                                    id->args.push_back(ParseNumeralExpression());
-                                    break;
-                                case TokensTypes::TOKEN_TRUE:
-                                case TokensTypes::TOKEN_FALSE:
-                                    id->args.push_back(ParseLoopCond());
-                                    break;
-                            }
-                            consume(TokensTypes::TOKEN_RPAREN);
-                            ptr = id; 
+                        case TokensTypes::TOKEN_IDENTIFIER:
+                            consume(TokensTypes::TOKEN_IDENTIFIER);
+                            std::cout << "Identifier podi n man" << std::endl;
+                            break;
+                        case TokensTypes::TOKEN_INT_32:
+                        case TokensTypes::TOKEN_INT_64:
+                        case TokensTypes::TOKEN_FLOAT_32:
+                        case TokensTypes::TOKEN_FLOAT_64:
+                            id->args.push_back(ParseNumeralExpression());
+                            break;
+                        case TokensTypes::TOKEN_TRUE:
+                        case TokensTypes::TOKEN_FALSE:
+                            id->args.push_back(ParseLoopCond());
+                            break;
                         }
-                        
-                    } else {
-                        auto id = std::make_shared<VariableNode>();
-                        id->name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
+                        consume(TokensTypes::TOKEN_RPAREN);
                         ptr = id;
                     }
-                    return std::make_shared<ObjectNode>(ptr);
                 }
-                default:
-                    LogErrors::getInstance().addError("Invalid variable value for 'obj' type", 95, current().line, current().column);
-                    return nullptr;
+                else
+                {
+                    auto id = std::make_shared<VariableNode>();
+                    id->name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
+                    ptr = id;
+                }
+                return std::make_shared<ObjectNode>(ptr);
+            }
+            default:
+                LogErrors::getInstance().addError("Invalid variable value for 'obj' type", 95, current().line, current().column);
+                return nullptr;
             }
         default:
             LogErrors::getInstance().addError("Invalid variable value type", 97, current().line, current().column);
@@ -628,9 +634,11 @@ namespace Rythin
         consume(TokensTypes::TOKEN_LOOP);
         consume(TokensTypes::TOKEN_LPAREN);
         std::string var_name;
-        if (check(TokensTypes::TOKEN_TRUE) or check(TokensTypes::TOKEN_FALSE)) {
+        if (check(TokensTypes::TOKEN_TRUE) or check(TokensTypes::TOKEN_FALSE))
+        {
             return ParseLoopCond();
-        } else if (check(TokensTypes::TOKEN_IDENTIFIER))
+        }
+        else if (check(TokensTypes::TOKEN_IDENTIFIER))
         {
             var_name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
         }
@@ -692,7 +700,7 @@ namespace Rythin
         {
             lit_val = std::stoll(consume(current().type).value);
         }
-        
+
         if (lit_val < 0 || lit_val > 255)
         {
             LogErrors::getInstance().addWarning("Value " + std::to_string(lit_val) + " is out of range for byte type. It will be truncated to: " + std::to_string(static_cast<unsigned char>(lit_val)), 5, current().line, current().column);
@@ -703,11 +711,13 @@ namespace Rythin
             val = static_cast<unsigned char>(lit_val);
         }
         if (check(TokensTypes::TOKEN_NIL))
-        //nil cannot be assigned with number values (int32, int64, float32, flat64 and others), throw a error pls
+        // nil cannot be assigned with number values (int32, int64, float32, flat64 and others), throw a error pls
         {
-            //this error wil be repeated with ParseIntValues
+            // this error wil be repeated with ParseIntValues
             LogErrors::getInstance().addError("'nil' keyword cannot be assigned with number values", 89, current().line, current().column);
-        } else {
+        }
+        else
+        {
             consume(TokensTypes::TOKEN_INT_32);
         }
         return std::make_shared<ByteNode>(val);
