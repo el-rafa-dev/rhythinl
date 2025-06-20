@@ -23,6 +23,7 @@ namespace Log
             static LogErrors instance;
             return instance;
         }
+
         int getWarnsSize();
         int getErrSize();
         void addError(const std::string &error, int exit_code, int line, int column);

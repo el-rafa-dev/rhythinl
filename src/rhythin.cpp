@@ -50,6 +50,10 @@ namespace Rythin
                 }
                 Rythin::Parser parser(tokens);
                 std::vector<ASTPtr> nodes = parser.Parse();
+                for (auto& stmts : nodes)
+                {
+                    
+                }
                 // only for tests
                 Interpreter interpreter(nodes);
             }

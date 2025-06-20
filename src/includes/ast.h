@@ -11,16 +11,20 @@
 #include "t_tokens.h"
 #include "rexcept.h"
 #include "t_tokens.h"
+#include "ast_visit.h"
 #include <iostream>
 
 namespace Rythin
 {
 
     typedef signed long int int32;
+    typedef signed long long int int64;
+
     class ASTNode
     {
     public:
         virtual ~ASTNode() = default;
+        virtual void accept(ASTVisitor &visit) = 0;
     };
 
     using ASTPtr = std::shared_ptr<ASTNode>;
@@ -70,7 +74,7 @@ namespace Rythin
     struct IdentifierNode : public ASTNode
     {
         std::string name;
-        std::vector <ASTPtr> args;
+        std::vector<ASTPtr> args;
     };
 
     struct LiteralNode : public ASTNode
@@ -109,18 +113,33 @@ namespace Rythin
     {
         int32_t val;
         i32Node(int32_t val) : val(val) {}
+
+        void accept(ASTVisitor &visitor) override
+        {
+            visitor.visit(*this);
+        }
     };
 
     struct i64Node : public ASTNode
     {
         int64_t val;
         i64Node(int64_t val) : val(val) {}
+
+        void accept(ASTVisitor &visitor) override
+        {
+            visitor.visit(*this);
+        }
     };
 
     struct ByteNode : public ASTNode
     {
         unsigned char byte;
         ByteNode(unsigned char by) : byte(by) {}
+        
+        void accept(ASTVisitor &visitor) override
+        {
+            visitor.visit(*this);
+        }
     };
 
     struct f64Node : public ASTNode
@@ -128,18 +147,33 @@ namespace Rythin
         // double is a float thats supports 8 bytes (or 64 bits), one byte = 8 bits, 8x8 = 64
         double val;
         f64Node(double val) : val(val) {}
+
+        void accept(ASTVisitor &visitor) override
+        {
+            visitor.visit(*this);
+        }
     };
 
     struct f32Node : public ASTNode
     {
         float val;
         f32Node(float val) : val(val) {}
+
+        void accept(ASTVisitor &visitor) override
+        {
+            visitor.visit(*this);
+        }
     };
 
     struct TrueOrFalseNode : public ASTNode
     {
         bool val;
         TrueOrFalseNode(bool val) : val(val) {}
+
+        void accept(ASTVisitor &visitor) override
+        {
+            visitor.visit(*this);
+        }
     };
 
     struct IfStatement : public ASTNode
@@ -155,18 +189,37 @@ namespace Rythin
     {
         ASTPtr val;
         ObjectNode(ASTPtr val) : val(val) {}
+
+        void accept(ASTVisitor &visitor) override
+        {
+            visitor.visit(*this);
+        }
     };
 
     struct ReturnNode : public ASTNode
     {
         ASTPtr val; // return value (pode ser um int, float/double, string, byte e etc)
         ReturnNode(ASTPtr val) : val(val) {}
+        
+        void accept(ASTVisitor &visitor) override
+        {
+            visitor.visit(*this);
+        }
     };
 
     struct FinishNode : public ASTNode
     {
-        int val; // finish code is a intiger
+        // finish code is a intiger but if is a variable name defined or a variable function call (like var() ), is a ASTPtr
+        int val;
+        ASTPtr value;
+
         FinishNode(int val) : val(val) {}
+        FinishNode(ASTPtr &value) : value(value) {}
+
+        void accept(ASTVisitor &visitor) override
+        {
+            visitor.visit(*this);
+        }
     };
 
     struct NilNode : public ASTNode
@@ -186,7 +239,7 @@ namespace Rythin
         ASTPtr left, right; // left value and right value
         BinOp(ASTPtr left, TokensTypes &op, ASTPtr right) : left(left), op(op), right(right)
         {
-            //debug only
+            // debug only
 
             if (auto var = std::dynamic_pointer_cast<i32Node>(left))
             {
@@ -213,6 +266,11 @@ namespace Rythin
                 }
             }
         }
+        void accept(ASTVisitor &visitor) override
+        {
+            visitor.visit(*this);
+        }
+        
     };
 
     struct IfExpressionNode : public ASTNode
@@ -229,6 +287,11 @@ namespace Rythin
         std::vector<ASTPtr> args;
         ASTPtr block;
         FunctionDefinitionNode(std::string name, std::vector<ASTPtr> args, ASTPtr block) : var_name(name), args(args), block(block) {}
+
+        void accept(ASTVisitor &visitor) override
+        {
+            visitor.visit(*this);
+        }
     };
 
     struct VariableDefinitionNode : public ASTNode
@@ -236,22 +299,32 @@ namespace Rythin
         std::string var_name;
         TokensTypes type;
         ASTPtr val;
-        VariableDefinitionNode(const std::string var, TokensTypes type, ASTPtr val) : var_name(var), type(type), val(val){
-            //debug only
+        VariableDefinitionNode(const std::string var, TokensTypes type, ASTPtr val) : var_name(var), type(type), val(val)
+        {
+            // debug only
             if (auto var = std::dynamic_pointer_cast<f32Node>(val))
             {
                 if (type == TokensTypes::TOKEN_FLOAT_32)
                 {
                     std::cout << "Name: " << var_name << " Type: " << Tokens::tokenTypeToString(type) << " Value: " << var->val << std::endl;
                 }
-            } else if (auto var = std::dynamic_pointer_cast<f64Node>(val)) {
+            }
+            else if (auto var = std::dynamic_pointer_cast<f64Node>(val))
+            {
                 if (type == TokensTypes::TOKEN_FLOAT_64)
                 {
                     std::cout << "Name: " << var_name << " Type: " << Tokens::tokenTypeToString(type) << " Value: " << var->val << std::endl;
                 }
-            } else if (auto var = std::dynamic_pointer_cast<BinOp>(val)) {
+            }
+            else if (auto var = std::dynamic_pointer_cast<BinOp>(val))
+            {
                 std::cout << "Left " << var->left << " Operator: " << Tokens::tokenTypeToString(var->op) << " Right: " << var->right << std::endl;
             }
+        }
+
+        void accept(ASTVisitor &visitor) override
+        {
+            visitor.visit(*this);
         }
     };
 }
