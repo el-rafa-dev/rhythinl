@@ -256,6 +256,30 @@ src/rhythin.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/src/rhythin.cpp.s
 .PHONY : src/rhythin.cpp.s
 
+src/semantic_v.o: src/semantic_v.cc.o
+.PHONY : src/semantic_v.o
+
+# target to build an object file
+src/semantic_v.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/src/semantic_v.cc.o
+.PHONY : src/semantic_v.cc.o
+
+src/semantic_v.i: src/semantic_v.cc.i
+.PHONY : src/semantic_v.i
+
+# target to preprocess a source file
+src/semantic_v.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/src/semantic_v.cc.i
+.PHONY : src/semantic_v.cc.i
+
+src/semantic_v.s: src/semantic_v.cc.s
+.PHONY : src/semantic_v.s
+
+# target to generate assembly for a file
+src/semantic_v.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rhythin.dir/build.make CMakeFiles/rhythin.dir/src/semantic_v.cc.s
+.PHONY : src/semantic_v.cc.s
+
 src/t_tokens.o: src/t_tokens.cpp.o
 .PHONY : src/t_tokens.o
 
@@ -305,6 +329,9 @@ help:
 	@echo "... src/rhythin.o"
 	@echo "... src/rhythin.i"
 	@echo "... src/rhythin.s"
+	@echo "... src/semantic_v.o"
+	@echo "... src/semantic_v.i"
+	@echo "... src/semantic_v.s"
 	@echo "... src/t_tokens.o"
 	@echo "... src/t_tokens.i"
 	@echo "... src/t_tokens.s"

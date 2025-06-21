@@ -1,4 +1,9 @@
 /***nesse header tem todos os Nós da ASTNode que é classe principal onde todo os nos herdam dela***/
+/**
+ * @brief this is a basic ast node
+ * @author Rafael
+ * @category A.S.T - Abstract Syntax Tree
+**/
 
 #ifndef AST_H
 #define AST_H
@@ -101,6 +106,11 @@ namespace Rythin
         ASTPtr value;
         ASTPtr block;
         LoopNode(std::string var_name, TokensTypes type, ASTPtr value, ASTPtr block) : var_name(var_name), type(type), block(block) {}
+
+        void accept(ASTVisitor &visit) override
+        {
+            visit.visit(*this);
+        }
     };
 
     struct InterpolationNode : public ASTNode
@@ -113,22 +123,12 @@ namespace Rythin
     {
         int32_t val;
         i32Node(int32_t val) : val(val) {}
-
-        void accept(ASTVisitor &visitor) override
-        {
-            visitor.visit(*this);
-        }
     };
 
     struct i64Node : public ASTNode
     {
         int64_t val;
         i64Node(int64_t val) : val(val) {}
-
-        void accept(ASTVisitor &visitor) override
-        {
-            visitor.visit(*this);
-        }
     };
 
     struct ByteNode : public ASTNode
@@ -136,10 +136,6 @@ namespace Rythin
         unsigned char byte;
         ByteNode(unsigned char by) : byte(by) {}
         
-        void accept(ASTVisitor &visitor) override
-        {
-            visitor.visit(*this);
-        }
     };
 
     struct f64Node : public ASTNode
@@ -147,33 +143,18 @@ namespace Rythin
         // double is a float thats supports 8 bytes (or 64 bits), one byte = 8 bits, 8x8 = 64
         double val;
         f64Node(double val) : val(val) {}
-
-        void accept(ASTVisitor &visitor) override
-        {
-            visitor.visit(*this);
-        }
     };
 
     struct f32Node : public ASTNode
     {
         float val;
         f32Node(float val) : val(val) {}
-
-        void accept(ASTVisitor &visitor) override
-        {
-            visitor.visit(*this);
-        }
     };
 
     struct TrueOrFalseNode : public ASTNode
     {
         bool val;
         TrueOrFalseNode(bool val) : val(val) {}
-
-        void accept(ASTVisitor &visitor) override
-        {
-            visitor.visit(*this);
-        }
     };
 
     struct IfStatement : public ASTNode
@@ -189,22 +170,12 @@ namespace Rythin
     {
         ASTPtr val;
         ObjectNode(ASTPtr val) : val(val) {}
-
-        void accept(ASTVisitor &visitor) override
-        {
-            visitor.visit(*this);
-        }
     };
 
     struct ReturnNode : public ASTNode
     {
         ASTPtr val; // return value (pode ser um int, float/double, string, byte e etc)
         ReturnNode(ASTPtr val) : val(val) {}
-        
-        void accept(ASTVisitor &visitor) override
-        {
-            visitor.visit(*this);
-        }
     };
 
     struct FinishNode : public ASTNode
@@ -215,11 +186,6 @@ namespace Rythin
 
         FinishNode(int val) : val(val) {}
         FinishNode(ASTPtr &value) : value(value) {}
-
-        void accept(ASTVisitor &visitor) override
-        {
-            visitor.visit(*this);
-        }
     };
 
     struct NilNode : public ASTNode
@@ -266,11 +232,6 @@ namespace Rythin
                 }
             }
         }
-        void accept(ASTVisitor &visitor) override
-        {
-            visitor.visit(*this);
-        }
-        
     };
 
     struct IfExpressionNode : public ASTNode

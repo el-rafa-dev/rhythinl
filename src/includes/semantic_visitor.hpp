@@ -1,6 +1,7 @@
 #include <vector>
 #include <string.h>
 #include <unordered_map>
+#include <iostream>
 
 // local include
 #include "ast.h"
@@ -8,6 +9,8 @@
 
 #ifndef SEMANTIC_VISITOR_HPP
 #define SEMANTIC_VISITOR_HPP
+
+using namespace Rythin;
 
 namespace Semantic
 {
@@ -17,10 +20,13 @@ namespace Semantic
         std::unordered_map<std::string, TokensTypes> symbolTable;
         TokensTypes lastExprType = TokensTypes::TOKEN_EOF;
 
-        void visit(VariableDefinitionNode& node) override
-        {
-            // symbolTable[node.var_name, node.val] = node.var_name;
-        }
+        void visit(VariableDefinitionNode& node) override;
+
+        void visit(LoopConditionNode& node) override;
+
+        void visit(LoopNode &node) override;
+
+        void visit(FunctionDefinitionNode& node) override;
     };
 
 }

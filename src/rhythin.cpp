@@ -11,8 +11,10 @@
 #include "../src/includes/r_parser.h"
 #include "../src/includes/r_opcodes.h"
 #include "../src/includes/log.h"
+#include "../src/includes/semantic_visitor.hpp"
 
 using namespace Log;
+using namespace Semantic;
 std::fstream file;
 
 namespace Rythin
@@ -50,9 +52,11 @@ namespace Rythin
                 }
                 Rythin::Parser parser(tokens);
                 std::vector<ASTPtr> nodes = parser.Parse();
+
+                SemanticAnalyses as;
                 for (auto& stmts : nodes)
                 {
-                    
+                    stmts->accept(as);
                 }
                 // only for tests
                 Interpreter interpreter(nodes);
