@@ -18,14 +18,11 @@ namespace Semantic
     {
     public:
         std::unordered_map<std::string, TokensTypes> symbolTable;
-        TokensTypes lastExprType = TokensTypes::TOKEN_EOF;
+        TokensTypes lastExprType = TokensTypes::TOKEN_EOF; // by default is the EOF - End Of File 
 
         void visit(VariableDefinitionNode& node) override;
-
         void visit(LoopConditionNode& node) override;
-
         void visit(LoopNode &node) override;
-
         void visit(FunctionDefinitionNode& node) override;
     };
 

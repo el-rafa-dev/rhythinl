@@ -24,7 +24,8 @@ namespace Rythin
     public:
         void Run(std::string file_name)
         {
-            std::fstream file(file_name, std::ios::in); // Abre para leitura
+            // open to read of file
+            std::fstream file(file_name, std::ios::in);
             if (file.is_open())
             {
                 std::string code;
@@ -54,11 +55,13 @@ namespace Rythin
                 std::vector<ASTPtr> nodes = parser.Parse();
 
                 SemanticAnalyses as;
-                for (auto& stmts : nodes)
+                // start the semantic analyses here
+                for (auto &stmts : nodes)
                 {
                     stmts->accept(as);
                 }
-                // only for tests
+
+                // only for tests, a tree-walk interpreter
                 Interpreter interpreter(nodes);
             }
             else

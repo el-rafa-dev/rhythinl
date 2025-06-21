@@ -11,20 +11,23 @@
 #include <string>
 #include <vector>
 #include <memory>
-#include "iostream"
+#include <iostream>
+#include <iostream>
+
+/** 
+ * local includes 
+ * @brief include files from the src dir 
+ **/
+
 #include "lex_types.h"
 #include "t_tokens.h"
 #include "rexcept.h"
 #include "t_tokens.h"
 #include "ast_visit.h"
-#include <iostream>
+
 
 namespace Rythin
 {
-
-    typedef signed long int int32;
-    typedef signed long long int int64;
-
     class ASTNode
     {
     public:

@@ -1,23 +1,25 @@
 #include "../src/includes/ast.h"
 #include "../src/includes/semantic_visitor.hpp"
 
+using namespace Rythin;
+
 namespace Semantic {
         void SemanticAnalyses::visit(VariableDefinitionNode& node)
         {
             // symbolTable[node.var_name, node.val] = node.var_name;
-            std::cout << "Value of variable: " << node.val << std::endl;
+            std::cout << "Value of variable: " << node.val <<"\n";
         }
 
-        void SemanticAnalyses::visit(Rythin::LoopConditionNode& node)
+        void SemanticAnalyses::visit(LoopConditionNode& node)
         {
-            
+            //nothing here por enquanto
         }
 
-        void SemanticAnalyses::visit(Rythin::LoopNode &node)
+        void SemanticAnalyses::visit(LoopNode &node)
         {
         }
 
-        void SemanticAnalyses::visit(Rythin::FunctionDefinitionNode& node)
+        void SemanticAnalyses::visit(FunctionDefinitionNode& node)
         {
         }
 }

@@ -14,6 +14,6 @@ namespace Rythin
         virtual void visit(LoopNode &node) = 0;
         virtual void visit(FunctionDefinitionNode &node) = 0;
     };
-
 }
+
 #endif
