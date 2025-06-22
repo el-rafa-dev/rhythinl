@@ -1,4 +1,4 @@
-#include "../src/includes/ast.h"
+#include "../src/includes/ast.hpp"
 #include "../src/includes/semantic_visitor.hpp"
 
 using namespace Rythin;

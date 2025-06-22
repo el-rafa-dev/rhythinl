@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <string>
-#include "ast.h"
+#include "ast.hpp"
 #include <filesystem>
 
 namespace Rythin

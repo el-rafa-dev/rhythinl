@@ -1,11 +1,11 @@
-#ifndef R_PARSER_H
-#define R_PARSER_H
+#ifndef R_PARSER_HPP
+#define R_PARSER_HPP
 
-#include "vector"
-#include "t_tokens.h"
-#include "ast.h"
-#include "lex_types.h"
-#include "chunk.h"
+#include <vector>
+#include "t_tokens.hpp"
+#include "ast.hpp"
+#include "lex_types.hpp"
+#include "chunk.hpp"
 
 
 namespace Rythin {

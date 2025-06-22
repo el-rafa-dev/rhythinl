@@ -4,8 +4,8 @@
 #include <iostream>
 
 // local include
-#include "ast.h"
-#include "ast_visit.h"
+#include "ast.hpp"
+#include "ast_visit.hpp"
 
 #ifndef SEMANTIC_VISITOR_HPP
 #define SEMANTIC_VISITOR_HPP

@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 #include <stdint.h>
-#include "r_opcodes.h"
+#include "r_opcodes.hpp"
 
 namespace Rythin
 {

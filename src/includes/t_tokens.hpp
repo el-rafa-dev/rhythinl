@@ -1,5 +1,5 @@
-#include "string"
-#include "lex_types.h"
+#include <string>
+#include "lex_types.hpp"
 
 #ifndef T_TOKENS_H
 #define T_TOKENS_H

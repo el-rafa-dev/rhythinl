@@ -7,12 +7,12 @@
 #include <iomanip>
 
 // local includes
-#include "../src/includes/ast.h"
-#include "../src/includes/t_tokens.h"
-#include "../src/includes/r_parser.h"
-#include "../src/includes/r_opcodes.h"
-#include "../src/includes/rexcept.h"
-#include "../src/includes/log.h"
+#include "../src/includes/ast.hpp"
+#include "../src/includes/t_tokens.hpp"
+#include "../src/includes/r_parser.hpp"
+#include "../src/includes/r_opcodes.hpp"
+#include "../src/includes/rexcept.hpp"
+#include "../src/includes/log.hpp"
 
 // using namespace std;
 using namespace Log;

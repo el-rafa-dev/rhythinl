@@ -1,5 +1,5 @@
-#include "../src/includes/log.h"
-#include "../src/includes/r_parser.h"
+#include "../src/includes/log.hpp"
+#include "../src/includes/r_parser.hpp"
 #include <iostream>
 
 namespace Log

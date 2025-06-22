@@ -1,9 +1,9 @@
 // r_lex.h
-#ifndef R_LEX_H
-#define R_LEX_H
+#ifndef R_LEX_HPP
+#define R_LEX_HPP
 
-#include "t_tokens.h"
-#include "lex_types.h"
+#include "t_tokens.hpp"
+#include "lex_types.hpp"
 #include <string>
 
 namespace Rythin

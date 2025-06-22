@@ -5,12 +5,12 @@
 #include <stdlib.h>
 #include <vector>
 // local includes
-#include "../src/includes/t_tokens.h"
-#include "../src/includes/r_lex.h"
-#include "../src/includes/r_inter.h"
-#include "../src/includes/r_parser.h"
-#include "../src/includes/r_opcodes.h"
-#include "../src/includes/log.h"
+#include "../src/includes/t_tokens.hpp"
+#include "../src/includes/r_lex.hpp"
+#include "../src/includes/r_inter.hpp"
+#include "../src/includes/r_parser.hpp"
+#include "../src/includes/r_opcodes.hpp"
+#include "../src/includes/log.hpp"
 #include "../src/includes/semantic_visitor.hpp"
 
 using namespace Log;

@@ -1,7 +1,7 @@
 #ifndef INSTRUCTIONS_H
 #define INSTRUCTIONS_H
 
-#include "r_opcodes.h"
+#include "r_opcodes.hpp"
 
 struct Instruction {
     OpCode opcode;

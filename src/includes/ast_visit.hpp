@@ -1,7 +1,7 @@
 #ifndef AST_VISIT_H
 #define AST_VISIT_H
 
-#include "ast.h"
+#include "ast.hpp"
 
 class ASTVisitor
 {

@@ -5,8 +5,8 @@
  * @category A.S.T - Abstract Syntax Tree
 **/
 
-#ifndef AST_H
-#define AST_H
+#ifndef AST_HPP
+#define AST_HPP
 
 #include <string>
 #include <vector>
@@ -19,11 +19,11 @@
  * @brief include files from the src dir 
  **/
 
-#include "lex_types.h"
-#include "t_tokens.h"
-#include "rexcept.h"
-#include "t_tokens.h"
-#include "ast_visit.h"
+#include "lex_types.hpp"
+#include "t_tokens.hpp"
+#include "rexcept.hpp"
+#include "t_tokens.hpp"
+#include "ast_visit.hpp"
 
 
 namespace Rythin

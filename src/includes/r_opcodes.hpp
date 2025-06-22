@@ -1,5 +1,5 @@
-#ifndef R_OPCODES_H
-#define R_OPCODES_H
+#ifndef R_OPCODES_HPP
+#define R_OPCODES_HPP
 
 #include <vector>
 #include <variant>

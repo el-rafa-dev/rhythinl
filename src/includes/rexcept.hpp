@@ -1,8 +1,8 @@
 #include <stdexcept>
 #include <string>
 
-#ifndef R_EXCEPTION_H
-#define R_EXCEPTION_H
+#ifndef R_EXCEPTION_HPP
+#define R_EXCEPTION_HPP
 
 // customizeds exceptions
 namespace Excepts
