@@ -54,12 +54,12 @@ namespace Rythin
                 Rythin::Parser parser(tokens);
                 std::vector<ASTPtr> nodes = parser.Parse();
 
-                SemanticAnalyses as;
-                // start the semantic analyses here
-                for (auto &stmts : nodes)
-                {
-                    stmts->accept(as);
-                }
+                // SemanticAnalyses as;
+                // // start the semantic analyses here
+                // for (auto &stmts : nodes)
+                // {
+                //     stmts->accept(as);
+                // }
 
                 // only for tests, a tree-walk interpreter
                 Interpreter interpreter(nodes);

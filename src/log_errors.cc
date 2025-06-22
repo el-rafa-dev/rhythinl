@@ -12,31 +12,25 @@ namespace Log
         }
         else
         {
+            for (int i = 0; i < Rythin::Parser::codes.size(); i++)
+            {
+                printf(Rythin::Parser::codes[i].c_str() + '\n');
+
+                // Espaços até a coluna do erro (col_num é 1-based)
+            }
+            std::cout << "  ";
+            for (int i = 1; i < column; ++i)
+            {
+                // Conta tabs como 4 espaços para alinhamento (opcional)
+                if (Rythin::Parser::codes[i - 1] == "\t")
+                    std::cout << "    ";
+                else
+                    std::cout << " ";
+            }
+            std::cout << "\x1b[1m\x1b[31m^\x1b[0m\n";
             logs.push_back("\x1b[1m\x1b[31m[Error]:>\x1b[0m " + error + " at line " + std::to_string(line) + " column " + std::to_string(column));
         }
 
-        for (int i = 0; i < Rythin::Parser::codes.size(); i++)
-        {
-            printf(Rythin::Parser::codes[i].c_str() + '\n');
-
-            // Espaços até a coluna do erro (col_num é 1-based)
-        }
-        std::cout << "  ";
-        for (int i = 1; i < column; ++i)
-        {
-            // Conta tabs como 4 espaços para alinhamento (opcional)
-            if (Rythin::Parser::codes[i - 1] == "\t")
-                std::cout << "    ";
-            else
-                std::cout << " ";
-        }
-        std::cout << "\x1b[1m\x1b[31m^\x1b[0m\n";
-
-        // Imprime sugestão se houver
-        // if (!suggestion.empty())
-        // {
-        //     std::cout << "  suggestion: " << suggestion << "\n";
-        // }
         this->code = exit_code;
     }
 

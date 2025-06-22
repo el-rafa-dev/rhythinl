@@ -23,16 +23,18 @@
 #include "t_tokens.hpp"
 #include "rexcept.hpp"
 #include "t_tokens.hpp"
-#include "ast_visit.hpp"
+// #include "ast_visit.hpp"
 
 
 namespace Rythin
 {
+    class ASTVisitor;
+
     class ASTNode
     {
     public:
         virtual ~ASTNode() = default;
-        virtual void accept(ASTVisitor &visit) = 0;
+        //virtual void accept(ASTVisitor &visit) = 0;
     };
 
     using ASTPtr = std::shared_ptr<ASTNode>;
@@ -109,11 +111,6 @@ namespace Rythin
         ASTPtr value;
         ASTPtr block;
         LoopNode(std::string var_name, TokensTypes type, ASTPtr value, ASTPtr block) : var_name(var_name), type(type), block(block) {}
-
-        void accept(ASTVisitor &visit) override
-        {
-            visit.visit(*this);
-        }
     };
 
     struct InterpolationNode : public ASTNode
@@ -252,10 +249,6 @@ namespace Rythin
         ASTPtr block;
         FunctionDefinitionNode(std::string name, std::vector<ASTPtr> args, ASTPtr block) : var_name(name), args(args), block(block) {}
 
-        void accept(ASTVisitor &visitor) override
-        {
-            visitor.visit(*this);
-        }
     };
 
     struct VariableDefinitionNode : public ASTNode
@@ -284,11 +277,6 @@ namespace Rythin
             {
                 std::cout << "Left " << var->left << " Operator: " << Tokens::tokenTypeToString(var->op) << " Right: " << var->right << std::endl;
             }
-        }
-
-        void accept(ASTVisitor &visitor) override
-        {
-            visitor.visit(*this);
         }
     };
 }
