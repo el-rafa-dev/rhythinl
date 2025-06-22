@@ -1,7 +1,9 @@
+#include "ast.hpp"
+
 #ifndef AST_VISIT_H
 #define AST_VISIT_H
 
-#include "ast.hpp"
+using namespace Rythin;
 
 class ASTVisitor
 {
