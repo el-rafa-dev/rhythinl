@@ -1,0 +1,44 @@
+[
+  {
+    "directory": "/home/el-rafa/VSCode/Rhythin/.vscode",
+    "command": "/usr/bin/c++   -g -std=gnu++20 -o CMakeFiles/rhythin.dir/src/rhythin.cpp.o -c /home/el-rafa/VSCode/Rhythin/.vscode/src/rhythin.cpp",
+    "file": "/home/el-rafa/VSCode/Rhythin/src/rhythin.cpp",
+    "output": "CMakeFiles/rhythin.dir/src/rhythin.cpp.o"
+  },
+  {
+    "directory": "/home/el-rafa/VSCode/Rhythin/.vscode",
+    "command": "/usr/bin/c++   -g -std=gnu++20 -o CMakeFiles/rhythin.dir/src/r_lex.cpp.o -c /home/el-rafa/VSCode/Rhythin/.vscode/src/r_lex.cpp",
+    "file": "/home/el-rafa/VSCode/Rhythin/src/r_lex.cpp",
+    "output": "CMakeFiles/rhythin.dir/src/r_lex.cpp.o"
+  },
+  {
+    "directory": "/home/el-rafa/VSCode/Rhythin/.vscode",
+    "command": "/usr/bin/c++   -g -std=gnu++20 -o CMakeFiles/rhythin.dir/src/r_parser.cpp.o -c /home/el-rafa/VSCode/Rhythin/.vscode/src/r_parser.cpp",
+    "file": "/home/el-rafa/VSCode/Rhythin/src/r_parser.cpp",
+    "output": "CMakeFiles/rhythin.dir/src/r_parser.cpp.o"
+  },
+  {
+    "directory": "/home/el-rafa/VSCode/Rhythin/.vscode",
+    "command": "/usr/bin/c++   -g -std=gnu++20 -o CMakeFiles/rhythin.dir/src/t_tokens.cpp.o -c /home/el-rafa/VSCode/Rhythin/.vscode/src/t_tokens.cpp",
+    "file": "/home/el-rafa/VSCode/Rhythin/src/t_tokens.cpp",
+    "output": "CMakeFiles/rhythin.dir/src/t_tokens.cpp.o"
+  },
+  {
+    "directory": "/home/el-rafa/VSCode/Rhythin/.vscode",
+    "command": "/usr/bin/c++   -g -std=gnu++20 -o CMakeFiles/rhythin.dir/src/semantic_v.cc.o -c /home/el-rafa/VSCode/Rhythin/.vscode/src/semantic_v.cc",
+    "file": "/home/el-rafa/VSCode/Rhythin/src/semantic_v.cc",
+    "output": "CMakeFiles/rhythin.dir/src/semantic_v.cc.o"
+  },
+  {
+    "directory": "/home/el-rafa/VSCode/Rhythin/.vscode",
+    "command": "/usr/bin/c++   -g -std=gnu++20 -o CMakeFiles/rhythin.dir/src/r_inter.cpp.o -c /home/el-rafa/VSCode/Rhythin/.vscode/src/r_inter.cpp",
+    "file": "/home/el-rafa/VSCode/Rhythin/src/r_inter.cpp",
+    "output": "CMakeFiles/rhythin.dir/src/r_inter.cpp.o"
+  },
+  {
+    "directory": "/home/el-rafa/VSCode/Rhythin/.vscode",
+    "command": "/usr/bin/c++   -g -std=gnu++20 -o CMakeFiles/rhythin.dir/src/log_errors.cpp.o -c /home/el-rafa/VSCode/Rhythin/.vscode/src/log_errors.cpp",
+    "file": "/home/el-rafa/VSCode/Rhythin/src/log_errors.cpp",
+    "output": "CMakeFiles/rhythin.dir/src/log_errors.cpp.o"
+  }
+]

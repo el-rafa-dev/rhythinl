@@ -1,7 +1,7 @@
-/***nesse header tem todos os Nós da ASTNode que é classe principal onde todo os nos herdam dela***/
 /**
- * @brief this is a basic ast node
+ * @brief this is a basic but robust ast node
  * @author Rafael
+ * @date 21/06/2025 23:32
  * @category A.S.T - Abstract Syntax Tree
 **/
 
@@ -15,7 +15,7 @@
 #include <iostream>
 
 /** 
- * local includes 
+ * @name local includes 
  * @brief include files from the src dir 
  **/
 

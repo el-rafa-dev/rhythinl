@@ -3,17 +3,14 @@
 
 #include "ast.h"
 
-namespace Rythin
+class ASTVisitor
 {
-    class ASTVisitor
-    {
-    public:
-        virtual ~ASTVisitor() = default;
-        virtual void visit(VariableDefinitionNode &node) = 0;
-        virtual void visit(LoopConditionNode &node) = 0;
-        virtual void visit(LoopNode &node) = 0;
-        virtual void visit(FunctionDefinitionNode &node) = 0;
-    };
-}
+public:
+    virtual ~ASTVisitor() = default;
+    virtual void visit(VariableDefinitionNode &node) = 0;
+    virtual void visit(LoopConditionNode &node) = 0;
+    virtual void visit(LoopNode &node) = 0;
+    virtual void visit(FunctionDefinitionNode &node) = 0;
+};
 
 #endif

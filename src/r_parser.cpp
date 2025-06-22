@@ -12,7 +12,6 @@
 #include "../src/includes/r_parser.h"
 #include "../src/includes/r_opcodes.h"
 #include "../src/includes/rexcept.h"
-#include "../src/includes/chunk.h"
 #include "../src/includes/log.h"
 
 // using namespace std;
