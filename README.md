@@ -80,3 +80,6 @@ SOFTWARE.
 
 ## Contact
 Contact with me via telegram! My user id: [@rafaprobr](https://t.me/rafaprobr)
+
+## A picture of --help and --version
+<img src="https://files.catbox.moe/subfwd.png"></img>
