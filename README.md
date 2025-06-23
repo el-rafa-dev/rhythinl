@@ -6,7 +6,7 @@
 
 <p align="center">
   <a>
-[![CMake on multiple platforms](https://github.com/el-rafa-dev/rhythinl/actions/workflows/cmake-multi-platform.yml/badge.svg)](https://github.com/el-rafa-dev/rhythinl/actions/workflows/cmake-multi-platform.yml)
+![CMake on multiple platforms](https://github.com/el-rafa-dev/rhythinl/actions/workflows/cmake-multi-platform.yml/badge.svg)](https://github.com/el-rafa-dev/rhythinl/actions/workflows/cmake-multi-platform.yml)
   </a>
 </p>
 
