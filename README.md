@@ -1,13 +1,3 @@
-<p align="center">
-  <img src="./gitsrc/rhythin_logo.png" alt="Rhythin Logo" width="300"/>
-</p>
-
-<h1 align="center">Rhythin Programming Language</h1>
-
-<p align="center">
-  <img src="./gitsrc/rhythin_logo.png" alt="Rhythin Logo" width="300"/>
-</p>
-
 <h1 align="center">Rhythin Programming Language</h1>
 
 <p align="center">
