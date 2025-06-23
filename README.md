@@ -46,6 +46,7 @@ The build will be finished and you can run Rhythin with:
 ```
 ## Warning!
 You need to have mingw64 configured first before proceeding
+
 See how [configure](./CONFIGURE_MINGW.md) the mingw in windows
 
 ## Building on Windows (with mingw64):
