@@ -44,12 +44,8 @@ The build will be finished and you can run Rhythin with:
 ```bash
 ./build/rhythin
 ```
-## Warning!
-You need to have mingw64 configured first before proceeding
 
-See how [configure](./CONFIGURE_MINGW.md) the mingw in windows
-
-## Building on Windows (with mingw64):
+## Building on Windows (with mingw64, see {#Warning} first of processed):
 clone the repository with:
 ```
 git clone https://github.com/el-rafa-dev/rhythinl.git
@@ -70,6 +66,12 @@ The build will be finished and you can be run the rhythin executable saved in bu
 ```
 .\rhythin.exe
 ```
+
+## Warning
+You need to have mingw64 configured first before proceeding
+
+See how [configure](./CONFIGURE_MINGW.md) the mingw in windows
+
 
 ## Supporting
 Go to [support.md](./SUPPORT.md) to see how support the project
