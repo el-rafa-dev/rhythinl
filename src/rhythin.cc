@@ -134,7 +134,7 @@ void printVersion()
 
 int main(int argc, char *argv[])
 {
-    if (argc < 0 && argv == 0)
+    if (argc == 1)
     {
         LogErrors::getInstance().addError("No argument specified. See --help or -h to see the list of options.", 6, 0, 0);
         LogErrors::getInstance().printAll();

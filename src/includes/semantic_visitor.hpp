@@ -5,6 +5,7 @@
 #include <string>
 
 // Local Includes
+#include "ast.hpp"
 #include "ast_visit.hpp"
 #include "t_tokens.hpp"
 #include "log.hpp"
@@ -17,6 +18,8 @@ namespace Rythin
     {
     private:
         std::unordered_map<std::string, TokensTypes> symbolTable;
+        std::unordered_map<std::string, ASTPtr> valTable;
+        std::unordered_map<std::string, ASTPtr> func_argsTable;
 
     public:
         void Visit(VariableDefinitionNode& node) override
@@ -26,7 +29,9 @@ namespace Rythin
                 LogErrors::getInstance().addError("Variable name '" + node.var_name +"' already set!",76,0,0);
                 return;
             }
+
             symbolTable[node.var_name] = node.type;
+            valTable[node.var_name] = node.val;
             VisitNode(node.val);
         }
 
@@ -34,7 +39,8 @@ namespace Rythin
         {
             if (symbolTable.find(node.name) == symbolTable.end())
             {
-                std::cerr << "Erro: Variável '" << node.name << "' não declarada!" << std::endl;
+                LogErrors::getInstance().addError("Variable not declared!", 67, 0, 0);
+                return;
             }
         }
 

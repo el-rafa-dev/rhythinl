@@ -10,7 +10,7 @@ namespace Rythin
     class ASTVisitor
     {
     public:
-        virtual void Visit(PrintNode& node) {}
+        virtual void Visit(PrintNode& node) {};
         virtual void Visit(PrintNl& node) {}
         virtual void Visit(VariableNode& node) {}
         virtual void Visit(LiteralNode& node) {}
