@@ -54,7 +54,7 @@ The build will be finished and you can run Rhythin with:
 ./build/rhythin
 ```
 
-## Building on Windows (With mingw64. See [warning](#warning)first before proceeding):
+## Building on Windows (With mingw64. See [warning](#warning) first before proceeding):
 clone the repository with:
 ```
 git clone https://github.com/el-rafa-dev/rhythinl.git
