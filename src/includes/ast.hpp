@@ -256,28 +256,7 @@ namespace Rythin
         std::string var_name;
         TokensTypes type;
         ASTPtr val;
-        VariableDefinitionNode(const std::string var, TokensTypes type, ASTPtr val) : var_name(var), type(type), val(val)
-        {
-            // debug only
-            if (auto var = std::dynamic_pointer_cast<f32Node>(val))
-            {
-                if (type == TokensTypes::TOKEN_FLOAT_32)
-                {
-                    std::cout << "Name: " << var_name << " Type: " << Tokens::tokenTypeToString(type) << " Value: " << var->val << std::endl;
-                }
-            }
-            else if (auto var = std::dynamic_pointer_cast<f64Node>(val))
-            {
-                if (type == TokensTypes::TOKEN_FLOAT_64)
-                {
-                    std::cout << "Name: " << var_name << " Type: " << Tokens::tokenTypeToString(type) << " Value: " << var->val << std::endl;
-                }
-            }
-            else if (auto var = std::dynamic_pointer_cast<BinOp>(val))
-            {
-                std::cout << "Left " << var->left << " Operator: " << Tokens::tokenTypeToString(var->op) << " Right: " << var->right << std::endl;
-            }
-        }
+        VariableDefinitionNode(const std::string var, TokensTypes type, ASTPtr val) : var_name(var), type(type), val(val) {}
     };
 }
 

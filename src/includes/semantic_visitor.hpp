@@ -1,31 +1,57 @@
-#include <vector>
-#include <string.h>
+#ifndef SEMANTIC_ANALYZER_HPP
+#define SEMANTIC_ANALYZER_HPP
+
 #include <unordered_map>
-#include <iostream>
+#include <string>
 
-// local include
-#include "ast.hpp"
+// Local Includes
 #include "ast_visit.hpp"
+#include "t_tokens.hpp"
+#include "log.hpp"
 
-#ifndef SEMANTIC_VISITOR_HPP
-#define SEMANTIC_VISITOR_HPP
+using namespace Log;
 
-using namespace Rythin;
-
-namespace Semantic
+namespace Rythin
 {
-    class SemanticAnalyses : public ASTVisitor
+    class SemanticAnalyzer : public ASTVisitor
     {
-    public:
+    private:
         std::unordered_map<std::string, TokensTypes> symbolTable;
-        TokensTypes lastExprType = TokensTypes::TOKEN_EOF; // by default is the EOF - End Of File 
 
-        void visit(VariableDefinitionNode& node) override;
-        void visit(LoopConditionNode& node) override;
-        void visit(LoopNode &node) override;
-        void visit(FunctionDefinitionNode& node) override;
+    public:
+        void Visit(VariableDefinitionNode& node) override
+        {
+            if (symbolTable.find(node.var_name) != symbolTable.end())
+            {
+                LogErrors::getInstance().addError("Variable name '" + node.var_name +"' already set!",76,0,0);
+                return;
+            }
+            symbolTable[node.var_name] = node.type;
+            VisitNode(node.val);
+        }
+
+        void Visit(VariableNode& node) override
+        {
+            if (symbolTable.find(node.name) == symbolTable.end())
+            {
+                std::cerr << "Erro: Variável '" << node.name << "' não declarada!" << std::endl;
+            }
+        }
+
+        void Visit(BinOp& node) override
+        {
+            VisitNode(node.left);
+            VisitNode(node.right);
+        }
+
+        void Visit(FunctionDefinitionNode& node) override
+        {
+            // Em uma versão mais avançada, adicionar à symbol table e criar escopo
+            VisitNode(node.block);
+        }
+
+        // TODO: Adicionar outros Visit conforme você for expandindo
     };
-
 }
 
 #endif

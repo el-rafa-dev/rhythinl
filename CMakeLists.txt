@@ -11,7 +11,6 @@ set(RHYTHIN_SRC_CORE
     src/r_lex.cc
     src/r_parser.cc
     src/t_tokens.cc
-    src/semantic_v.cc
     src/r_inter.cc
     src/log_errors.cc
 )
