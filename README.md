@@ -61,11 +61,11 @@ Inside of rhythin dir, run:
 ```
 cd build
 ```
-Execute the mingw32-make:
+Execute the mingw32-make inside of build dir:
 ```
 mingw32-make
 ```
-The build will be finished and you can be run the rhythin executable with:
+The build will be finished and you can be run the rhythin executable saved in build directory with:
 ```
 .\rhythin.exe
 ```
