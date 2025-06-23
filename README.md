@@ -5,7 +5,8 @@
 <h1 align="center">Rhythin Programming Language</h1>
 
 <p align="center">
-  <[![CMake on multiple platforms](https://github.com/el-rafa-dev/rhythinl/actions/workflows/cmake-multi-platform.yml/badge.svg)](https://github.com/el-rafa-dev/rhythinl/actions/workflows/cmake-multi-platform.yml)
+  <a>
+[![CMake on multiple platforms](https://github.com/el-rafa-dev/rhythinl/actions/workflows/cmake-multi-platform.yml/badge.svg)](https://github.com/el-rafa-dev/rhythinl/actions/workflows/cmake-multi-platform.yml)
   </a>
 </p>
 
