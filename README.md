@@ -4,10 +4,17 @@
 
 <h1 align="center">Rhythin Programming Language</h1>
 
-<center>
-[![CMake on multiple platforms](https://github.com/el-rafa-dev/rhythinl/actions/workflows/cmake-multi-platform.yml/badge.svg?branch=main)](https://github.com/el-rafa-dev/rhythinl/actions/workflows/cmake-multi-platform.yml)
-</center>
+<p align="center">
+  <img src="./gitsrc/rhythin_logo.png" alt="Rhythin Logo" width="300"/>
+</p>
 
+<h1 align="center">Rhythin Programming Language</h1>
+
+<p align="center">
+  <a href="https://github.com/el-rafa-dev/rhythinl/actions/workflows/cmake-multi-platform.yml">
+    <img src="https://github.com/el-rafa-dev/rhythinl/actions/workflows/cmake-multi-platform.yml/badge.svg?branch=main" alt="Build Status"/>
+  </a>
+</p>
 RhythinLang will be a statically typed, interpreted and compiled (not JIT) programming language focused on being objective and direct to execute on Command Line Interface (CLI), facilitating learning for both beginners and programmers with experience in the area.
 
 ## Current Status
