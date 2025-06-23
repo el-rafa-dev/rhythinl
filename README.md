@@ -44,6 +44,9 @@ The build will be finished and you can run Rhythin with:
 ```bash
 ./build/rhythin
 ```
+## Warning!
+You need to have mingw64 configured first before proceeding
+See how [configure](./CONFIGURE_MINGW.md) the mingw in windows
 
 ## Building on Windows (with mingw64):
 clone the repository with:
@@ -66,10 +69,6 @@ The build will be finished and you can be run the rhythin executable with:
 ```
 .\rhythin.exe
 ```
-
-## Warning!
-You need of the mingw64\bin directory in the Path of Windows!
-See how [configure](./CONFIGURE_MINGW.md) the mingw in windows
 
 ## Supporting
 Go to [support.md](./SUPPORT.md) to see how support the project
