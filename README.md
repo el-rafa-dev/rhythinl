@@ -69,7 +69,7 @@ The build will be finished and you can be run the rhythin executable with:
 
 ## Warning!
 You need of the mingw64\bin directory in the Path of Windows!
-See how [configure](_blank) the mingw in windows
+See how [configure](./CONFIGURE_MINGW.md) the mingw in windows
 
 execute
 ## Supporting
