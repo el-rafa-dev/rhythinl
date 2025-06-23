@@ -6,3 +6,5 @@ cmake-build-debug/
 .idea/
 *.i
 *.ry
+CMakeCache.txt
+cmake_install.cmake
