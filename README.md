@@ -36,15 +36,14 @@ git clone https://github.com/el-rafa-dev/rhythinl.git
 ```
 Run this command:
 ```
-cmake -B build -DCMAKE_BUILD_TYPE=Release cmake --build build
+cmake -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build
 ```
-Finally, execute:
-```
-cmake CMakeLists.txt
-make
-```
-The build will be finished and you can run the Rhythin file with ```./rhythin```
+The build will be finished and you can run Rhythin with:
 
+```bash
+./build/rhythin
+```
 ## Supporting
 Go to [support.md](./SUPPORT.md) to see how support the project
 
