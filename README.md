@@ -35,7 +35,8 @@ clone the repository with:
 git clone https://github.com/el-rafa-dev/rhythinl.git
 ```
 Run this command:
-```cmake -B build -DCMAKE_BUILD_TYPE=Release cmake --build build
+```
+cmake -B build -DCMAKE_BUILD_TYPE=Release cmake --build build
 ```
 Finally, execute:
 ```
