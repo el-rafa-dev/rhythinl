@@ -34,13 +34,9 @@ clone the repository with:
 ```
 git clone https://github.com/el-rafa-dev/rhythinl.git
 ```
-Use to generate the CMakeCache.txt in the current directory
-```
-python gencmake.py 
-```
-Or use this instead:
-```
-chmod +x gencmake.py && ./gencmake.py
+Run this command:
+``` 
+```cmake -B build -DCMAKE_BUILD_TYPE=Release cmake --build build
 ```
 Finally, execute:
 ```
