@@ -44,6 +44,34 @@ The build will be finished and you can run Rhythin with:
 ```bash
 ./build/rhythin
 ```
+
+## Building on Windows (with mingw64):
+clone the repository with:
+```
+git clone https://github.com/el-rafa-dev/rhythinl.git
+````
+Run this command:
+```
+cmake -G "MinGW Makefiles" -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER="C:\mingw64\bin\gcc.exe" -DCMAKE_CXX_COMPILER="C:\mingw64\bin\g++.exe"
+````
+Inside of rhythin dir, run:
+```
+cd build
+```
+Execute the mingw32-make:
+```
+mingw32-make
+```
+The build will be finished and you can be run the rhythin executable with:
+```
+.\rhythin.exe
+```
+
+## Warning!
+You need of the mingw64\bin directory in the Path of Windows!
+See how [configure](_blank) the mingw in windows
+
+execute
 ## Supporting
 Go to [support.md](./SUPPORT.md) to see how support the project
 
