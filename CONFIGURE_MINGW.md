@@ -12,4 +12,4 @@ Set the dir path to PATH for ALL Users with: ``` setx PATH "%PATH%;C:\mingw64\bi
 Set the dir path to PATH for local users with: ``` [System.Environment]::SetEnvironmentVariable("PATH", $env:PATH + ";C:\ming64\bin", "User") ```
 Set the dir path to PATH for ALL User with: ``` [System.Environment]::SetEnvironmentVariable("PATH", $env:PATH + ";C:\ming64\bin", "Machine") ```
 # Note (important)
-The path **C:\ming64\bin"** is the path where you should extract the zip file containing mingw64. Even if it's not the same path or different drive letter, include the location where you extracted it to avoid errors!
+The path **C:\ming64\bin** is the path where you should extract the zip file containing mingw64. Even if it's not the same path or different drive letter, include the location where you extracted it to avoid errors!
