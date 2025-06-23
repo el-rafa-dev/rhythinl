@@ -18,7 +18,7 @@ The current status is development and tests.
 
 ## When will be released?
 
-The first version for general use will be when it has the basic syntax of a language. Types, structures, etc.
+The first version for general use will be when it has the basic syntax of a language for work. Types, structures, etc.
 
 
 
