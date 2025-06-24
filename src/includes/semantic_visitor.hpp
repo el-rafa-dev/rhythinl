@@ -30,6 +30,35 @@ namespace Rythin
                 return;
             }
 
+            for (auto& stb : symbolTable)
+            {
+                std::cout << "Var name: " << stb.first << " Type: " << Tokens::tokenTypeToString(stb.second) << std::endl;
+                // check if the type value is compatible with type declared
+                if (valTable.find(stb.first) != valTable.end())
+                {
+                    // std::cout << "Type: " << Tokens::tokenTypeToString(stb.second) << "\n";
+                    for (auto& vals : valTable)
+                    {
+                        
+                        if (auto val = std::dynamic_pointer_cast<i32Node>(vals.second))
+                        {
+                            if (stb.second != TokensTypes::TOKEN_INT_32)
+                            {
+                                LogErrors::getInstance().addError("The value type for " + stb.first + " not matches with the type that you declared: " + Tokens::tokenTypeToString(stb.second), 99, 0 , 0);
+                            }
+                            std::cout << "int32 Value: " << val->val << std::endl;
+                        }
+                        if (auto val = std::dynamic_pointer_cast<LiteralNode>(vals.second))
+                        {
+                            if (stb.second != TokensTypes::TOKEN_STRING_LITERAL)
+                            {
+                                LogErrors::getInstance().addError("The value type for " + stb.first + " not matches with the type that you declared: " + Tokens::tokenTypeToString(stb.second), 99, 0 , 0);
+                            }
+                        }
+                    }
+                }
+            }
+
             symbolTable[node.var_name] = node.type;
             valTable[node.var_name] = node.val;
             VisitNode(node.val);

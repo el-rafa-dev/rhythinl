@@ -34,7 +34,6 @@ namespace Rythin
     {
     public:
         virtual ~ASTNode() = default;
-        //virtual void accept(ASTVisitor &visit) = 0;
     };
 
     using ASTPtr = std::shared_ptr<ASTNode>;

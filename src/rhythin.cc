@@ -21,8 +21,6 @@
     #define SUCESS "[Sucess]:> "
 #endif
 
-
-
 using namespace Log;
 std::fstream file;
 
@@ -64,11 +62,10 @@ namespace Rythin
                 std::vector<ASTPtr> nodes = parser.Parse();
 
                 Rythin::SemanticAnalyzer analyzer;
-                for (ASTPtr stmts : nodes)
+                for (ASTPtr &stmts : nodes)
                 {
                     analyzer.VisitNode(stmts);
                 }
-                // ou analyzer.Visit(*mainBlock);
 
                 // only for tests, a tree-walk interpreter
                 Interpreter interpreter(nodes);
