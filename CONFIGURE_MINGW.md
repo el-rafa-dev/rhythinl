@@ -1,6 +1,6 @@
 # Configuring mingw64 on Windows:
 ## Downloading the mingw64
-Go to [winlibs site](https://winlibs.com/) and select a latest version of UCRT Runtime (64bit version) (or download directly the latest version with this [link](https://github.com/brechtsanders/winlibs_mingw/releases/download/15.1.0posix-13.0.0-ucrt-r2/winlibs-i686-posix-dwarf-gcc-15.1.0-mingw-w64ucrt-13.0.0-r2.zip))
+Go to [winlibs site](https://winlibs.com/) and select a latest version of UCRT/MSVCRT Runtime (64bit version or 32bit) (or download directly the latest version with this [link](https://github.com/brechtsanders/winlibs_mingw/releases/download/15.1.0posix-13.0.0-ucrt-r2/winlibs-i686-posix-dwarf-gcc-15.1.0-mingw-w64ucrt-13.0.0-r2.zip) version UCRT)
 ## Installing the mingw64
 Extract the zip that you downloaded to the root of system (example: C:\ (C is the disk letter))
 Now, we will be set the path C:\mingw64\bin to the PATH of windows.
