@@ -17,8 +17,8 @@
     #define BAD_COMP "\x1b[1m\x1b[31m[Bad compilation]:>\x1b[0m "
     #define SUCESS "\x1b[1m\x1b[32m[Sucess]:>\x1b[0m "
 #elif defined(_WIN32)
-    #define BAD_COMP "\x1b[1m\x1b[31m[Bad compilation]:>\x1b[0m "
-    #define SUCESS "\x1b[1m\x1b[32m[Sucess]:>\x1b[0m "
+    #define BAD_COMP "[Bad compilation]:> "
+    #define SUCESS "[Sucess]:> "
 #endif
 
 
