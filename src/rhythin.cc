@@ -109,6 +109,31 @@ int executeRun(char *argv[])
 
 void printVersion()
 {
+    std::cout << "               ...:::::^:::..                         [Rhythin] :: [Version] :: [0.0.0.1-01]                                   " << std::endl;
+    std::cout << "             ...::^~7J5PGGBBBG57::.                   [31m[Author]  :: [Rafael de Sousa]                                       " << std::endl;
+    std::cout << "           .::^!?Y5B&@@@@@@@@@@@@B7::.                [31m[Copyright] (C) [2025] [Rafael de Sousa]                             " << std::endl;
+    std::cout << "         .:^~75#&@@@@@@@@@@@@@@@@@@@Y::                                                                                        " << std::endl;
+    std::cout << "        .^^Y#@@@@@@@@&#G5Y?7!~J@@@@@&^:.                                                                                       " << std::endl;
+    std::cout << "        ^^J@@@@@@B5J7~:...... .?#@@@@@5..                                                                                      " << std::endl;
+    std::cout << "        ^^7&@@@@P::..    ..:7B@@@@@@Y...                                                                                       " << std::endl;
+    std::cout << "        .^^B@@@@J::    ..:?B@@@@@@#7..                                                                                         " << std::endl;
+    std::cout << "        .^^#@@@@7::.....:~Y#@@@@@@&Y:                                                                                          " << std::endl;
+    std::cout << "        :^~&@@@@!::  ::JG@@@@@@@#J:                                                                                            " << std::endl;
+    std::cout << "        :^!@@@@&!?G&@@@@@@&G!@@@.                                                                                              " << std::endl;
+    std::cout << "        :^7@@@@@&@@@@@@#P?^@@@.                                                                                                " << std::endl;
+    std::cout << "        ^^J@@@@@@@@@@@B7@@^:..                                                                                                 " << std::endl;
+    std::cout << "        ^^Y@@@@@@@@@@@@@&&BG5Y?7~^:..                                                                                          " << std::endl;
+    std::cout << "        ^^5@@@@@GB&@@@@@@@@@@@@@&@@@@@J!^:...                                                                                  " << std::endl;
+    std::cout << "        .^^P@@@@@!:^7JPB&@@@@@@@@@@@@@@@@@&#5!:.                                                                               " << std::endl;
+    std::cout << "        .^^P@@@@@5::...:^~7J5PGB##&@@@@@@@@@@#::.                                                                              " << std::endl;
+    std::cout << "        ^^7&@@@@PP:^.         ::^~!7?JJJJJ?!::                                                                                 " << std::endl;
+    std::cout << "        .^^!J5PY@^^.                                                                                                           " << std::endl;
+    std::cout << "          ^^@@@@^^·                                                                                                            " << std::endl;
+    std::cout << "                                                                                                                               " << std::endl;
+}
+
+void printVersionColored()
+{
     std::cout << "\x1b[1m\x1b[31m               ...:::::^:::..                         \x1b[0m\x1b[1m\x1b[31m[Rhythin] :: [Version] :: [0.0.0.1-01]\x1b[0m      " << std::endl;
     std::cout << "\x1b[1m\x1b[31m             ...::^~7J5PGGBBBG57::.                   \x1b[0m\x1b[1m\x1b[31m[Author]  :: [Rafael de Sousa]\x1b[0m              " << std::endl;
     std::cout << "\x1b[1m\x1b[31m           .::^!?Y5B&@@@@@@@@@@@@B7::.                \x1b[0m\x1b[1m\x1b[31m[Copyright] (C) [2025] [Rafael de Sousa]\x1b[0m    " << std::endl;
@@ -134,7 +159,7 @@ void printVersion()
 
 int main(int argc, char *argv[])
 {
-    if (argc == 1)
+    if (argc == 1) // the first argumment are the program name
     {
         LogErrors::getInstance().addError("No argument specified. See --help or -h to see the list of options.", 6, 0, 0);
         LogErrors::getInstance().printAll();
@@ -159,11 +184,23 @@ int main(int argc, char *argv[])
     }
     else if (argc > 1 && strcmp(argv[1], "-v") == 0)
     {
-        printVersion();
+        #if defined(__linux__)
+            printVersionColored();
+        #elif defined(_WIN32)
+            printVersion();
+        #else
+            #error "Invalid OS or not compatible with Rhythin."
+        #endif
     }
     else if (argc > 1 && strcmp(argv[1], "--version") == 0)
     {
-        printVersion();
+        #if defined(__linux__)
+            printVersionColored();
+        #elif defined(_WIN32)
+            printVersion();
+        #else
+            #error "Invalid OS or not compatible with Rhythin."
+        #endif
     }
     else
     {
