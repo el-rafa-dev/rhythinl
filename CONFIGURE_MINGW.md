@@ -8,11 +8,11 @@ Now, we will be set the path C:\mingw64\bin to the PATH of windows.
 ## Setting paths with CMD:
 Set the dir path to PATH for local users with: 
 ```
-setx PATH "%PATH%;C:\mingw64\bin" /M
+setx PATH "%PATH%;C:\mingw64\bin"
 ```
 Set the dir path to PATH for ALL Users with: 
 ```
-setx PATH "%PATH%;C:\mingw64\bin"
+setx PATH "%PATH%;C:\mingw64\bin" /M
 ```
 # To set the dir path to Windows PATH with PowerShell, do this:
 ## Setting paths with PowerShell:
