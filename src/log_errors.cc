@@ -2,33 +2,28 @@
 #include "../src/includes/r_parser.hpp"
 #include <iostream>
 
+#if defined(__linux__)
+    #define WARNING "\x1b[1m\x1b[33m[Warning]:>\x1b[0m "
+    #define ERROR "\x1b[1m\x1b[31m[Error]:>\x1b[0m "
+#elif defined(_WIN32)
+    #define WARNING "[Warning]:> "
+    #define ERROR "[Error]:> "
+#endif
+
+
+
+
 namespace Log
 {
     void LogErrors::addError(const std::string &error, int exit_code, int line, int column)
     {
         if (line == 0 && column == 0)
         {
-            logs.push_back("\x1b[1m\x1b[31m[Error]:>\x1b[0m " + error);
+            logs.push_back(ERROR + error);
         }
         else
         {
-            for (int i = 0; i < Rythin::Parser::codes.size(); i++)
-            {
-                printf(Rythin::Parser::codes[i].c_str() + '\n');
-
-                // Espaços até a coluna do erro (col_num é 1-based)
-            }
-            std::cout << "  ";
-            for (int i = 1; i < column; ++i)
-            {
-                // Conta tabs como 4 espaços para alinhamento (opcional)
-                if (Rythin::Parser::codes[i - 1] == "\t")
-                    std::cout << "    ";
-                else
-                    std::cout << " ";
-            }
-            std::cout << "\x1b[1m\x1b[31m^\x1b[0m\n";
-            logs.push_back("\x1b[1m\x1b[31m[Error]:>\x1b[0m " + error + " at line " + std::to_string(line) + " column " + std::to_string(column));
+            logs.push_back(ERROR + error + " at line " + std::to_string(line) + " column " + std::to_string(column));
         }
 
         this->code = exit_code;
@@ -38,11 +33,11 @@ namespace Log
     {
         if (line == 0 && column == 0)
         {
-            warns.push_back("\x1b[1m\x1b[33m[Warning]:>\x1b[0m " + err);
+            warns.push_back(WARNING + err);
         }
         else
         {
-            logs.push_back("\x1b[1m\x1b[33m[Warning]:>\x1b[0m " + err + " at line " + std::to_string(line) + " column " + std::to_string(column));
+            logs.push_back(WARNING + err + " at line " + std::to_string(line) + " column " + std::to_string(column));
         }
         code = exit;
     }

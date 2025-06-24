@@ -13,6 +13,16 @@
 #include "../src/includes/log.hpp"
 #include "../src/includes/semantic_visitor.hpp"
 
+#if defined(__linux__)
+    #define BAD_COMP "\x1b[1m\x1b[31m[Bad compilation]:>\x1b[0m "
+    #define SUCESS "\x1b[1m\x1b[32m[Sucess]:>\x1b[0m "
+#elif defined(_WIN32)
+    #define BAD_COMP "\x1b[1m\x1b[31m[Bad compilation]:>\x1b[0m "
+    #define SUCESS "\x1b[1m\x1b[32m[Sucess]:>\x1b[0m "
+#endif
+
+
+
 using namespace Log;
 std::fstream file;
 
@@ -90,12 +100,12 @@ int executeRun(char *argv[])
         {
 
             LogErrors::getInstance().printErrors();
-            std::cerr << "\x1b[1m\x1b[31m[Bad compilation]:>\x1b[0m " << std::to_string(LogErrors::getInstance().getErrSize()) << " errors and " << std::to_string(LogErrors::getInstance().getWarnsSize()) << " warnings. Exited with code: " << LogErrors::getInstance().exitCode() << std::endl;
+            std::cerr << BAD_COMP << std::to_string(LogErrors::getInstance().getErrSize()) << " errors and " << std::to_string(LogErrors::getInstance().getWarnsSize()) << " warnings. Exited with code: " << LogErrors::getInstance().exitCode() << std::endl;
             return LogErrors::getInstance().exitCode();
         }
         else
         {
-            std::cout << "\x1b[1m\x1b[32m[Sucess]:>\x1b[0m Compiled without errors or warnings. Exit code: " << std::to_string(LogErrors::getInstance().exitCode()) << std::endl;
+            std::cout << SUCESS << "Compiled without errors or warnings. Exit code: " << std::to_string(LogErrors::getInstance().exitCode()) << std::endl;
             return 0;
         }
     }
@@ -110,8 +120,8 @@ int executeRun(char *argv[])
 void printVersion()
 {
     std::cout << "               ...:::::^:::..                         [Rhythin] :: [Version] :: [0.0.0.1-01]                                   " << std::endl;
-    std::cout << "             ...::^~7J5PGGBBBG57::.                   [31m[Author]  :: [Rafael de Sousa]                                       " << std::endl;
-    std::cout << "           .::^!?Y5B&@@@@@@@@@@@@B7::.                [31m[Copyright] (C) [2025] [Rafael de Sousa]                             " << std::endl;
+    std::cout << "             ...::^~7J5PGGBBBG57::.                   [Author]  :: [Rafael de Sousa]                                           " << std::endl;
+    std::cout << "           .::^!?Y5B&@@@@@@@@@@@@B7::.                [Copyright] (C) [2025] [Rafael de Sousa]                                 " << std::endl;
     std::cout << "         .:^~75#&@@@@@@@@@@@@@@@@@@@Y::                                                                                        " << std::endl;
     std::cout << "        .^^Y#@@@@@@@@&#G5Y?7!~J@@@@@&^:.                                                                                       " << std::endl;
     std::cout << "        ^^J@@@@@@B5J7~:...... .?#@@@@@5..                                                                                      " << std::endl;
