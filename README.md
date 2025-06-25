@@ -39,7 +39,7 @@ def main:func() -> [
 
 | Works on Linux | Works on Windows |
 | -------------- | ---------------- |
-|       ✅       |       ✅         |
+|✅ Works        | ✅ Works         |
 
 ## CLI Commands
 
