@@ -376,10 +376,9 @@ namespace Rythin
             {"int64", TokensTypes::TOKEN_INT_64},
             {"f", TokensTypes::TOKEN_FLOAT_IND},
             {"bool", TokensTypes::TOKEN_BOOL},
-            {"str", TokensTypes::TOKEN_STR},
+            {"charseq", TokensTypes::TOKEN_CHARSEQ},
             {"obj", TokensTypes::TOKEN_OBJECT},
             {"func", TokensTypes::TOKEN_FUNC},
-            {"char", TokensTypes::TOKEN_CHAR},
             {"float32", TokensTypes::TOKEN_FLOAT_32},
             {"float64", TokensTypes::TOKEN_FLOAT_64},
             {"byte", TokensTypes::TOKEN_BYTES},
@@ -525,8 +524,7 @@ namespace Rythin
         {
             //std::cerr << "[Error]Unterminated interpolation at line " << line << " Column " << column << std::endl;
             LogErrors::getInstance().addError("Unterminated interpolation", 14, line, column);
-            LogErrors::getInstance().printAll();
-            exit(14);
+            return nullptr;
         }
     }
 

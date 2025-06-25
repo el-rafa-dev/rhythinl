@@ -17,9 +17,9 @@ namespace Rythin
     class SemanticAnalyzer : public ASTVisitor
     {
     private:
-        std::unordered_map<std::string, TokensTypes> symbolTable;
-        std::unordered_map<std::string, ASTPtr> valTable;
-        std::unordered_map<std::string, ASTPtr> func_argsTable;
+        std::unordered_map<std::string, TokensTypes> var_table;
+        std::unordered_map<std::string, ASTPtr> var_values;
+        std::unordered_map<std::string, TokensTypes> func_table;
 
     public:
         void Visit(VariableDefinitionNode &node) override;

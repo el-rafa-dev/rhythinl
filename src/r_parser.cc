@@ -448,7 +448,7 @@ namespace Rythin
         case TokensTypes::TOKEN_INT_64:
         case TokensTypes::TOKEN_FLOAT_32:
         case TokensTypes::TOKEN_FLOAT_64:
-        case TokensTypes::TOKEN_STR:
+        case TokensTypes::TOKEN_CHARSEQ:
         case TokensTypes::TOKEN_BYTES:
         case TokensTypes::TOKEN_OBJECT:
             tk = consume(current().type).type;
@@ -481,7 +481,7 @@ namespace Rythin
         // this helps the semantic analysis
         switch (types)
         {
-        case TokensTypes::TOKEN_STR:
+        case TokensTypes::TOKEN_CHARSEQ:
             return std::make_shared<LiteralNode>(consume(TokensTypes::TOKEN_STRING_LITERAL).value);
         case TokensTypes::TOKEN_PLUS:
             consume(TokensTypes::TOKEN_PLUS);

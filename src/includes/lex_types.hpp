@@ -65,11 +65,10 @@ enum class TokensTypes {
     TOKEN_MKDIR,
     TOKEN_LEN,
     TOKEN_BOOL,
-    TOKEN_STR,
     TOKEN_INT_32, //i32 bits
     TOKEN_INT_64, //i64 bits
     TOKEN_FUNC,
-    TOKEN_CHAR,
+    TOKEN_CHARSEQ,
     TOKEN_FLOAT_32, //f32
     TOKEN_FLOAT_IND,    //f
     TOKEN_FLOAT_64, //f64

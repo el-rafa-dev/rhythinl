@@ -145,11 +145,9 @@ std::string Tokens::tokenTypeToString(TokensTypes type)
         return "int64";
     case TokensTypes::TOKEN_BOOL:
         return "bool";
-    case TokensTypes::TOKEN_STR:
-        return "str";
     case TokensTypes::TOKEN_FUNC:
         return "func";
-    case TokensTypes::TOKEN_CHAR:
+    case TokensTypes::TOKEN_CHARSEQ:
         return "char";
     case TokensTypes::TOKEN_FLOAT_32:
         return "float32";

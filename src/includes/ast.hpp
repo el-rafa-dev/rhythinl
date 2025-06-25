@@ -247,8 +247,12 @@ namespace Rythin
         std::vector<ASTPtr> args;
         TokensTypes type;
         ASTPtr block;
-        FunctionDefinitionNode(std::string name, TokensTypes tk, std::vector<ASTPtr> args, ASTPtr block) : var_name(name), type(tk), args(args), block(block) {}
-
+        FunctionDefinitionNode(std::string name, TokensTypes tk, std::vector<ASTPtr> args, ASTPtr block) : var_name(name), type(tk), args(args), block(block) {
+            while (auto test = std::dynamic_pointer_cast<PrintNl>(block))
+            {
+                std::cout << "Value of printnl(): " << test->val << "\n";
+            }
+        }
     };
 
     struct VariableDefinitionNode : public ASTNode
