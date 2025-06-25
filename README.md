@@ -47,6 +47,7 @@ Run this commands:
 ```
 cmake -B build -DCMAKE_BUILD_TYPE=Release
 ```
+Runs this for start the build on the "/build" directory
 ```
 cmake --build build
 ```
