@@ -49,7 +49,7 @@ def main:func() -> [
 
 |    Command   |    Description   |
 | --- | --- |
-| -f or --file |  use to open e and execute a rhythin (.ry) file (requerid a path after argument!)|
+| -f or --file |  use to open e and execute a rhythin (.ry) file (required a path after argument!)|
 | -v or --version | displays a ASCII art and version of Rhythin |
 | -h or --help | displays a arguments list |
 
