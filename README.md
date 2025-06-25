@@ -9,7 +9,7 @@
     <img src="https://github.com/el-rafa-dev/rhythinl/actions/workflows/cmake-multi-platform.yml/badge.svg?branch=main" alt="Build on multiple-platforms Status"/>
   </a>
   <!-- <br> -->
-  <a href="./LICENSE">
+  <a href="./licenses/LICENSE">
     <img src="https://img.shields.io/badge/License-GPLv3-blue.svg"/>
   </a>
 </p>
@@ -109,7 +109,7 @@ Go to [support.md](./SUPPORT.md) to see how support the project
 
 License of Rhythin changed to GNU GPLv3.
 
-Click [here](./LICENSE) to see and read the license.
+Click [here](./licenses/LICENSE) to see and read the license.
 
 
 
