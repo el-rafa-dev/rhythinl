@@ -13,6 +13,7 @@ set(RHYTHIN_SRC_CORE
     src/t_tokens.cc
     src/r_inter.cc
     src/log_errors.cc
+    src/semantic_visit.cc
 )
 
 set(RHYTHIN_INCLUDES

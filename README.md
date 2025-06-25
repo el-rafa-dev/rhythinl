@@ -6,7 +6,7 @@
 
 <p align="center">
   <a href="https://github.com/el-rafa-dev/rhythinl/actions/workflows/cmake-multi-platform.yml">
-    <img src="https://github.com/el-rafa-dev/rhythinl/actions/workflows/cmake-multi-platform.yml/badge.svg?branch=main" alt="Build Status"/>
+    <img src="https://github.com/el-rafa-dev/rhythinl/actions/workflows/cmake-multi-platform.yml/badge.svg?branch=main" alt="Build on multiple-platforms Status"/>
   </a>
 </p>
 
@@ -43,9 +43,11 @@ clone the repository with:
 ```
 git clone https://github.com/el-rafa-dev/rhythinl.git
 ```
-Run this command:
+Run this commands:
 ```
 cmake -B build -DCMAKE_BUILD_TYPE=Release
+```
+```
 cmake --build build
 ```
 The build will be finished and you can run Rhythin with:
