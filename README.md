@@ -10,7 +10,7 @@
   </a>
   <!-- <br> -->
   <a href="./LICENSE">
-    <img src="https://img.shields.io/badge/License-GPLv3-blue.svg">
+    <img src="https://img.shields.io/badge/License-GPLv3-blue.svg"/>
   </a>
 </p>
 
