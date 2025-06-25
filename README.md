@@ -41,9 +41,9 @@ def main:func() -> [
 ```
 ## Compability
 
-| Works on Linux | Works on Windows |
-| -------------- | ---------------- |
-|✅ Works        | ✅ Works         |
+| Works on Linux | Works on Windows | Works on MacOS   |
+| -------------- | ---------------- | ---------------- |
+|✅ Works        | ✅ Works         |❓ Not tested yet |
 
 ## CLI Commands
 
