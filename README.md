@@ -35,11 +35,19 @@ def main:func() -> [
     finish(0) ;; sucess code
 ]
 ```
+# Compability
 
----
-Works on Linux: ✅
-Works on Windows: ✅
----
+| Works on Linux | Works on Windows |
+| -------------- | ---------------- |
+|       ✅       |       ✅         |
+
+# CLI Commands
+
+|    Command   |    Description   |
+| --- | --- |
+| -f or --file |  use to open e and execute a file |
+| -v or --version | displays a ASCII art and version of Rhythin |
+| -h or --help | displays a arguments list |
 
 ## Building on Linux
 To build and run the project on linux, do this below:
