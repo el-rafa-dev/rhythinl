@@ -18,7 +18,7 @@ RhythinLang will be a statically typed, interpreted and compiled (not JIT) progr
 
 ## Current Status
 
-The current status is development and tests.
+The current status is development and constant testing.
 
 ## When will be released?
 
