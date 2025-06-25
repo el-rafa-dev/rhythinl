@@ -35,13 +35,13 @@ def main:func() -> [
     finish(0) ;; sucess code
 ]
 ```
-# Compability
+## Compability
 
 | Works on Linux | Works on Windows |
 | -------------- | ---------------- |
 |       ✅       |       ✅         |
 
-# CLI Commands
+## CLI Commands
 
 |    Command   |    Description   |
 | --- | --- |
