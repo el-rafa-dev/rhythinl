@@ -172,7 +172,7 @@ namespace Rythin
         // the ParseBlock will parse the [ and ] too,
         // don't need to consume the [ and ] tokens here
         auto block = ParseBlock();
-        return std::make_shared<FunctionDefinitionNode>(var_name, args, block);
+        return std::make_shared<FunctionDefinitionNode>(var_name, type, args, block);
     }
 
     ASTPtr Parser::ParseIntVal()

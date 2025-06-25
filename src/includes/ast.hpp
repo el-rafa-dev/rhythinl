@@ -245,8 +245,9 @@ namespace Rythin
     {
         std::string var_name;
         std::vector<ASTPtr> args;
+        TokensTypes type;
         ASTPtr block;
-        FunctionDefinitionNode(std::string name, std::vector<ASTPtr> args, ASTPtr block) : var_name(name), args(args), block(block) {}
+        FunctionDefinitionNode(std::string name, TokensTypes tk, std::vector<ASTPtr> args, ASTPtr block) : var_name(name), type(tk), args(args), block(block) {}
 
     };
 

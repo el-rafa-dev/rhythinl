@@ -4,7 +4,9 @@
 #include <iostream>
 #include <stdlib.h>
 #include <vector>
+
 // local includes
+
 #include "../src/includes/t_tokens.hpp"
 #include "../src/includes/r_lex.hpp"
 #include "../src/includes/r_inter.hpp"
@@ -68,7 +70,7 @@ namespace Rythin
                 }
 
                 // only for tests, a tree-walk interpreter
-                Interpreter interpreter(nodes);
+                // Interpreter interpreter(nodes);
             }
             else
             {

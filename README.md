@@ -36,6 +36,11 @@ def main:func() -> [
 ]
 ```
 
+---
+Works on Linux: ✅
+Works on Windows: ✅
+---
+
 ## Building on Linux
 To build and run the project on linux, do this below:
 
@@ -47,7 +52,7 @@ Run this commands:
 ```
 cmake -B build -DCMAKE_BUILD_TYPE=Release
 ```
-Runs this for start the build on the "/build" directory
+Run this for start the build on the "/build" directory
 ```
 cmake --build build
 ```

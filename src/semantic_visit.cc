@@ -15,27 +15,20 @@ namespace Rythin
         {
             std::cout << "Var name: " << stb.first << " Type: " << Tokens::tokenTypeToString(stb.second) << std::endl;
             // check if the type value is compatible with type declared
-            if (valTable.find(stb.first) == valTable.end())
+            if (valTable.find(stb.first) != valTable.end())
             {
                 // std::cout << "Type: " << Tokens::tokenTypeToString(stb.second) << "\n";
-                for (auto &vals : valTable)
-                {
-                    if (auto val = std::dynamic_pointer_cast<LiteralNode>(vals.second))
-                    {
-                        if (stb.second != TokensTypes::TOKEN_STRING_LITERAL)
-                        {
-                            LogErrors::getInstance().addError("The value type for " + stb.first + " not matches with the type that you declared: " + Tokens::tokenTypeToString(stb.second), 99, 0, 0);
-                            return;
-                        }
 
-                        std::cout << "Literal value: " << val->val << "\n";
-                    }
-                }
+                // if (auto& value = std::dynamic_pointer_cast<LiteralNode>(&node.val))
+                // {
+
+                // }
+
             }
         }
 
-        symbolTable[node.var_name] = node.type;
-        valTable[node.var_name] = node.val;
+        symbolTable.insert(std::make_pair(node.var_name, node.type));
+        valTable.insert(std::make_pair(node.var_name, node.val));
         VisitNode(node.val);
     }
 
@@ -57,6 +50,7 @@ namespace Rythin
     void SemanticAnalyzer::Visit(FunctionDefinitionNode &node)
     {
         // Em uma versão mais avançada, vou adicionar à symbol table e criar escopo
+        symbolTable.insert(std::make_pair(node.var_name, node.type));
         VisitNode(node.block);
     }
 }
