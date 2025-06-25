@@ -98,11 +98,11 @@
             "patterns": [
                 {
                     "name": "keyword.control.rhythin",
-                    "match": "\\b(try|catch|if|but|loop|return|def|makedef|using|from|get|as|in|local|global|and|or|lenght|switch|case|default|stop|continue|jmpcase|true|false)\\b"
+                    "match": "\\b(try|catch|if|but|loop|return|def|makedef|using|from|get|in|local|global|and|or|lenght|switch|case|default|stop|continue|jmpcase|true|false|signed|unsigned)\\b"
                 },
                 {
                     "name": "storage.type.rhythin",
-                    "match": "\\b(func|charseq|int32|int64|float32|float64|bool|byte|obj)\\b"
+                    "match": "\\b(func|charseq|int32|int64|float32|float64|bool|byte|obj|struct)\\b"
                 }
             ]
         },
