@@ -1,6 +1,8 @@
 #include "../src/includes/semantic_visitor.hpp"
 #include <iostream>
 
+// TODO: add more analyses for semantic analyzer!
+
 namespace Rythin
 {
     void SemanticAnalyzer::Visit(VariableDefinitionNode &node)
