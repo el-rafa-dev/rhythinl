@@ -108,7 +108,7 @@ namespace Rythin
                 if (check(TokensTypes::TOKEN_COLON))
                 {
                     position = oldpos;
-                    std::cout << "Current(): " << Tokens::tokenTypeToString(current().type) << "\n";
+                    // std::cout << "Current(): " << Tokens::tokenTypeToString(current().type) << "\n";
                     return ParseLoopExpression();
                 } else {
                     position = oldpos;
