@@ -41,6 +41,7 @@ namespace Rythin {
         ASTPtr ParsePositiveVals(TokensTypes curr);
         ASTPtr ParseNegativeVals(TokensTypes curr);
         ASTPtr ParseVarDeclaration();
+        ASTPtr ParseVarCall();
 
         std::string getCode();
 

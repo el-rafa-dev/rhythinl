@@ -32,7 +32,7 @@ namespace Rythin
     Tokens Parser::consume(TokensTypes tk)
     {
         codes.push_back(current().value);
-        //std::cout << "Code: " <<  << std::endl;
+        // std::cout << "Code: " <<  << std::endl;
 
         if (current().type == TokensTypes::TOKEN_EOF)
         {
@@ -99,13 +99,24 @@ namespace Rythin
         case TokensTypes::TOKEN_IF:
             return ParseIfStatement();
         case TokensTypes::TOKEN_LOOP:
-            return ParseLoopExpression();
-            // if (lookAhead(TokensTypes::TOKEN_IN))
-            // {
-            //     return ParseLoopExpression();
-            // } else {
-            //     return ParseLoopCond();
-            // }
+        {
+            int oldpos = position;
+            while (!check(TokensTypes::TOKEN_COLON))
+            {
+                consume(current().type);
+                
+                if (check(TokensTypes::TOKEN_COLON))
+                {
+                    position = oldpos;
+                    std::cout << "Current(): " << Tokens::tokenTypeToString(current().type) << "\n";
+                    return ParseLoopExpression();
+                } else {
+                    position = oldpos;
+                    return ParseLoopCond();
+                }
+            }
+        }
+
         case TokensTypes::TOKEN_PRINT:
             return ParsePrint();
         case TokensTypes::TOKEN_PRINT_ERROR:
@@ -142,7 +153,7 @@ namespace Rythin
 
         default:
             // if the current type don't have the valid statements keywords,
-            // throw a compilation excption
+            // throw a compilation exception
             LogErrors::getInstance().addError("Invalid statement/keyword '" + Tokens::tokenTypeToString(current().type) + "'", 2, current().line, current().column);
             LogErrors::getInstance().printAll();
             exit(2);
@@ -435,6 +446,13 @@ namespace Rythin
         return node;
     }
 
+    ASTPtr Parser::ParseVarCall()
+    {
+        auto var_node = std::make_shared<VariableNode>();
+        var_node->name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
+        return var_node;
+    }
+
     ASTPtr Parser::ParseVarDeclaration()
     {
         consume(TokensTypes::TOKEN_DEF);
@@ -633,14 +651,8 @@ namespace Rythin
         consume(TokensTypes::TOKEN_LOOP);
         consume(TokensTypes::TOKEN_LPAREN);
         std::string var_name;
-        if (check(TokensTypes::TOKEN_TRUE) or check(TokensTypes::TOKEN_FALSE))
-        {
-            return ParseLoopCond();
-        }
-        else if (check(TokensTypes::TOKEN_IDENTIFIER))
-        {
-            var_name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
-        }
+
+        var_name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
         // consome o : para em seguida consumir o tipo da variavel
         consume(TokensTypes::TOKEN_COLON);
         // switch para verificação de tipos da variavel
@@ -654,7 +666,7 @@ namespace Rythin
             type = consume(current().type).type;
             break;
         default:
-            LogErrors::getInstance().addError("Loop expression only accepts number types (int(32 or 64), float(32/64))", 23, current().line, current().column);
+            LogErrors::getInstance().addError("Loop expression only accepts number types (int(32 or 64), float(32/64)) and array lists (foreach)", 23, current().line, current().column);
             return nullptr;
         }
         consume(TokensTypes::TOKEN_IN);
@@ -681,7 +693,16 @@ namespace Rythin
     {
         auto node = std::make_shared<LoopConditionNode>();
         /// ParseLoopExpression will be check if have a varaible definition and his type or condition
-        node->condition = ParseLoopCondition();
+        switch (current().type)
+        {
+        case TokensTypes::TOKEN_FALSE:
+        case TokensTypes::TOKEN_TRUE:
+            node->condition = ParseLoopCondition();
+            break;
+        case TokensTypes::TOKEN_IDENTIFIER:
+            node->condition = ParseVarCall();
+            break;
+        }
 
         consume(TokensTypes::TOKEN_RPAREN);
         consume(TokensTypes::TOKEN_ARROW_SET);
