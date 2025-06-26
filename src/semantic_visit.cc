@@ -29,11 +29,12 @@ namespace Rythin
         }
 
         for (auto &stb : var_table)
-        {
+        { 
+            std::cout << "Name" << "\n";
             // check if the type value is compatible with type declared
             if (var_values.find(stb.first) != var_values.end())
             {
-                // std::cout << "Type: " << Tokens::tokenTypeToString(stb.second) << "\n";
+                std::cout << "Type: " << Tokens::tokenTypeToString(stb.second) << "\n";
 
                 // if (auto& value = std::dynamic_pointer_cast<LiteralNode>(&node.val))
                 // {
@@ -64,10 +65,9 @@ namespace Rythin
 
     void SemanticAnalyzer::Visit(FunctionDefinitionNode &node)
     {
-        // Em uma versão mais avançada, vou adicionar à symbol table e criar escopo
         if (var_table.find(node.var_name) != var_table.end())
         {
-            LogErrors::getInstance().addError("The function name '" + node.var_name + "' already set and it's a " + Tokens::tokenTypeToString(node.type) + "!", 76, 0, 0);
+            LogErrors::getInstance().addError("The function name '" + node.var_name + "' already set and it's a " + Tokens::tokenTypeToString(node.type) + "!", 78, 0, 0);
             return;
         }
         // if (func_table.find(node.))

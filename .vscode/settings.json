@@ -1,5 +1,6 @@
 {
     "files.associations": {
+        "*.ry": "rhythin",
         "bit": "cpp",
         "bitset": "cpp",
         "charconv": "cpp",
@@ -81,7 +82,9 @@
         "thread": "cpp",
         "cinttypes": "cpp",
         "csetjmp": "cpp",
-        "csignal": "cpp"
+        "csignal": "cpp",
+        "coroutine": "cpp",
+        "cfenv": "cpp"
     },
     "workbench.colorCustomizations": {
         "tab.activeBackground": "#282c34",

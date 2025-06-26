@@ -115,20 +115,29 @@ namespace Rythin
             return ParseIfStatement();
         case TokensTypes::TOKEN_LOOP:
         {
-            int oldpos = position;
-            while (!check(TokensTypes::TOKEN_COLON))
+            // int oldpos = position;
+            // while (!check(TokensTypes::TOKEN_COLON))
+            // {
+            //     consume(current().type);
+            //     //std::cout << "Debug Current(): " << Tokens::tokenTypeToString(current().type) << "\n";
+            //     if (check(TokensTypes::TOKEN_COLON))
+            //     {
+            //         position = oldpos;
+            //         return ParseLoopExpression();
+            //     } else if (check(TokensTypes::TOKEN_IDENTIFIER)) {
+            //         position = oldpos;
+            //         return ParseLoopCond();
+            //     }
+            // }
+
+
+            if (lookAhead(TokensTypes::TOKEN_IN))
             {
-                consume(current().type);
-                
-                if (check(TokensTypes::TOKEN_COLON))
-                {
-                    position = oldpos;
-                    // std::cout << "Current(): " << Tokens::tokenTypeToString(current().type) << "\n";
-                    return ParseLoopExpression();
-                } else {
-                    position = oldpos;
-                    return ParseLoopCond();
-                }
+                // std::cout << "Debug Current(): " << Tokens::tokenTypeToString(current().type) << "\n";
+                return ParseLoopExpression();
+            } else {
+                // std::cout << "Debug Current(): " << Tokens::tokenTypeToString(current().type) << "\n";
+                return ParseLoopCond();
             }
         }
 
@@ -665,9 +674,8 @@ namespace Rythin
     {
         consume(TokensTypes::TOKEN_LOOP);
         consume(TokensTypes::TOKEN_LPAREN);
-        std::string var_name;
 
-        var_name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
+        std::string var_name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
         // consome o : para em seguida consumir o tipo da variavel
         consume(TokensTypes::TOKEN_COLON);
         // switch para verificação de tipos da variavel
@@ -706,6 +714,8 @@ namespace Rythin
 
     ASTPtr Parser::ParseLoopCond()
     {
+        consume(TokensTypes::TOKEN_LOOP);
+        consume(TokensTypes::TOKEN_LPAREN);
         auto node = std::make_shared<LoopConditionNode>();
         /// ParseLoopExpression will be check if have a varaible definition and his type or condition
         switch (current().type)

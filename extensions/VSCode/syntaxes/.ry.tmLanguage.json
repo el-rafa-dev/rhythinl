@@ -26,11 +26,11 @@
             "patterns": [
                 {
                     "name": "comment.line.number-sign.rhythin",
-                    "match": "^#.*$" 
+                    "match": "#.*$" 
                 },
                 {
                     "name":"comment.line.number-sign.rhythin",
-                    "match": "^;.*$"
+                    "match": ";.*$"
                 }
             ]
         },
@@ -98,7 +98,7 @@
             "patterns": [
                 {
                     "name": "keyword.control.rhythin",
-                    "match": "\\b(try|catch|if|but|loop|return|def|makedef|using|from|get|in|local|global|and|or|lenght|switch|case|default|stop|continue|jmpcase|true|false|signed|unsigned)\\b"
+                    "match": "\\b(try|catch|if|but|loop|return|def|makedef|using|from|get|in|local|global|and|or|lenght|switch|case|default|stop|continue|jmpcase|true|false|signed|unsigned|parallel)\\b"
                 },
                 {
                     "name": "storage.type.rhythin",
