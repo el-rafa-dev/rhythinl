@@ -67,10 +67,11 @@ namespace Rythin
     {
         if (var_table.find(node.var_name) != var_table.end())
         {
-            LogErrors::getInstance().addError("The function name '" + node.var_name + "' already set and it's a " + Tokens::tokenTypeToString(node.type) + "!", 78, 0, 0);
+            LogErrors::getInstance().addError("The name '" + node.var_name + "' already set and it's a " + Tokens::tokenTypeToString(node.type) + "!", 78, 0, 0);
             return;
         }
-        // if (func_table.find(node.))
+
+        var_table.insert(std::make_pair(node.var_name, node.type));
         func_table.insert(std::make_pair(node.var_name, node.type));
         VisitNode(node.block);
     }

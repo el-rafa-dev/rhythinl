@@ -115,6 +115,7 @@ namespace Rythin
             return ParseIfStatement();
         case TokensTypes::TOKEN_LOOP:
         {
+            // needs urgent changes to works perfectly
             int oldpos = position;
             while (!check(TokensTypes::TOKEN_COLON))
             {
