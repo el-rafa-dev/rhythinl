@@ -33,8 +33,10 @@ IF NOT EXIST "%build_dir%\" (
 
 :proceed_with_cmake
 ECHO Attempting to generate build directory with CMake...
-REM Use cmake -B to create and configure the build directory
-cmake -B "%build_dir%" -DCMAKE_BUILD_TYPE=Release
+REM Use cmake -B to create and configure the build directory. 
+REM In -DCMAKE_BUILD_TYPE you can choose between release (Release) and debug (Debug).
+REM The following line explicitly sets the generator and compiler paths for MinGW64.
+cmake -G "MinGW Makefiles" -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER="C:\mingw64\bin\gcc.exe" -DCMAKE_CXX_COMPILER="C:\mingw64\bin\g++.exe"
 IF %ERRORLEVEL% NEQ 0 (
     ECHO Error: Could not generate the build directory with CMake. Exiting.
     GOTO :cleanup_and_exit_error
