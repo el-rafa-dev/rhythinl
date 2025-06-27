@@ -22,8 +22,7 @@
 #include <iostream>
 #include <iostream>
 
-/** 
- * @name local includes 
+/** * @name local includes 
  * @brief include files from the src dir 
  **/
 
@@ -117,7 +116,7 @@ namespace Rythin
         TokensTypes type;
         ASTPtr value;
         ASTPtr block;
-        LoopNode(std::string var_name, TokensTypes type, ASTPtr value, ASTPtr block) : var_name(var_name), type(type), block(block) {}
+        LoopNode(std::string var_name, TokensTypes type, ASTPtr value, ASTPtr block) : var_name(var_name), type(type), value(value), block(block) {} // Added value to constructor
     };
 
     struct InterpolationNode : public ASTNode
@@ -206,6 +205,14 @@ namespace Rythin
         TokensTypes type;
     };
 
+    // Added: New AST node for unary operations (e.g., +val, -val)
+    struct UnaryOp : public ASTNode
+    {
+        TokensTypes op; // The unary operator (e.g., TOKEN_PLUS, TOKEN_MINUS)
+        ASTPtr operand; // The expression it operates on
+        UnaryOp(TokensTypes op, ASTPtr operand) : op(op), operand(operand) {}
+    };
+
     struct BinOp : public ASTNode
     {
         TokensTypes op;     // operators
@@ -235,16 +242,23 @@ namespace Rythin
                     case TokensTypes::TOKEN_DIVIDE:
                         std::cout << "Valor divido: " << var->val / var2->val << std::endl;
                         break;
+                    case TokensTypes::TOKEN_MODULO: // Added MODULO
+                        std::cout << "Valor modulo: " << var->val % var2->val << std::endl;
+                        break;
+                    case TokensTypes::TOKEN_BIT_XOR: // Added BIT_XOR
+                        std::cout << "Valor XOR: " << (var->val ^ var2->val) << std::endl;
+                        break;
                     }
                 }
             }
+            // Add similar debug blocks for float/double types if needed
         }
     };
 
     struct IfExpressionNode : public ASTNode
     {
-        std::string var_name;      // name of the variable
-        TokensTypes type;          // type of expression (== or other binary operators types)
+        std::string var_name;      // name of the variable (can be empty if direct literal comparison)
+        TokensTypes type;          // type of expression (== or other binary operators types, or TRUE/FALSE token type for direct bools)
         TokensTypes logic_divisor; // the divisor of the expressions like (&&, || and !)
         ASTPtr val;                // the value of the condition (like x > 2, the value of this expression is 2)
     };
@@ -256,10 +270,12 @@ namespace Rythin
         TokensTypes type;
         ASTPtr block;
         FunctionDefinitionNode(std::string name, TokensTypes tk, std::vector<ASTPtr> args, ASTPtr block) : var_name(name), type(tk), args(args), block(block) {
-            while (auto test = std::dynamic_pointer_cast<PrintNl>(block))
-            {
-                std::cout << "Value of printnl(): " << test->val << "\n";
-            }
+            // Debugging code removed for cleaner ASTNode.
+            // This kind of debug output is usually handled by a separate ASTVisitor or interpreter.
+            // while (auto test = std::dynamic_pointer_cast<PrintNl>(block))
+            // {
+            //     std::cout << "Value of printnl(): " << test->val << "\n";
+            // }
         }
     };
 
@@ -272,4 +288,4 @@ namespace Rythin
     };
 }
 
-#endif
+#endif // AST_HPP

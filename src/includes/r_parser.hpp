@@ -33,6 +33,7 @@ namespace Rythin {
         inline static std::vector<std::string> codes;
         Parser(std::vector<Tokens> tokens) : position(0), tokens(tokens){}
         Tokens current();
+        Tokens peek(int offset); // Added: Peeks at a token without consuming it.
         Tokens consume(TokensTypes tk);
         std::vector<ASTPtr> Parse();
         bool check(TokensTypes tk);
@@ -58,18 +59,23 @@ namespace Rythin {
         ASTPtr ParseVarDeclaration();
         ASTPtr ParseVarCall();
 
+        // New functions for arithmetic expression parsing with precedence
+        ASTPtr ParsePrimaryExpression();      // Handles numbers, identifiers, and parenthesized expressions
+        ASTPtr ParseMultiplicativeExpression(); // Handles multiplication, division, modulo
+        ASTPtr ParseAdditiveExpression();     // Handles addition, subtraction
+
         std::string getCode();
 
         ASTPtr ParseByteVal();
         ASTPtr ParseNumeralExpression();
         //ASTPtr Parse
-        ASTPtr ParseIntVal(); /// to parse the int or arithmetic or others types of expressions like division or addition values
+        ASTPtr ParseIntVal(); /// This will now call ParseAdditiveExpression to handle full arithmetic expressions
 
         bool isConditionOperator(TokensTypes type) {
             return type == TokensTypes::TOKEN_LESS_THAN || // < 
                    type == TokensTypes::TOKEN_GREATER_THAN || // >
                    type == TokensTypes::TOKEN_EQUAL ||  // ==
-                   type == TokensTypes::TOKEN_NOT_EQUAL ||  //!=
+                   type == TokensTypes::TOKEN_NOT_EQUAL ||  //!=\
                    type == TokensTypes::TOKEN_LESS_EQUAL || // <=
                    type == TokensTypes::TOKEN_GREATER_EQUAL; // >=
         }
