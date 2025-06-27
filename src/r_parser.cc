@@ -115,29 +115,22 @@ namespace Rythin
             return ParseIfStatement();
         case TokensTypes::TOKEN_LOOP:
         {
-            // int oldpos = position;
-            // while (!check(TokensTypes::TOKEN_COLON))
-            // {
-            //     consume(current().type);
-            //     //std::cout << "Debug Current(): " << Tokens::tokenTypeToString(current().type) << "\n";
-            //     if (check(TokensTypes::TOKEN_COLON))
-            //     {
-            //         position = oldpos;
-            //         return ParseLoopExpression();
-            //     } else if (check(TokensTypes::TOKEN_IDENTIFIER)) {
-            //         position = oldpos;
-            //         return ParseLoopCond();
-            //     }
-            // }
-
-
-            if (lookAhead(TokensTypes::TOKEN_IN))
+            int oldpos = position;
+            while (!check(TokensTypes::TOKEN_COLON))
             {
-                // std::cout << "Debug Current(): " << Tokens::tokenTypeToString(current().type) << "\n";
-                return ParseLoopExpression();
-            } else {
-                // std::cout << "Debug Current(): " << Tokens::tokenTypeToString(current().type) << "\n";
-                return ParseLoopCond();
+                consume(current().type);
+                std::cout << "Debug Current(): " << Tokens::tokenTypeToString(current().type) << "\n";
+                if (check(TokensTypes::TOKEN_COLON))
+                {
+                    position = oldpos;
+                    std::cout << "Contains colon? true" << "\n";
+                    return ParseLoopExpression();
+                } else /*if (check(TokensTypes::TOKEN_IDENTIFIER))*/ {
+                    std::cout << "Contains colon? false" << "\n";
+                    //std::cout << "Debug Current(): " << Tokens::tokenTypeToString(current().type) << "\n";
+                    position = oldpos;
+                    return ParseLoopCond();
+                }
             }
         }
 
@@ -160,6 +153,7 @@ namespace Rythin
             while (!check(TokensTypes::TOKEN_ASSIGN))
             {
                 consume(current().type);
+                //std::cout << "Debug Current(): " << Tokens::tokenTypeToString(current().type) << "\n";
                 if (check(TokensTypes::TOKEN_ASSIGN))
                 {
                     // sets the position to the old position - controlled backtracking
