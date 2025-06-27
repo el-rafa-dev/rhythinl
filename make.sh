@@ -4,9 +4,7 @@
 
 function cd_and_start {
     curr_dir=$(pwd)
-
     cd "build" || { echo "Error: Could not change to 'build' directory. Aborting."; exit 1; }
-
     if [[ "$(basename "$(pwd)")" == "build" ]]; then
         echo -e "Entered 'build' directory.\n"
 
