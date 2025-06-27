@@ -5,7 +5,26 @@
 function cd_and_start {
     curr_dir=$(pwd)
 
-    cd "build" || { echo "Error: Could not change to 'build' directory. Aborting."; exit 1; }
+    #cd "builds" || { echo "Error: Could not change to 'build' directory. Aborting."; exit 1; }
+    if ! cd "build" 2>/dev/null; then
+        printf "Build directory not found... Do you want to generate the build directory? (y/Y/S/s/n/N) "
+        read ans
+        case $ans in
+        "y"|"Y"|"S"|"s")
+            if cmake -B build -DCMAKE_BUILD_TYPE=Release; then
+                echo -e "Build generated with sucess! Re-run the script"
+                # exit 0
+            else
+                echo -e "Could not generate the Build with CMake command... Try again"
+                exit 1
+            fi
+        ;;
+        *)
+            exit 0
+        ;;
+        esac
+    fi
+
 
     if [[ "$(basename "$(pwd)")" == "build" ]]; then
         echo -e "Entered 'build' directory.\n"
