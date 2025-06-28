@@ -1,8 +1,10 @@
-# Bug Report:
-## Info
+
 ---
 name: Bug report
 about: Send a report to improve the work of Rhythin
+title: ''
+labels: ''
+
 ---
 
 # Needed info
