@@ -52,7 +52,7 @@ namespace Log
         }
         else
         {
-            logs.push_back(WARNING + err + " at line " + std::to_string(line) + " column " + std::to_string(column));
+            warns.push_back(WARNING + err + " at line " + std::to_string(line) + " column " + std::to_string(column));
         }
         code = exit;
     }
