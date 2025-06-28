@@ -43,6 +43,8 @@ namespace Rythin
         }
         // If position is out of bounds, return EOF (End Of File) token.
         // This ensures the parser doesn't crash on out-of-bounds access.
+        // It's crucial for error recovery to always return a valid token type,
+        // even if it's an EOF when past the end.
         return tokens[tokens.size() - 1];
     }
 
@@ -62,22 +64,26 @@ namespace Rythin
     Tokens Parser::consume(TokensTypes tk)
     {
         codes.push_back(current().value);
-        // std::cout << "Code: " <<  << std::endl;
 
         if (current().type == TokensTypes::TOKEN_EOF)
         {
-            // checa se o token atual é o EOF (end of file), se for retorna o erro abaixo
-            LogErrors::getInstance().addError("Expected a statement but reached the end of file and left early.... Are you forget anything?", 1, 0, 0);
-            LogErrors::getInstance().printAll();
-            exit(1);
+            // If EOF is reached unexpectedly, add an error but allow parsing to continue
+            // (e.g., if it's the end of a block that should have been closed).
+            // The main Parse() loop will eventually stop on EOF.
+            LogErrors::getInstance().addError("Expected a statement but reached the end of file and left early.... Are you forget anything?", 1, current().line, current().column);
+            // Do NOT exit here to allow error progression.
+            return Tokens{TokensTypes::TOKEN_EOF, "", current().line, current().column}; // Return EOF token
         }
 
         if (current().type != tk)
         {
-            // check if the current type matches the expected token
+            // If the current type doesn't match the expected token, add an error.
+            // Do NOT exit here to allow error progression.
             LogErrors::getInstance().addError("Expected " + Tokens::tokenTypeToString(tk) + " token but got: " + Tokens::tokenTypeToString(current().type), 4, current().line, current().column);
-            LogErrors::getInstance().printAll(); // Added to exit on error immediately
-            exit(4); // Exit with a different code
+            // Try to advance the parser to potentially recover from the error.
+            // This is a simple recovery strategy; more advanced parsers might skip tokens.
+            position++;
+            return tokens[position - 1]; // Return the consumed (but incorrect) token
         }
 
         position++;
@@ -90,7 +96,21 @@ namespace Rythin
         std::vector<ASTPtr> node;
         while (current().type != TokensTypes::TOKEN_EOF)
         {
-            node.push_back(ParseDeclarations());
+            ASTPtr declaration = ParseDeclarations();
+            if (declaration) // Only add if parsing was successful (not nullptr due to error)
+            {
+                node.push_back(declaration);
+            } else {
+                // Error occurred in ParseDeclarations, try to recover and continue
+                // Simple recovery: if it's not EOF, advance past the current token
+                // to avoid infinite loops on unhandled tokens.
+                if (current().type != TokensTypes::TOKEN_EOF) {
+                    position++;
+                } else {
+                    // If EOF is reached, break the loop
+                    break;
+                }
+            }
         }
         return node;
     }
@@ -103,6 +123,7 @@ namespace Rythin
 
     // This lookAhead function was problematic. A simpler `peek` is introduced for reliability.
     // Keeping it here for reference, but not used in the new logic.
+    /*
     bool Parser::lookAhead(TokensTypes tk)
     {
         int oldpos = position;
@@ -123,6 +144,7 @@ namespace Rythin
         }
         return false;
     }
+    */
 
     ASTPtr Parser::ParseDeclarations()
     {
@@ -139,11 +161,23 @@ namespace Rythin
             // We need to look ahead after `loop (` to differentiate.
             // Consume LOOP and LPAREN first, then peek to decide.
             int start_pos = position; // Save position to restore if needed
-            consume(TokensTypes::TOKEN_LOOP);
-            consume(TokensTypes::TOKEN_LPAREN);
+            // Temporarily consume TOKEN_LOOP and TOKEN_LPAREN to inspect what follows.
+            // This consume operation might add an error if the token is not as expected,
+            // but the error is logged and parsing continues.
+            Tokens loop_token = consume(TokensTypes::TOKEN_LOOP);
+            if (loop_token.type != TokensTypes::TOKEN_LOOP) { // Check if consume failed
+                position = start_pos; // Restore position if consume failed for initial token
+                return nullptr;
+            }
+            Tokens lparen_token = consume(TokensTypes::TOKEN_LPAREN);
+            if (lparen_token.type != TokensTypes::TOKEN_LPAREN) { // Check if consume failed
+                position = start_pos; // Restore position if consume failed
+                return nullptr;
+            }
 
             // Check if it's a loop expression (e.g., `var:type in value`)
             // This means we expect an IDENTIFIER, then a COLON, then a TYPE, then 'in'.
+            // Ensure proper token types are checked for types (INT_32, INT_64, FLOAT_32, FLOAT_64).
             if (check(TokensTypes::TOKEN_IDENTIFIER) &&
                 peek(1).type == TokensTypes::TOKEN_COLON &&
                 (peek(2).type == TokensTypes::TOKEN_INT_32 || peek(2).type == TokensTypes::TOKEN_INT_64 ||
@@ -168,22 +202,17 @@ namespace Rythin
             return ParsePrintNl();
         case TokensTypes::TOKEN_STRING_LITERAL: // This case just consumes and returns nullptr, which might not be intended for a top-level declaration.
             consume(TokensTypes::TOKEN_STRING_LITERAL);
-            return nullptr; // Consider what this should actually do
+            LogErrors::getInstance().addError("Unexpected string literal at top-level. Expected a statement.", 2, current().line, current().column);
+            return nullptr; // Return nullptr for error progression
         case TokensTypes::TOKEN_DEF:
         {
             // stores the current position on another int
             int pos = position;
-            // look ahead if have the assign (=) token
-            // if not, is check if have the left paren ( token
-            // the ( token defines thats the variable is a function regardless of type
-            while (!check(TokensTypes::TOKEN_ASSIGN) && !check(TokensTypes::TOKEN_LPAREN)) // Added check for LPAREN in loop condition
+            // Advance until '=' or '(' is found, or EOF, to determine if it's a variable or function declaration.
+            // This consume loop should not add errors for simply advancing. Errors are added by final checks.
+            while (!check(TokensTypes::TOKEN_ASSIGN) && !check(TokensTypes::TOKEN_LPAREN) && current().type != TokensTypes::TOKEN_EOF)
             {
-                if (current().type == TokensTypes::TOKEN_EOF) { // Avoid infinite loop on unexpected token
-                     LogErrors::getInstance().addError("Unexpected EOF while parsing declaration. Missing '=' or '('?", 1, current().line, current().column);
-                     LogErrors::getInstance().printAll();
-                     exit(1);
-                }
-                consume(current().type);
+                position++; // Simply advance, don't use consume() to avoid adding errors in this lookahead
             }
 
             if (check(TokensTypes::TOKEN_ASSIGN))
@@ -198,12 +227,11 @@ namespace Rythin
                 position = pos;
                 return ParseFuncDeclaration();
             }
-            else
+            else // If EOF reached without finding '=' or '('
             {
-                // Should not reach here if the while loop is correct, but as a safeguard:
-                LogErrors::getInstance().addError("Expected '=' or '(' after 'def IDENTIFIER : TYPE' in declaration", 5, current().line, current().column);
-                LogErrors::getInstance().printAll();
-                exit(5);
+                LogErrors::getInstance().addError("Unexpected EOF while parsing 'def' declaration. Missing '=' or '('?", 1, current().line, current().column);
+                position = pos; // Restore position for better error context if needed, or simply return nullptr
+                return nullptr; // Return nullptr for error progression
             }
         }
 
@@ -211,34 +239,63 @@ namespace Rythin
             // if the current type don't have the valid statements keywords,
             // throw a compilation exception
             LogErrors::getInstance().addError("Invalid statement/keyword '" + Tokens::tokenTypeToString(current().type) + "'", 2, current().line, current().column);
-            LogErrors::getInstance().printAll();
-            exit(2);
+            return nullptr; // Return nullptr for error progression
         }
     }
 
     ASTPtr Parser::ParseFuncDeclaration()
     {
-        consume(TokensTypes::TOKEN_DEF);
+        // Check for nullptr returns from consume to ensure tokens are valid
+        if (consume(TokensTypes::TOKEN_DEF).type != TokensTypes::TOKEN_DEF) return nullptr;
         std::string var_name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
-        consume(TokensTypes::TOKEN_COLON);
-        auto type = consume(current().type).type;
-        consume(TokensTypes::TOKEN_LPAREN);
+        if (var_name.empty() && current().type != TokensTypes::TOKEN_IDENTIFIER) return nullptr; // Check if identifier was consumed correctly
+        if (consume(TokensTypes::TOKEN_COLON).type != TokensTypes::TOKEN_COLON) return nullptr;
+        
+        auto type_token = consume(current().type); // Consume the type token
+        if (type_token.type == TokensTypes::TOKEN_EOF) { // Check if consume failed
+            LogErrors::getInstance().addError("Expected a type token after ':' in function declaration.", 4, current().line, current().column);
+            return nullptr;
+        }
+        TokensTypes type = type_token.type;
+
+        if (consume(TokensTypes::TOKEN_LPAREN).type != TokensTypes::TOKEN_LPAREN) return nullptr;
         std::vector<ASTPtr> args;
 
-        while (!check(TokensTypes::TOKEN_RPAREN))
+        while (!check(TokensTypes::TOKEN_RPAREN) && current().type != TokensTypes::TOKEN_EOF) // Added EOF check for robustness
         {
-            args.push_back(ParseFuncExpressions());
+            ASTPtr arg = ParseFuncExpressions();
+            if (!arg) {
+                // Error occurred in parsing argument, attempt to recover by skipping to next comma or RPAREN
+                while (!check(TokensTypes::TOKEN_COMMA) && !check(TokensTypes::TOKEN_RPAREN) && current().type != TokensTypes::TOKEN_EOF) {
+                    position++;
+                }
+                if (current().type == TokensTypes::TOKEN_EOF) return nullptr; // Return if EOF reached during recovery
+                continue; // Continue loop to try parsing next argument
+            }
+            args.push_back(arg);
             while (check(TokensTypes::TOKEN_COMMA))
             {
                 consume(TokensTypes::TOKEN_COMMA);
-                args.push_back(ParseFuncExpressions());
+                if (check(TokensTypes::TOKEN_RPAREN)) { // Handle trailing comma error
+                    LogErrors::getInstance().addError("Trailing comma in function arguments.", 4, current().line, current().column);
+                    break; // Exit inner loop, next consume will be RPAREN
+                }
+                ASTPtr next_arg = ParseFuncExpressions();
+                if (!next_arg) {
+                    while (!check(TokensTypes::TOKEN_COMMA) && !check(TokensTypes::TOKEN_RPAREN) && current().type != TokensTypes::TOKEN_EOF) {
+                        position++;
+                    }
+                    if (current().type == TokensTypes::TOKEN_EOF) return nullptr;
+                    break; // Break inner loop, will check outer loop condition
+                }
+                args.push_back(next_arg);
             }
         }
-        consume(TokensTypes::TOKEN_RPAREN);
-        consume(TokensTypes::TOKEN_ARROW_SET);
-        // the ParseBlock will parse the [ and ] too,
-        // don't need to consume the [ and ] tokens here
+        if (consume(TokensTypes::TOKEN_RPAREN).type != TokensTypes::TOKEN_RPAREN) return nullptr;
+        if (consume(TokensTypes::TOKEN_ARROW_SET).type != TokensTypes::TOKEN_ARROW_SET) return nullptr;
+        
         auto block = ParseBlock();
+        if (!block) return nullptr; // Error in parsing block
         return std::make_shared<FunctionDefinitionNode>(var_name, type, args, block);
     }
 
@@ -263,38 +320,47 @@ namespace Rythin
             val = std::make_shared<f64Node>(std::stod(consume(TokensTypes::TOKEN_FLOAT_64).value));
             break;
         case TokensTypes::TOKEN_LPAREN: // Handle parenthesized expressions (e.g., (1 + 2) * 3)
-            consume(TokensTypes::TOKEN_LPAREN);
+            if (consume(TokensTypes::TOKEN_LPAREN).type != TokensTypes::TOKEN_LPAREN) return nullptr;
             val = ParseAdditiveExpression(); // Recursively parse the expression inside parentheses
-            consume(TokensTypes::TOKEN_RPAREN);
+            if (!val) return nullptr; // Error in recursive call
+            if (consume(TokensTypes::TOKEN_RPAREN).type != TokensTypes::TOKEN_RPAREN) return nullptr;
             break;
         case TokensTypes::TOKEN_IDENTIFIER: // Handle variable calls
             val = ParseVarCall();
+            if (!val) return nullptr; // Error in variable call
             break;
         case TokensTypes::TOKEN_MINUS: // Handle unary minus
-            consume(TokensTypes::TOKEN_MINUS);
-            val = std::make_shared<UnaryOp>(TokensTypes::TOKEN_MINUS, ParsePrimaryExpression());
+            if (consume(TokensTypes::TOKEN_MINUS).type != TokensTypes::TOKEN_MINUS) return nullptr;
+            val = ParsePrimaryExpression(); // The operand of unary minus
+            if (!val) return nullptr; // Error in operand
+            val = std::make_shared<UnaryOp>(TokensTypes::TOKEN_MINUS, val);
             break;
         case TokensTypes::TOKEN_PLUS: // Handle unary plus (optional)
-            consume(TokensTypes::TOKEN_PLUS);
-            val = std::make_shared<UnaryOp>(TokensTypes::TOKEN_PLUS, ParsePrimaryExpression());
+            if (consume(TokensTypes::TOKEN_PLUS).type != TokensTypes::TOKEN_PLUS) return nullptr;
+            val = ParsePrimaryExpression(); // The operand of unary plus
+            if (!val) return nullptr; // Error in operand
+            val = std::make_shared<UnaryOp>(TokensTypes::TOKEN_PLUS, val);
             break;
         default:
             LogErrors::getInstance().addError("Expected a number, identifier, or '(' for expression", 197, current().line, current().column);
-            LogErrors::getInstance().printAll();
-            exit(197);
+            return nullptr; // Return nullptr for error progression
         }
         return val;
     }
 
-    // Parses multiplicative expressions (multiplication, division)
+    // Parses multiplicative expressions (multiplication, division, modulo, bit_xor)
     // Uses left-to-right associativity and calls ParsePrimaryExpression for operands.
     ASTPtr Parser::ParseMultiplicativeExpression()
     {
         ASTPtr left = ParsePrimaryExpression();
-        while (check(TokensTypes::TOKEN_PLUS) || check(TokensTypes::TOKEN_DIVIDE) || check(TokensTypes::TOKEN_MODULO))
+        if (!left) return nullptr; // Error in left operand
+
+        while (check(TokensTypes::TOKEN_MULTIPLY) || check(TokensTypes::TOKEN_DIVIDE) ||
+               check(TokensTypes::TOKEN_MODULO) || check(TokensTypes::TOKEN_BIT_XOR)) // Added MODULO and BIT_XOR
         {
-            TokensTypes op = consume(current().type).type;
+            TokensTypes op = consume(current().type).type; // consume should log error but not exit
             ASTPtr right = ParsePrimaryExpression();
+            if (!right) return nullptr; // Error in right operand
             left = std::make_shared<BinOp>(left, op, right);
         }
         return left;
@@ -306,10 +372,13 @@ namespace Rythin
     ASTPtr Parser::ParseAdditiveExpression()
     {
         ASTPtr left = ParseMultiplicativeExpression();
+        if (!left) return nullptr; // Error in left operand
+
         while (check(TokensTypes::TOKEN_PLUS) || check(TokensTypes::TOKEN_MINUS))
         {
-            TokensTypes op = consume(current().type).type;
+            TokensTypes op = consume(current().type).type; // consume should log error but not exit
             ASTPtr right = ParseMultiplicativeExpression();
+            if (!right) return nullptr; // Error in right operand
             left = std::make_shared<BinOp>(left, op, right);
         }
         return left;
@@ -340,48 +409,51 @@ namespace Rythin
             val = std::make_shared<f32Node>(std::stof(consume(TokensTypes::TOKEN_FLOAT_32).value));
             break;
         case TokensTypes::TOKEN_FLOAT_64:
-            // std::cout << "Value in int: " << std::fixed << std::setprecision(current().value.size() - 1) << std::stod(current().value) << std::endl;
             val = std::make_shared<f64Node>(std::stod(consume(TokensTypes::TOKEN_FLOAT_64).value));
             break;
         default: // Added default case to catch non-numeral tokens
             LogErrors::getInstance().addError("Expected a numeral literal (int32, float32, etc.)", 198, current().line, current().column);
-            LogErrors::getInstance().printAll();
-            exit(198);
+            // Removed LogErrors::getInstance().printAll(); and exit(198);
+            return nullptr; // Return nullptr for error progression
         }
         return val;
     }
 
     ASTPtr Parser::ParseIfStatement()
     {
-
-        consume(TokensTypes::TOKEN_IF);      // consume the'if'
-        consume(TokensTypes::TOKEN_LPAREN);
+        // Ensure consume does not cause early exit
+        if (consume(TokensTypes::TOKEN_IF).type != TokensTypes::TOKEN_IF) return nullptr;
+        if (consume(TokensTypes::TOKEN_LPAREN).type != TokensTypes::TOKEN_LPAREN) return nullptr;
+        
         auto condition = ParseIfExpressions(); // conditional expression (e.g.: 1 == 2) or others
-        consume(TokensTypes::TOKEN_RPAREN);
-        consume(TokensTypes::TOKEN_ARROW_SET); // -> consume the arrow set
-        //consume(TokensTypes::TOKEN_LBRACKET); // dont need it here, the ParseBlock already consumes the [... works smart, not hard hehe
+        if (!condition) return nullptr; // Error in condition parsing
+        
+        if (consume(TokensTypes::TOKEN_RPAREN).type != TokensTypes::TOKEN_RPAREN) return nullptr;
+        if (consume(TokensTypes::TOKEN_ARROW_SET).type != TokensTypes::TOKEN_ARROW_SET) return nullptr;
+        
         auto ifBranch = ParseBlock(); // if body (ParseBlock handles brackets)
-        //consume(TokensTypes::TOKEN_RBRACKET); // Removed, as ParseBlock consumes ']'
+        if (!ifBranch) return nullptr; // Error in if branch parsing
+
         ASTPtr butBranch = nullptr;
         ASTPtr butCondition = nullptr;
 
         if (check(TokensTypes::TOKEN_BUT))
         {
-            consume(TokensTypes::TOKEN_BUT); // consume the 'but'
+            if (consume(TokensTypes::TOKEN_BUT).type != TokensTypes::TOKEN_BUT) return nullptr;
             if (check(TokensTypes::TOKEN_LPAREN))
             {
-                consume(TokensTypes::TOKEN_LPAREN);
-                // While loop for parsing multiple conditions in 'but' might be tricky, assuming single condition for now
-                while (!check(TokensTypes::TOKEN_RPAREN)) // Check if not immediately closing
+                if (consume(TokensTypes::TOKEN_LPAREN).type != TokensTypes::TOKEN_LPAREN) return nullptr;
+                if (!check(TokensTypes::TOKEN_RPAREN)) // Check if not immediately closing
                 {
                     butCondition = ParseIfExpressions();
+                    if (!butCondition) return nullptr; // Error in but condition parsing
                 }
-                consume(TokensTypes::TOKEN_RPAREN);
+                if (consume(TokensTypes::TOKEN_RPAREN).type != TokensTypes::TOKEN_RPAREN) return nullptr;
             }
-            consume(TokensTypes::TOKEN_ARROW_SET); // Added to match 'if' structure for 'but'
-            consume(TokensTypes::TOKEN_LBRACKET);
+            if (consume(TokensTypes::TOKEN_ARROW_SET).type != TokensTypes::TOKEN_ARROW_SET) return nullptr;
+            if (consume(TokensTypes::TOKEN_LBRACKET).type != TokensTypes::TOKEN_LBRACKET) return nullptr; // ParseBlock already consumes LBRACKET, so this is redundant or indicative of a parse error. Keeping for now based on your previous code logic.
             butBranch = ParseBlock(); // 'but' body (ParseBlock handles brackets)
-            // consume(TokensTypes::TOKEN_RBRACKET); // Removed, as ParseBlock consumes ']'
+            if (!butBranch) return nullptr; // Error in but branch parsing
         }
 
         return std::make_shared<IfStatement>(condition, ifBranch, butBranch, butCondition);
@@ -395,9 +467,13 @@ namespace Rythin
         if (check(TokensTypes::TOKEN_IDENTIFIER))
         {
             exp_node->var_name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
+            if (exp_node->var_name.empty() && current().type != TokensTypes::TOKEN_IDENTIFIER) return nullptr; // Consume failed
+            
             if (isConditionOperator(current().type)) // check if current token is a condition operator
             {
                 exp_node->type = consume(current().type).type; // Consume the operator
+                if (exp_node->type == TokensTypes::TOKEN_EOF) return nullptr; // Consume failed
+                
                 switch (current().type) // Check the type of the value after the operator
                 {
                 case TokensTypes::TOKEN_INT_32:
@@ -419,23 +495,24 @@ namespace Rythin
                 {
                     auto var = std::make_shared<VariableNode>();
                     var->name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
+                    if (var->name.empty() && current().type != TokensTypes::TOKEN_IDENTIFIER) return nullptr; // Consume failed
                     exp_node->val = var;
                     break;
                 }
                 default:
                     LogErrors::getInstance().addError("Expected a value or identifier after conditional operator", 200, current().line, current().column);
-                    LogErrors::getInstance().printAll();
-                    exit(200);
+                    return nullptr;
                 }
             } else {
                  LogErrors::getInstance().addError("Expected a conditional operator (==, !=, >, etc.) after identifier in if expression", 201, current().line, current().column);
-                 LogErrors::getInstance().printAll();
-                 exit(201);
+                 return nullptr;
             }
         }
         else if (isTrueOrFalseOperator(current().type))
         {
             exp_node->type = consume(current().type).type; // Consumes TRUE or FALSE
+            if (exp_node->type == TokensTypes::TOKEN_EOF) return nullptr; // Consume failed
+            
             // If it's a direct boolean literal, val should likely be a TrueOrFalseNode directly.
             // Current setup uses 'type' for the boolean operator (TRUE/FALSE) which is fine for direct literals.
             exp_node->val = std::make_shared<TrueOrFalseNode>(exp_node->type == TokensTypes::TOKEN_TRUE);
@@ -443,33 +520,31 @@ namespace Rythin
         else
         {
             LogErrors::getInstance().addError("Invalid expression in 'if' condition. Expected identifier or boolean literal.", 202, current().line, current().column);
-            LogErrors::getInstance().printAll();
-            exit(202);
+            return nullptr;
         }
-        // Original loop 'while (!check(TokensTypes::TOKEN_RPAREN))' here was problematic if not properly handled
-        // Assuming ParseIfExpressions parses a single condition like `id == value` or `true/false`
-        // More complex conditions (e.g., `a == b && c < d`) would require a separate boolean expression parser.
         return exp_node;
     }
 
     ASTPtr Parser::ParsePrint()
     {
         auto node = std::make_shared<PrintNode>();
-        consume(TokensTypes::TOKEN_PRINT);
-        consume(TokensTypes::TOKEN_LPAREN);
-        // Changed loop condition to ensure at least one value is parsed before closing ')'
+        if (consume(TokensTypes::TOKEN_PRINT).type != TokensTypes::TOKEN_PRINT) return nullptr;
+        if (consume(TokensTypes::TOKEN_LPAREN).type != TokensTypes::TOKEN_LPAREN) return nullptr;
+        
         if (!check(TokensTypes::TOKEN_RPAREN))
         {
             if (check(TokensTypes::TOKEN_STRING_LITERAL))
             {
-                node->val = consume(current().type).value;
+                node->val = consume(TokensTypes::TOKEN_STRING_LITERAL).value;
+                if (node->val.empty() && current().type != TokensTypes::TOKEN_STRING_LITERAL) return nullptr; // Consume failed
+                
                 while (check(TokensTypes::TOKEN_PLUS))
                 {
-                    consume(TokensTypes::TOKEN_PLUS);
+                    if (consume(TokensTypes::TOKEN_PLUS).type != TokensTypes::TOKEN_PLUS) return nullptr;
                     // Ensure the next token is also a string literal for concatenation
                     if (check(TokensTypes::TOKEN_STRING_LITERAL))
                     {
-                        node->val += consume(current().type).value;
+                        node->val += consume(TokensTypes::TOKEN_STRING_LITERAL).value;
                     }
                     else if (check(TokensTypes::TOKEN_IDENTIFIER)) // Allows string concatenation with variable
                     {
@@ -479,14 +554,13 @@ namespace Rythin
                     else
                     {
                         LogErrors::getInstance().addError("Only string literals or identifiers can be concatenated with '+' in print for now.", 3, current().line, current().column);
-                        LogErrors::getInstance().printAll();
-                        exit(3);
+                        return nullptr; // Return nullptr indicating an error in this AST subtree
                     }
                 }
             }
             else if (check(TokensTypes::TOKEN_NIL))
             {
-                consume(TokensTypes::TOKEN_NIL); // Consume NIL
+                if (consume(TokensTypes::TOKEN_NIL).type != TokensTypes::TOKEN_NIL) return nullptr;
                 return std::make_shared<NilNode>(); // Return NilNode if print(nil)
             }
             else if (check(TokensTypes::TOKEN_IDENTIFIER)) // Allow printing identifiers directly
@@ -502,8 +576,7 @@ namespace Rythin
             else
             {
                 LogErrors::getInstance().addError("Print statement supports string literals, identifiers, numbers, or 'nil'", 3, current().line, current().column);
-                LogErrors::getInstance().printAll();
-                exit(3);
+                return nullptr;
             }
         }
         else
@@ -511,37 +584,43 @@ namespace Rythin
              // Handle empty print()
              LogErrors::getInstance().addWarning("Empty print statement. Consider printing a newline with printnl()", 300, current().line, current().column);
         }
-        consume(TokensTypes::TOKEN_RPAREN);
+        if (consume(TokensTypes::TOKEN_RPAREN).type != TokensTypes::TOKEN_RPAREN) return nullptr;
         return node;
     }
 
     ASTPtr Parser::ParseCinput()
     {
-        consume(TokensTypes::TOKEN_CINPUT);
-        consume(TokensTypes::TOKEN_LPAREN);
+        if (consume(TokensTypes::TOKEN_CINPUT).type != TokensTypes::TOKEN_CINPUT) return nullptr;
+        if (consume(TokensTypes::TOKEN_LPAREN).type != TokensTypes::TOKEN_LPAREN) return nullptr;
+
         if (check(TokensTypes::TOKEN_STRING_LITERAL))
         {
             auto msg = consume(TokensTypes::TOKEN_STRING_LITERAL).value;
+            if (msg.empty() && current().type != TokensTypes::TOKEN_STRING_LITERAL) return nullptr; // Consume failed
+            
             // The comma logic was inside a return which made it unreachable.
             // Re-structured to allow message and optional integer.
             if (check(TokensTypes::TOKEN_COMMA))
             {
-                consume(TokensTypes::TOKEN_COMMA);
+                if (consume(TokensTypes::TOKEN_COMMA).type != TokensTypes::TOKEN_COMMA) return nullptr;
                 if (check(TokensTypes::TOKEN_INT_32))
                 {
-                    return std::make_shared<CinputNode>(msg, std::stoi(consume(TokensTypes::TOKEN_INT_32).value));
+                    std::string int_val_str = consume(TokensTypes::TOKEN_INT_32).value;
+                    if (int_val_str.empty() && current().type != TokensTypes::TOKEN_INT_32) return nullptr; // Consume failed
+                    if (consume(TokensTypes::TOKEN_RPAREN).type != TokensTypes::TOKEN_RPAREN) return nullptr;
+                    return std::make_shared<CinputNode>(msg, std::stoi(int_val_str));
                 }
                 else
                 {
                     LogErrors::getInstance().addError("Expected an integer after comma in cinput()", 301, current().line, current().column);
-                    LogErrors::getInstance().printAll();
-                    exit(301);
+                    // Removed LogErrors::getInstance().printAll(); and exit(301);
+                    return nullptr;
                 }
             }
             else
             {
                 // No comma, so only message provided
-                consume(TokensTypes::TOKEN_RPAREN); // Ensure RPAREN is consumed after message
+                if (consume(TokensTypes::TOKEN_RPAREN).type != TokensTypes::TOKEN_RPAREN) return nullptr;
                 return std::make_shared<CinputNode>(msg);
             }
         }
@@ -551,28 +630,30 @@ namespace Rythin
             LogErrors::getInstance().addWarning("cinput() called without a message. Consider adding a prompt string.", 302, current().line, current().column);
         }
 
-        consume(TokensTypes::TOKEN_RPAREN);
-        return std::make_shared<CinputNode>(); // Default cinput() if no specific arguments parsed
+        if (consume(TokensTypes::TOKEN_RPAREN).type != TokensTypes::TOKEN_RPAREN) return nullptr; // Consume final RPAREN for the no-arg case
+        return std::make_shared<CinputNode>(); // Default cinput() if no specific arguments parsed (and no previous error)
     }
 
     ASTPtr Parser::ParsePrintE()
     {
         // TODO: remove the printe, print and cinput - This comment is from original code.
         auto node = std::make_shared<PrintE>();
-        consume(TokensTypes::TOKEN_PRINT_ERROR);
-        consume(TokensTypes::TOKEN_LPAREN);
-        // Changed loop condition to ensure at least one value is parsed before closing ')'
+        if (consume(TokensTypes::TOKEN_PRINT_ERROR).type != TokensTypes::TOKEN_PRINT_ERROR) return nullptr;
+        if (consume(TokensTypes::TOKEN_LPAREN).type != TokensTypes::TOKEN_LPAREN) return nullptr;
+        
         if (!check(TokensTypes::TOKEN_RPAREN))
         {
             if (check(TokensTypes::TOKEN_STRING_LITERAL))
             {
-                node->val = consume(current().type).value;
+                node->val = consume(TokensTypes::TOKEN_STRING_LITERAL).value;
+                if (node->val.empty() && current().type != TokensTypes::TOKEN_STRING_LITERAL) return nullptr; // Consume failed
+                
                 while (check(TokensTypes::TOKEN_PLUS))
                 {
-                    consume(TokensTypes::TOKEN_PLUS);
+                    if (consume(TokensTypes::TOKEN_PLUS).type != TokensTypes::TOKEN_PLUS) return nullptr;
                      if (check(TokensTypes::TOKEN_STRING_LITERAL))
                     {
-                        node->val += consume(current().type).value;
+                        node->val += consume(TokensTypes::TOKEN_STRING_LITERAL).value;
                     }
                     else if (check(TokensTypes::TOKEN_IDENTIFIER))
                     {
@@ -581,14 +662,13 @@ namespace Rythin
                     else
                     {
                         LogErrors::getInstance().addError("Only string literals or identifiers can be concatenated with '+' in print_error for now.", 3, current().line, current().column);
-                        LogErrors::getInstance().printAll();
-                        exit(3);
+                        return nullptr;
                     }
                 }
             }
             else if (check(TokensTypes::TOKEN_NIL))
             {
-                consume(TokensTypes::TOKEN_NIL);
+                if (consume(TokensTypes::TOKEN_NIL).type != TokensTypes::TOKEN_NIL) return nullptr;
                 return std::make_shared<NilNode>();
             }
             else if (check(TokensTypes::TOKEN_IDENTIFIER))
@@ -604,35 +684,36 @@ namespace Rythin
             else
             {
                 LogErrors::getInstance().addError("Print_error statement supports string literals, identifiers, numbers, or 'nil'", 3, current().line, current().column);
-                LogErrors::getInstance().printAll();
-                exit(3);
+                return nullptr;
             }
         }
         else
         {
             LogErrors::getInstance().addWarning("Empty print_error statement.", 303, current().line, current().column);
         }
-        consume(TokensTypes::TOKEN_RPAREN);
+        if (consume(TokensTypes::TOKEN_RPAREN).type != TokensTypes::TOKEN_RPAREN) return nullptr;
         return node;
     }
 
     ASTPtr Parser::ParsePrintNl()
     {
         auto node = std::make_shared<PrintNl>();
-        consume(TokensTypes::TOKEN_PRINT_NEW_LINE);
-        consume(TokensTypes::TOKEN_LPAREN);
-        // Changed loop condition to ensure at least one value is parsed before closing ')'
+        if (consume(TokensTypes::TOKEN_PRINT_NEW_LINE).type != TokensTypes::TOKEN_PRINT_NEW_LINE) return nullptr;
+        if (consume(TokensTypes::TOKEN_LPAREN).type != TokensTypes::TOKEN_LPAREN) return nullptr;
+        
         if (!check(TokensTypes::TOKEN_RPAREN))
         {
             if (check(TokensTypes::TOKEN_STRING_LITERAL))
             {
-                node->val = consume(current().type).value;
+                node->val = consume(TokensTypes::TOKEN_STRING_LITERAL).value;
+                if (node->val.empty() && current().type != TokensTypes::TOKEN_STRING_LITERAL) return nullptr; // Consume failed
+                
                 while (check(TokensTypes::TOKEN_PLUS))
                 {
-                    consume(TokensTypes::TOKEN_PLUS);
+                    if (consume(TokensTypes::TOKEN_PLUS).type != TokensTypes::TOKEN_PLUS) return nullptr;
                     if (check(TokensTypes::TOKEN_STRING_LITERAL))
                     {
-                        node->val += consume(current().type).value;
+                        node->val += consume(TokensTypes::TOKEN_STRING_LITERAL).value;
                     }
                     else if (check(TokensTypes::TOKEN_IDENTIFIER))
                     {
@@ -641,14 +722,13 @@ namespace Rythin
                     else
                     {
                         LogErrors::getInstance().addError("Only string literals or identifiers can be concatenated with '+' in print_nl for now.", 3, current().line, current().column);
-                        LogErrors::getInstance().printAll();
-                        exit(3);
+                        return nullptr;
                     }
                 }
             }
             else if (check(TokensTypes::TOKEN_NIL))
             {
-                consume(TokensTypes::TOKEN_NIL);
+                if (consume(TokensTypes::TOKEN_NIL).type != TokensTypes::TOKEN_NIL) return nullptr;
                 return std::make_shared<NilNode>();
             }
             else if (check(TokensTypes::TOKEN_IDENTIFIER))
@@ -661,12 +741,17 @@ namespace Rythin
                 node->val = current().value;
                 consume(current().type);
             }
+            else // Added else for comprehensive error handling
+            {
+                LogErrors::getInstance().addError("Print_nl statement supports string literals, identifiers, numbers, or 'nil'", 3, current().line, current().column);
+                return nullptr;
+            }
         }
         else
         {
             LogErrors::getInstance().addWarning("Empty print_nl statement.", 304, current().line, current().column);
         }
-        consume(TokensTypes::TOKEN_RPAREN);
+        if (consume(TokensTypes::TOKEN_RPAREN).type != TokensTypes::TOKEN_RPAREN) return nullptr;
         return node;
     }
 
@@ -674,47 +759,52 @@ namespace Rythin
     {
         auto var_node = std::make_shared<VariableNode>();
         var_node->name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
+        if (var_node->name.empty() && current().type != TokensTypes::TOKEN_IDENTIFIER) return nullptr; // Consume failed
         return var_node;
     }
 
     ASTPtr Parser::ParseVarDeclaration()
     {
-        consume(TokensTypes::TOKEN_DEF);
+        if (consume(TokensTypes::TOKEN_DEF).type != TokensTypes::TOKEN_DEF) return nullptr;
         std::string name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
-        consume(TokensTypes::TOKEN_COLON);
+        if (name.empty() && current().type != TokensTypes::TOKEN_IDENTIFIER) return nullptr; // Consume failed
+        if (consume(TokensTypes::TOKEN_COLON).type != TokensTypes::TOKEN_COLON) return nullptr;
+        
         TokensTypes tk;
-        switch (current().type)
-        {
-        case TokensTypes::TOKEN_BOOL:
-        case TokensTypes::TOKEN_INT_32:
-        case TokensTypes::TOKEN_INT_64:
-        case TokensTypes::TOKEN_FLOAT_32:
-        case TokensTypes::TOKEN_FLOAT_64:
-        case TokensTypes::TOKEN_CHARSEQ:
-        case TokensTypes::TOKEN_BYTES:
-        case TokensTypes::TOKEN_OBJECT:
-            tk = consume(current().type).type;
-            break;
-        default:
-            // don't have support imediatelly for identifiers.. before i will put a support, not now.]
-            // but is easy to set the support but a i need to create a function to parse variables names and args (if the variable is a function)
-            LogErrors::getInstance().addError("Invalid type for variable definition ", 54, current().line, current().column);
-            LogErrors::getInstance().printAll();
-            exit(54);
+        Tokens type_token = consume(current().type);
+        if (type_token.type == TokensTypes::TOKEN_EOF) { // Check if consume failed
+            LogErrors::getInstance().addError("Expected a type token after ':' in variable declaration.", 54, current().line, current().column);
+            return nullptr;
         }
+        tk = type_token.type;
+
         // consume the ':=' to get the value
-        consume(TokensTypes::TOKEN_ASSIGN);
+        if (consume(TokensTypes::TOKEN_ASSIGN).type != TokensTypes::TOKEN_ASSIGN) return nullptr;
+        
         // parse value after assign based on the defined type on tk
         auto val = ParseExpression(tk);
+        if (!val) return nullptr; // Error in parsing expression
         return std::make_shared<VariableDefinitionNode>(name, tk, val);
     }
 
     ASTPtr Parser::ParseFuncExpressions()
     {
         auto exp_node = std::make_shared<ExpressionNode>();
+        if (!check(TokensTypes::TOKEN_IDENTIFIER)) { // Ensure identifier is present
+            LogErrors::getInstance().addError("Expected identifier for function argument name", 90, current().line, current().column);
+            return nullptr;
+        }
         exp_node->var_name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
-        consume(TokensTypes::TOKEN_COLON);
-        exp_node->type = consume(current().type).type;
+        if (exp_node->var_name.empty() && current().type != TokensTypes::TOKEN_IDENTIFIER) return nullptr; // Consume failed
+        if (consume(TokensTypes::TOKEN_COLON).type != TokensTypes::TOKEN_COLON) return nullptr;
+        
+        Tokens type_token = consume(current().type);
+        if (type_token.type == TokensTypes::TOKEN_EOF) { // Check if consume failed
+            LogErrors::getInstance().addError("Expected a type token after ':' in function argument definition.", 91, current().line, current().column);
+            return nullptr;
+        }
+        exp_node->type = type_token.type;
+        
         return exp_node;
     }
 
@@ -722,25 +812,37 @@ namespace Rythin
     {
         // consume the value based on the type of the variable
         // this helps the semantic analysis
+        ASTPtr parsed_val = nullptr; // Initialize parsed_val
+
         switch (types)
         {
         case TokensTypes::TOKEN_CHARSEQ:
-            return std::make_shared<LiteralNode>(consume(TokensTypes::TOKEN_STRING_LITERAL).value);
-        case TokensTypes::TOKEN_PLUS: // This case handles unary plus at the start of an expression
-            consume(TokensTypes::TOKEN_PLUS);
-            return ParsePositiveVals(current().type); // ParsePositiveVals now expects the type to consume
-        case TokensTypes::TOKEN_MINUS: // This case handles unary minus at the start of an expression
-            consume(TokensTypes::TOKEN_MINUS);
-            return ParseNegativeVals(current().type); // ParseNegativeVals now expects the type to consume
+            if (!check(TokensTypes::TOKEN_STRING_LITERAL)) {
+                LogErrors::getInstance().addError("Expected a string literal for 'charseq' type.", 98, current().line, current().column);
+                return nullptr;
+            }
+            parsed_val = std::make_shared<LiteralNode>(consume(TokensTypes::TOKEN_STRING_LITERAL).value);
+            break;
+        // case TokensTypes::TOKEN_PLUS: // This case handles unary plus at the start of an expression
+        //     if (consume(TokensTypes::TOKEN_PLUS).type != TokensTypes::TOKEN_PLUS) return nullptr;
+        //     parsed_val = ParsePositiveVals(current().type); // ParsePositiveVals now expects the type to consume
+        //     break;
+        // case TokensTypes::TOKEN_MINUS: // This case handles unary minus at the start of an expression
+        //     if (consume(TokensTypes::TOKEN_MINUS).type != TokensTypes::TOKEN_MINUS) return nullptr;
+        //     parsed_val = ParseNegativeVals(current().type); // ParseNegativeVals now expects the type to consume
+        //     break;
         case TokensTypes::TOKEN_INT_32:
         case TokensTypes::TOKEN_INT_64:
         case TokensTypes::TOKEN_FLOAT_32:
         case TokensTypes::TOKEN_FLOAT_64:
-            return ParseAdditiveExpression(); // Now calls the top-level arithmetic expression parser
+            parsed_val = ParseAdditiveExpression(); // Now calls the top-level arithmetic expression parser
+            break;
         case TokensTypes::TOKEN_BYTES:
-            return ParseByteVal();
+            parsed_val = ParseByteVal();
+            break;
         case TokensTypes::TOKEN_BOOL:
-            return ParseLoopCondition(); // ParseLoopCondition returns a boolean node (true/false literal)
+            parsed_val = ParseLoopCondition(); // ParseLoopCondition returns a boolean node (true/false literal)
+            break;
         case TokensTypes::TOKEN_OBJECT:
             switch (current().type)
             {
@@ -748,23 +850,28 @@ namespace Rythin
             case TokensTypes::TOKEN_INT_64:
             case TokensTypes::TOKEN_FLOAT_32:
             case TokensTypes::TOKEN_FLOAT_64:
-                return std::make_shared<ObjectNode>(ParseNumeralExpression());
+                parsed_val = std::make_shared<ObjectNode>(ParseNumeralExpression());
+                break;
             case TokensTypes::TOKEN_TRUE:
             {
-                consume(TokensTypes::TOKEN_TRUE);
+                if (consume(TokensTypes::TOKEN_TRUE).type != TokensTypes::TOKEN_TRUE) return nullptr;
                 auto ptr = std::make_shared<TrueOrFalseNode>(true);
-                return std::make_shared<ObjectNode>(ptr);
+                parsed_val = std::make_shared<ObjectNode>(ptr);
+                break;
             }
             case TokensTypes::TOKEN_FALSE:
             {
-                consume(TokensTypes::TOKEN_FALSE);
+                if (consume(TokensTypes::TOKEN_FALSE).type != TokensTypes::TOKEN_FALSE) return nullptr;
                 auto ptr = std::make_shared<TrueOrFalseNode>(false);
-                return std::make_shared<ObjectNode>(ptr);
+                parsed_val = std::make_shared<ObjectNode>(ptr);
+                break;
             }
             case TokensTypes::TOKEN_STRING_LITERAL:
             {
                 auto ptr = std::make_shared<LiteralNode>(consume(TokensTypes::TOKEN_STRING_LITERAL).value);
-                return std::make_shared<ObjectNode>(ptr);
+                if (!ptr) return nullptr; // consume might return an invalid token or error
+                parsed_val = std::make_shared<ObjectNode>(ptr);
+                break;
             }
             case TokensTypes::TOKEN_IDENTIFIER:
             {
@@ -773,11 +880,13 @@ namespace Rythin
                 {
                     auto id = std::make_shared<IdentifierNode>(); // Assuming IdentifierNode for function calls with args
                     id->name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
-                    consume(TokensTypes::TOKEN_LPAREN);
-                    while (!check(TokensTypes::TOKEN_RPAREN))
+                    if (id->name.empty() && current().type != TokensTypes::TOKEN_IDENTIFIER) return nullptr; // Consume failed
+                    
+                    if (consume(TokensTypes::TOKEN_LPAREN).type != TokensTypes::TOKEN_LPAREN) return nullptr;
+                    while (!check(TokensTypes::TOKEN_RPAREN) && current().type != TokensTypes::TOKEN_EOF) // Added EOF check
                     {
                         // Parse arguments for function call. Needs to handle various types.
-                        // This part was incomplete and needs further robust parsing for arguments.
+                        ASTPtr arg_val = nullptr;
                         switch (current().type)
                         {
                         case TokensTypes::TOKEN_IDENTIFIER:
@@ -785,37 +894,53 @@ namespace Rythin
                             // If it's just an identifier (variable passed as arg)
                             auto var = std::make_shared<VariableNode>();
                             var->name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
-                            id->args.push_back(var);
+                            if (var->name.empty() && current().type != TokensTypes::TOKEN_IDENTIFIER) return nullptr; // Consume failed
+                            arg_val = var;
                             break;
                         }
                         case TokensTypes::TOKEN_INT_32:
                         case TokensTypes::TOKEN_INT_64:
                         case TokensTypes::TOKEN_FLOAT_32:
                         case TokensTypes::TOKEN_FLOAT_64:
-                            id->args.push_back(ParseNumeralExpression());
+                            arg_val = ParseNumeralExpression();
                             break;
                         case TokensTypes::TOKEN_TRUE:
                         case TokensTypes::TOKEN_FALSE:
-                            id->args.push_back(ParseLoopCondition()); // TrueOrFalseNode
+                            arg_val = ParseLoopCondition(); // TrueOrFalseNode
                             break;
                         case TokensTypes::TOKEN_STRING_LITERAL: // Allow string literals as arguments
-                             id->args.push_back(std::make_shared<LiteralNode>(consume(TokensTypes::TOKEN_STRING_LITERAL).value));
+                             arg_val = std::make_shared<LiteralNode>(consume(TokensTypes::TOKEN_STRING_LITERAL).value);
                              break;
                         default:
                             LogErrors::getInstance().addError("Invalid argument type in function call", 96, current().line, current().column);
-                            LogErrors::getInstance().printAll();
-                            exit(96);
+                            // Attempt to skip this invalid argument to continue parsing
+                            position++; // Simple skip
+                            arg_val = nullptr; // Explicitly set to nullptr to indicate parse error
+                            break;
                         }
+                        if (arg_val) { // Only add if parsing was successful
+                            id->args.push_back(arg_val);
+                        } else {
+                            // If arg_val is nullptr, an error was logged inside the switch.
+                            // We need to decide how to recover for the next argument or close RPAREN.
+                            // A robust parser might skip tokens until the next COMMA or RPAREN.
+                            while (!check(TokensTypes::TOKEN_COMMA) && !check(TokensTypes::TOKEN_RPAREN) && current().type != TokensTypes::TOKEN_EOF) {
+                                position++;
+                            }
+                            if (current().type == TokensTypes::TOKEN_EOF) return nullptr; // Return if EOF
+                            if (current().type == TokensTypes::TOKEN_COMMA) continue; // Try next arg
+                            if (current().type == TokensTypes::TOKEN_RPAREN) break; // End of arguments
+                        }
+                        
                         // Handle multiple arguments separated by commas (if your language supports it)
                         if (check(TokensTypes::TOKEN_COMMA)) {
-                            consume(TokensTypes::TOKEN_COMMA);
+                            if (consume(TokensTypes::TOKEN_COMMA).type != TokensTypes::TOKEN_COMMA) return nullptr;
                         } else if (!check(TokensTypes::TOKEN_RPAREN)) { // If not comma and not end of args, then error
                              LogErrors::getInstance().addError("Expected comma or ')' after function argument", 97, current().line, current().column);
-                             LogErrors::getInstance().printAll();
-                             exit(97);
+                             return nullptr;
                         }
                     }
-                    consume(TokensTypes::TOKEN_RPAREN);
+                    if (consume(TokensTypes::TOKEN_RPAREN).type != TokensTypes::TOKEN_RPAREN) return nullptr;
                     ptr = id;
                 }
                 else
@@ -823,120 +948,62 @@ namespace Rythin
                     // It's a variable call
                     auto id = std::make_shared<VariableNode>();
                     id->name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
+                    if (id->name.empty() && current().type != TokensTypes::TOKEN_IDENTIFIER) return nullptr; // Consume failed
                     ptr = id;
                 }
-                return std::make_shared<ObjectNode>(ptr);
+                parsed_val = std::make_shared<ObjectNode>(ptr);
+                break;
             }
             default:
                 LogErrors::getInstance().addError("Invalid variable value for 'obj' type", 95, current().line, current().column);
-                LogErrors::getInstance().printAll();
-                exit(95);
+                return nullptr;
             }
+            break; // Break from the inner switch (TOKEN_OBJECT)
         default:
             LogErrors::getInstance().addError("Invalid variable value type", 97, current().line, current().column);
-            LogErrors::getInstance().printAll();
-            exit(97);
-            // throw Excepts::CompilationException("Invalid Variable Value Type");
+            return nullptr;
+            // throw Excepts::CompilationException("Invalid Variable Value Type"); // This line was problematic
         }
+        return parsed_val; // Return the parsed value or nullptr on error
     }
 
     // needs a correction for perfectly work
-    ASTPtr Parser::ParsePositiveVals(TokensTypes curr)
-    {
-        switch (curr)
-        {
-        case TokensTypes::TOKEN_INT_32:
-            try
-            {
-                return std::make_shared<i32Node>(+std::stoi(consume(TokensTypes::TOKEN_INT_32).value));
-            }
-            catch (std::out_of_range e)
-            {
-                LogErrors::getInstance().addError("Integer value out of range", 100, current().line, current().column);
-                LogErrors::getInstance().printAll();
-                exit(100);
-            }
-
-        case TokensTypes::TOKEN_FLOAT_64:
-            return std::make_shared<f64Node>(+std::stod(consume(TokensTypes::TOKEN_FLOAT_64).value));
-        case TokensTypes::TOKEN_FLOAT_32:
-            return std::make_shared<f32Node>(+std::stof(consume(TokensTypes::TOKEN_FLOAT_32).value));
-        default:
-            LogErrors::getInstance().addError("Invalid type for positive value.", 101, current().line, current().column);
-            LogErrors::getInstance().printAll();
-            exit(101);
-        }
-    }
-
-    //needs a correction too to work perfectly
-    ASTPtr Parser::ParseNegativeVals(TokensTypes tks)
-    {
-        switch (tks)
-        {
-        case TokensTypes::TOKEN_INT_32:
-            try
-            {
-                return std::make_shared<i32Node>(-std::stoi(consume(TokensTypes::TOKEN_INT_32).value));
-            }
-            catch (std::out_of_range e)
-            {
-                std::cerr << "[Error]: Current value out of range at line " << current().line << " column " << current().column << std::endl;
-                LogErrors::getInstance().addError("Integer value out of range for negative value.", 102, current().line, current().column);
-                LogErrors::getInstance().printAll();
-                exit(102);
-            }
-
-        case TokensTypes::TOKEN_FLOAT_64:
-            return std::make_shared<f64Node>(-std::stod(consume(TokensTypes::TOKEN_FLOAT_64).value));
-        case TokensTypes::TOKEN_FLOAT_32:
-            return std::make_shared<f32Node>(-std::stof(consume(TokensTypes::TOKEN_FLOAT_32).value));
-        default:
-            LogErrors::getInstance().addError("Invalid type for negative value.", 103, current().line, current().column);
-            LogErrors::getInstance().printAll();
-            exit(103);
-        }
-    }
 
     ASTPtr Parser::ParseLoopCondition()
     {
         // This function now just parses true/false literals, suitable for boolean expressions.
         if (current().type == TokensTypes::TOKEN_TRUE) {
-            consume(TokensTypes::TOKEN_TRUE);
+            if (consume(TokensTypes::TOKEN_TRUE).type != TokensTypes::TOKEN_TRUE) return nullptr;
             return std::make_shared<TrueOrFalseNode>(true);
         } else if (current().type == TokensTypes::TOKEN_FALSE) {
-            consume(TokensTypes::TOKEN_FALSE);
+            if (consume(TokensTypes::TOKEN_FALSE).type != TokensTypes::TOKEN_FALSE) return nullptr;
             return std::make_shared<TrueOrFalseNode>(false);
         } else {
             LogErrors::getInstance().addError("Expected 'true' or 'false' for loop condition literal.", 203, current().line, current().column);
-            LogErrors::getInstance().printAll();
-            exit(203);
+            return nullptr;
         }
     }
 
     ASTPtr Parser::ParseLoopExpression()
     {
-        consume(TokensTypes::TOKEN_LOOP);
-        consume(TokensTypes::TOKEN_LPAREN);
+        if (consume(TokensTypes::TOKEN_LOOP).type != TokensTypes::TOKEN_LOOP) return nullptr;
+        if (consume(TokensTypes::TOKEN_LPAREN).type != TokensTypes::TOKEN_LPAREN) return nullptr;
 
         std::string var_name = consume(TokensTypes::TOKEN_IDENTIFIER).value;
+        if (var_name.empty() && current().type != TokensTypes::TOKEN_IDENTIFIER) return nullptr; // Consume failed
+        
         // consome o : para em seguida consumir o tipo da variavel
-        consume(TokensTypes::TOKEN_COLON);
-        // switch para verificação de tipos da variavel
+        if (consume(TokensTypes::TOKEN_COLON).type != TokensTypes::TOKEN_COLON) return nullptr;
+        
         TokensTypes type;
-        switch (current().type)
-        {
-        case TokensTypes::TOKEN_INT_32:
-        case TokensTypes::TOKEN_INT_64:
-        case TokensTypes::TOKEN_FLOAT_32:
-        case TokensTypes::TOKEN_FLOAT_64:
-            type = consume(current().type).type;
-            break;
-        default:
-            LogErrors::getInstance().addError("Loop expression only accepts number types (int(32 or 64), float(32 or 64)) and array lists (foreach)", 23, current().line, current().column);
-            LogErrors::getInstance().printAll();
-            exit(23);
+        Tokens type_token = consume(current().type);
+        if (type_token.type == TokensTypes::TOKEN_EOF) { // Check if consume failed
+            LogErrors::getInstance().addError("Expected a type token after ':' in loop expression variable definition.", 23, current().line, current().column);
+            return nullptr;
         }
-        consume(TokensTypes::TOKEN_IN);
+        type = type_token.type;
+
+        if (consume(TokensTypes::TOKEN_IN).type != TokensTypes::TOKEN_IN) return nullptr;
         ASTPtr val;
         switch (current().type)
         {
@@ -945,38 +1012,41 @@ namespace Rythin
         case TokensTypes::TOKEN_FLOAT_32:
         case TokensTypes::TOKEN_FLOAT_64:
             val = ParseNumeralExpression();
+            if (!val) return nullptr; // Error in parsing numeral expression
             break;
         case TokensTypes::TOKEN_IDENTIFIER: // Allows loop over a variable (e.g., an array)
             val = ParseVarCall();
+            if (!val) return nullptr; // Error in variable call
             break;
         default:
             LogErrors::getInstance().addError("Invalid type for 'in' value in loop expression. Expected numeral or a identifier.", 23, current().line, current().column);
-            LogErrors::getInstance().printAll();
-            exit(23);
+            return nullptr;
         }
-        consume(TokensTypes::TOKEN_RPAREN);
-        consume(TokensTypes::TOKEN_ARROW_SET);
+        if (consume(TokensTypes::TOKEN_RPAREN).type != TokensTypes::TOKEN_RPAREN) return nullptr;
+        if (consume(TokensTypes::TOKEN_ARROW_SET).type != TokensTypes::TOKEN_ARROW_SET) return nullptr;
+        
         auto block = ParseBlock();
+        if (!block) return nullptr; // Error in parsing block
         return std::make_shared<LoopNode>(var_name, type, val, block);
     }
 
     ASTPtr Parser::ParseLoopCond()
     {
-        consume(TokensTypes::TOKEN_LOOP);
-        consume(TokensTypes::TOKEN_LPAREN);
+        if (consume(TokensTypes::TOKEN_LOOP).type != TokensTypes::TOKEN_LOOP) return nullptr;
+        if (consume(TokensTypes::TOKEN_LPAREN).type != TokensTypes::TOKEN_LPAREN) return nullptr;
+        
         auto node = std::make_shared<LoopConditionNode>();
-        /// ParseLoopExpression will be check if have a varaible definition and his type or condition
+        
+        ASTPtr condition_node = nullptr;
         switch (current().type)
         {
         case TokensTypes::TOKEN_FALSE:
         case TokensTypes::TOKEN_TRUE:
-            node->condition = ParseLoopCondition(); // Parses boolean literal (true/false)
+            condition_node = ParseLoopCondition(); // Parses boolean literal (true/false)
             break;
         case TokensTypes::TOKEN_IDENTIFIER:
-            // This case might need to parse a full boolean expression like `var == 5`
-            // For now, it parses a simple variable reference. If `loop (myVar) ->` is the intent for a boolean var.
-            // If `loop (myVar == 5) ->` is needed, then ParseIfExpressions or a dedicated boolean expression parser is needed here.
-            node->condition = ParseVarCall();
+            condition_node = ParseVarCall();
+            if (!condition_node) return nullptr; // Error in variable call
             break;
         // Added support for direct arithmetic/comparison expressions as loop conditions (e.g., loop (10 > x) ->)
         case TokensTypes::TOKEN_INT_32:
@@ -984,18 +1054,21 @@ namespace Rythin
         case TokensTypes::TOKEN_FLOAT_32:
         case TokensTypes::TOKEN_FLOAT_64:
              // If a number starts the expression, try to parse it as an arithmetic/comparison expression
-             node->condition = ParseIfExpressions(); // Reusing ParseIfExpressions might work if it supports direct comparisons without an initial IDENTIFIER
+             condition_node = ParseIfExpressions(); // Reusing ParseIfExpressions might work if it supports direct comparisons without an initial IDENTIFIER
              break;
         default:
             LogErrors::getInstance().addError("Invalid token for loop condition. Expected boolean literal, identifier, or expression.", 204, current().line, current().column);
-            LogErrors::getInstance().printAll();
-            exit(204);
+            return nullptr;
         }
+        
+        if (!condition_node) return nullptr; // If condition parsing failed
+        node->condition = condition_node;
 
-        consume(TokensTypes::TOKEN_RPAREN);
-        consume(TokensTypes::TOKEN_ARROW_SET);
+        if (consume(TokensTypes::TOKEN_RPAREN).type != TokensTypes::TOKEN_RPAREN) return nullptr;
+        if (consume(TokensTypes::TOKEN_ARROW_SET).type != TokensTypes::TOKEN_ARROW_SET) return nullptr;
 
         node->body = ParseBlock();
+        if (!node->body) return nullptr; // Error in parsing block
 
         return node;
     }
@@ -1004,16 +1077,18 @@ namespace Rythin
     {
         long long lit_val;
         unsigned char val;
-        // Changed to check for any numeric type, then consume it.
-        if (current().type == TokensTypes::TOKEN_INT_32 || current().type == TokensTypes::TOKEN_INT_64 ||
-            current().type == TokensTypes::TOKEN_FLOAT_32 || current().type == TokensTypes::TOKEN_FLOAT_64)
+        
+        // Ensure consume returns a valid token before accessing its value
+        Tokens num_token = current(); // Get current token before consuming
+        if (num_token.type == TokensTypes::TOKEN_INT_32 || num_token.type == TokensTypes::TOKEN_INT_64 ||
+            num_token.type == TokensTypes::TOKEN_FLOAT_32 || num_token.type == TokensTypes::TOKEN_FLOAT_64)
         {
             // Assuming we only take the integer part for byte conversion
-            lit_val = std::stoll(consume(current().type).value);
+            lit_val = std::stoll(consume(num_token.type).value);
         } else {
             LogErrors::getInstance().addError("Expected a number literal for byte type", 88, current().line, current().column);
-            LogErrors::getInstance().printAll();
-            exit(88);
+            // Removed LogErrors::getInstance().printAll(); and exit(88);
+            return nullptr; // Return nullptr for error progression
         }
 
 
@@ -1027,33 +1102,48 @@ namespace Rythin
             val = static_cast<unsigned char>(lit_val);
         }
 
-        // The check for TOKEN_NIL and error was problematic as nil cannot be a number.
-        // If a nil is encountered here, it's an error because a number was expected for byte.
-        // Removed the check for TOKEN_NIL from here as it implies an incorrect flow for byte values.
-        // It's already handled by expecting a number type above.
-
         return std::make_shared<ByteNode>(val);
     }
 
     ASTPtr Parser::ParseBlock()
     {
         auto block = std::make_shared<BlockNode>();
-        consume(TokensTypes::TOKEN_LBRACKET); // '['
+        if (consume(TokensTypes::TOKEN_LBRACKET).type != TokensTypes::TOKEN_LBRACKET) return nullptr; // '['
 
         while (!check(TokensTypes::TOKEN_RBRACKET))
         {
             if (current().type == TokensTypes::TOKEN_EOF) {
                  LogErrors::getInstance().addError("Unclosed block. Expected ']' but reached end of file.", 57, current().line, current().column);
-                 LogErrors::getInstance().printAll();
-                 exit(57);
+                 // Removed LogErrors::getInstance().printAll(); and exit(57);
+                 return nullptr; // Return nullptr for error progression
             }
-            block->statements.push_back(ParseDeclarations());
+            ASTPtr statement = ParseDeclarations();
+            if (statement) {
+                block->statements.push_back(statement);
+            } else {
+                // Error in parsing a statement within the block, attempt to synchronize
+                // by skipping tokens until a known statement start or block end.
+                // This is a simple recovery, might need more sophisticated skipping.
+                while (!check(TokensTypes::TOKEN_RBRACKET) &&
+                       current().type != TokensTypes::TOKEN_EOF &&
+                       current().type != TokensTypes::TOKEN_CINPUT &&
+                       current().type != TokensTypes::TOKEN_IF &&
+                       current().type != TokensTypes::TOKEN_LOOP &&
+                       current().type != TokensTypes::TOKEN_PRINT &&
+                       current().type != TokensTypes::TOKEN_PRINT_ERROR &&
+                       current().type != TokensTypes::TOKEN_PRINT_NEW_LINE &&
+                       current().type != TokensTypes::TOKEN_DEF &&
+                       current().type != TokensTypes::TOKEN_STRING_LITERAL) // Added STRING_LITERAL for recovery
+                {
+                    position++; // Skip current token
+                }
+                // If we skipped to EOF, or if the next token is RBRACKET, we can break or proceed.
+                if (current().type == TokensTypes::TOKEN_EOF) {
+                    return nullptr; // Unclosed block reaching EOF
+                }
+            }
         }
-        /*if (!lookAhead(TokensTypes::TOKEN_RBRACKET))
-        {
-            LogErrors::getInstance().addError("Function scope not closed yet", 57, current().line, current().column);
-        }*/
-        consume(TokensTypes::TOKEN_RBRACKET); // ']'
+        if (consume(TokensTypes::TOKEN_RBRACKET).type != TokensTypes::TOKEN_RBRACKET) return nullptr; // ']'
         return block;
     }
 }
