@@ -14,6 +14,7 @@ assignees: ''
 
 3 - The code you tried to run
 
+## Past here the info (based on [Needed Info](#needed-info))
 ```text
-Past here the info (based on Needed info)
+
 
