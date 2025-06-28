@@ -1,6 +1,6 @@
 ---
 name: Bug report
-abut: Send a report to improve the work of Rhythin
+about: Send a report to improve the work of Rhythin
 title: ''
 labels: ''
 assignees: ''
