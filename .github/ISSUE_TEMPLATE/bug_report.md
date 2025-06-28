@@ -10,3 +10,6 @@
 2 - The logout of the rhythin execution
 3 - The code you tried to run
 
+```text
+Past here the info (based on Needed info)
+
