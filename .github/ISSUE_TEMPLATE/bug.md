@@ -1,8 +1,9 @@
 # Bug Report:
 ## Info
-| Name | About |
-| ---------- | ---------------- |
-| Bug report | Send a report to improve the work of Rhythin |
+---
+name: Bug report
+about: Send a report to improve the work of Rhythin
+---
 
 # Needed info
 ## Steps to a perfect (for the developer of rhythin) bug report:
