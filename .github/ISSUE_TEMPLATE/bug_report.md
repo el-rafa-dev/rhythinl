@@ -1,7 +1,9 @@
 ---
-| Name | About |
-| ---------- | ---------------- |
-| Bug report | Send a report to improve the work of Rhythin |
+name: Bug report
+abut: Send a report to improve the work of Rhythin
+title: ''
+labels: ''
+assignees: ''
 ---
 
 # Needed info
