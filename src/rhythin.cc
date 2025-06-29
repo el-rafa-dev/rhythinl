@@ -31,10 +31,10 @@
 #include "../src/includes/semantic_visitor.hpp"
 
 #if defined(__linux__)
-    #define BAD_COMP "\x1b[1m\x1b[31m[Bad compilation]:>\x1b[0m "
+    #define BAD_COMP "\x1b[1m\x1b[31m[Bad execution]:>\x1b[0m "
     #define SUCESS "\x1b[1m\x1b[32m[Sucess]:>\x1b[0m "
 #elif defined(_WIN32)
-    #define BAD_COMP "[Bad compilation]:> "
+    #define BAD_COMP "[Bad execution]:> "
     #define SUCESS "[Sucess]:> "
 #endif
 
@@ -123,7 +123,7 @@ int executeRun(char *argv[])
             std::cout << SUCESS << "Executed without errors but with " << LogErrors::getInstance().getWarnsSize() << " warnings. Exit code: " << std::to_string(LogErrors::getInstance().exitCode()) << std::endl;
             return LogErrors::getInstance().exitCode();
         } else {
-            std::cout << SUCESS << "Compiled without errors or warnings. Exit code: " << std::to_string(LogErrors::getInstance().exitCode()) << std::endl;
+            std::cout << SUCESS << "Executed without errors or warnings. Exit code: " << std::to_string(LogErrors::getInstance().exitCode()) << std::endl;
             return 0;
         }
     }

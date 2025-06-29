@@ -209,7 +209,8 @@ namespace Rythin
             return ParsePrintNl();
         case TokensTypes::TOKEN_STRING_LITERAL: // This case just consumes and returns nullptr, which might not be intended for a top-level declaration.
             consume(TokensTypes::TOKEN_STRING_LITERAL);
-            //LogErrors::getInstance().addError("Unexpected string literal at top-level. Expected a statement.", 2, current().line, current().column);
+            // error only for test
+            // LogErrors::getInstance().addError("Unexpected string literal at top-level. Expected a statement.", 2, current().line, current().column);
             return nullptr; // Return nullptr for error progression
         case TokensTypes::TOKEN_DEF:
         {
@@ -841,10 +842,18 @@ namespace Rythin
         std::string val;
 
         val = consume(TokensTypes::TOKEN_STRING_LITERAL).value;
-        while (check(TokensTypes::TOKEN_PLUS))
+        if (check(TokensTypes::TOKEN_PLUS))
         {
             consume(TokensTypes::TOKEN_PLUS);
             val += consume(TokensTypes::TOKEN_STRING_LITERAL).value;
+            while (check(TokensTypes::TOKEN_PLUS))
+            {
+                consume(TokensTypes::TOKEN_PLUS);
+                val += consume(TokensTypes::TOKEN_STRING_LITERAL).value;
+            }
+        } else {
+            LogErrors::getInstance().addError("Concatenation only accepts the '+' token, other types is not allowed", 24, current().line, current().column);
+            
         }
 
         return std::make_shared<LiteralNode>(val);
@@ -925,10 +934,10 @@ namespace Rythin
         case TokensTypes::TOKEN_CHARSEQ:
             if (!check(TokensTypes::TOKEN_STRING_LITERAL))
             {
-                LogErrors::getInstance().addError("Expected a string literal for 'charseq' type.", 98, current().line, current().column);
+                LogErrors::getInstance().addError("Expected a string literal for 'charseq' type", 98, current().line, current().column);
                 return nullptr;
             }
-            parsed_val = std::make_shared<LiteralNode>(consume(TokensTypes::TOKEN_STRING_LITERAL).value);
+            parsed_val = ParseCharseqValues();
             break;
         // case TokensTypes::TOKEN_PLUS: // This case handles unary plus at the start of an expression
         //     if (consume(TokensTypes::TOKEN_PLUS).type != TokensTypes::TOKEN_PLUS) return nullptr;
