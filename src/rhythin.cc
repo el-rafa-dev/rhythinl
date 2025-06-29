@@ -110,15 +110,19 @@ int executeRun(char *argv[])
     {
         Rythin::MainExecutor a;
         a.Run(argv[2]);
-        if (LogErrors::getInstance().hasErrorsAndWarns())
+        if (LogErrors::getInstance().hasErrorsAndWarns() and LogErrors::getInstance().getErrSize() != 0)
         {
 
             LogErrors::getInstance().printAll();
             std::cerr << BAD_COMP << std::to_string(LogErrors::getInstance().getErrSize()) << " errors and " << std::to_string(LogErrors::getInstance().getWarnsSize()) << " warnings. Exited with code: " << LogErrors::getInstance().exitCode() << std::endl;
             return LogErrors::getInstance().exitCode();
         }
-        else
+        else if (LogErrors::getInstance().getWarnsSize() != 0)
         {
+            LogErrors::getInstance().printAll();
+            std::cout << SUCESS << "Executed without errors but with " << LogErrors::getInstance().getWarnsSize() << " warnings. Exit code: " << std::to_string(LogErrors::getInstance().exitCode()) << std::endl;
+            return LogErrors::getInstance().exitCode();
+        } else {
             std::cout << SUCESS << "Compiled without errors or warnings. Exit code: " << std::to_string(LogErrors::getInstance().exitCode()) << std::endl;
             return 0;
         }
