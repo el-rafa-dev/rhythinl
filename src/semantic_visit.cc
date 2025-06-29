@@ -37,10 +37,32 @@ namespace Rythin
     {
         if (var_table.find(node.name) == var_table.end())
         {
-            LogErrors::getInstance().addError("Variable not declared!", 67, 0, 0);
+            LogErrors::getInstance().addError("Variable '" + node.name + "' not declared!", 67, 0, 0);
             return;
         }
+
+        for (auto stmts : var_values) {
+            if (auto var = std::dynamic_pointer_cast<TrueOrFalseNode>(stmts.second))
+            {
+                std::cout << "Name: " << stmts.first << " value: " << var->val << std::endl;
+            }
+            else if (auto var = std::dynamic_pointer_cast<LiteralNode>(stmts.second)) 
+            {
+                std::cout << "Name: " << stmts.first << " value: " << var->val << std::endl;
+            }
+            else if (auto var = std::dynamic_pointer_cast<VariableNode>(stmts.second)) 
+            {
+                // std::cout << "Name: " << stmts.first << " Variable called: " << var->name <<  << std::endl;
+
+            }
+            else if (auto var = std::dynamic_pointer_cast<BinOp>(stmts.second)) 
+            {
+                std::cout << "Name: " << stmts.first << " Left value: " << Tokens::tokenTypeToString(var->op) << std::endl;
+            }
+        }
+        
     }
+
 
     void SemanticAnalyzer::Visit(BinOp &node)
     {

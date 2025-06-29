@@ -217,42 +217,7 @@ namespace Rythin
     {
         TokensTypes op;     // operators
         ASTPtr left, right; // left value and right value
-        BinOp(ASTPtr left, TokensTypes &op, ASTPtr right) : left(left), op(op), right(right)
-        {
-            // debug only
-
-            if (auto var = std::dynamic_pointer_cast<i32Node>(left))
-            {
-                // std::cout << "Left value: " << var->val << std::endl;
-                // std::cout << "Operator: " << Tokens::tokenTypeToString(op) << std::endl;
-                if (auto var2 = std::dynamic_pointer_cast<i32Node>(right))
-                {
-                    // std::cout << "Right value: " << var2->val << std::endl;
-                    switch (op)
-                    {
-                    case TokensTypes::TOKEN_PLUS:
-                        std::cout << "Valor somado: " << var->val + var2->val << std::endl;
-                        break;
-                    case TokensTypes::TOKEN_MINUS:
-                        std::cout << "Valor subtraido: " << var->val - var2->val << std::endl;
-                        break;
-                    case TokensTypes::TOKEN_MULTIPLY:
-                        std::cout << "Valor multiplicado: " << var->val * var2->val << std::endl;
-                        break;
-                    case TokensTypes::TOKEN_DIVIDE:
-                        std::cout << "Valor divido: " << var->val / var2->val << std::endl;
-                        break;
-                    case TokensTypes::TOKEN_MODULO: // Added MODULO
-                        std::cout << "Valor modulo: " << var->val % var2->val << std::endl;
-                        break;
-                    case TokensTypes::TOKEN_BIT_XOR: // Added BIT_XOR
-                        std::cout << "Valor XOR: " << (var->val ^ var2->val) << std::endl;
-                        break;
-                    }
-                }
-            }
-            // Add similar debug blocks for float/double types if needed
-        }
+        BinOp(ASTPtr left, TokensTypes &op, ASTPtr right) : left(left), op(op), right(right) {}
     };
 
     struct IfExpressionNode : public ASTNode
