@@ -1,5 +1,5 @@
 ---
-name: Bug report
+name: Bug/Error report
 about: Send a report to improve the work of Rhythin
 title: ''
 labels: ''
@@ -7,7 +7,8 @@ assignees: ''
 ---
 
 # Needed info
-## Steps to a perfect (for the developer of rhythin) bug report:
+## Steps to a perfect (for the developer of rhythin) bug/error report:
+
 1 - System name and version
 
 2 - The logout of the rhythin execution
