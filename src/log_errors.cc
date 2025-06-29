@@ -26,8 +26,6 @@
 #endif
 
 
-
-
 namespace Log
 {
     void LogErrors::addError(const std::string &error, int exit_code, int line, int column)

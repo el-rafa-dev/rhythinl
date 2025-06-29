@@ -113,7 +113,7 @@ int executeRun(char *argv[])
         if (LogErrors::getInstance().hasErrorsAndWarns())
         {
 
-            LogErrors::getInstance().printErrors();
+            LogErrors::getInstance().printAll();
             std::cerr << BAD_COMP << std::to_string(LogErrors::getInstance().getErrSize()) << " errors and " << std::to_string(LogErrors::getInstance().getWarnsSize()) << " warnings. Exited with code: " << LogErrors::getInstance().exitCode() << std::endl;
             return LogErrors::getInstance().exitCode();
         }

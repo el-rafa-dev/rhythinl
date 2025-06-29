@@ -58,6 +58,7 @@ namespace Rythin {
         ASTPtr ParseNegativeVals(TokensTypes curr);
         ASTPtr ParseVarDeclaration();
         ASTPtr ParseVarCall();
+        ASTPtr ParseCharseqValues();
 
         // New functions for arithmetic expression parsing with precedence
         ASTPtr ParsePrimaryExpression();      // Handles numbers, identifiers, and parenthesized expressions

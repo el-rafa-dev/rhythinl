@@ -755,6 +755,23 @@ namespace Rythin
         return node;
     }
 
+    //here we will parse the literal values or charseq values
+    ASTPtr Parser::ParseCharseqValues()
+    {
+        //consume the predominant value
+        // it need be a charseq literal ("on quotes") or a identifier
+        std::string val;
+
+        if (check(TokensTypes::TOKEN_STRING_LITERAL))
+            val = consume(TokensTypes::TOKEN_STRING_LITERAL).value;
+            while (check(TokensTypes::TOKEN_PLUS))
+            {
+                val += consume(TokensTypes::TOKEN_STRING_LITERAL).value;
+            }    
+        
+        return std::make_shared<LiteralNode>(val);
+    }
+
     ASTPtr Parser::ParseVarCall()
     {
         auto var_node = std::make_shared<VariableNode>();
@@ -868,7 +885,7 @@ namespace Rythin
             }
             case TokensTypes::TOKEN_STRING_LITERAL:
             {
-                auto ptr = std::make_shared<LiteralNode>(consume(TokensTypes::TOKEN_STRING_LITERAL).value);
+                auto ptr = ParseCharseqValues();
                 if (!ptr) return nullptr; // consume might return an invalid token or error
                 parsed_val = std::make_shared<ObjectNode>(ptr);
                 break;

@@ -28,21 +28,6 @@ namespace Rythin
             return;
         }
 
-        for (auto &stb : var_table)
-        { 
-            std::cout << "Name" << "\n";
-            // check if the type value is compatible with type declared
-            if (var_values.find(stb.first) != var_values.end())
-            {
-                std::cout << "Type: " << Tokens::tokenTypeToString(stb.second) << "\n";
-
-                // if (auto& value = std::dynamic_pointer_cast<LiteralNode>(&node.val))
-                // {
-
-                // }
-            }
-        }
-
         var_table.insert(std::make_pair(node.var_name, node.type));
         var_values.insert(std::make_pair(node.var_name, node.val));
         VisitNode(node.val);
