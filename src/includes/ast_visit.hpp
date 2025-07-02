@@ -33,6 +33,7 @@ namespace Rythin
         inline virtual void Visit(BinOp& node) {}
         inline virtual void Visit(IfStatement& node) {}
         inline virtual void Visit(ReturnNode& node) {}
+        inline virtual void Visit(InterpolationNode& node) {}
         inline virtual void Visit(BlockNode& node)
         {
             for (auto& stmt : node.statements)
@@ -53,6 +54,7 @@ namespace Rythin
             if (auto n = std::dynamic_pointer_cast<IfStatement>(node)) Visit(*n);
             if (auto n = std::dynamic_pointer_cast<ReturnNode>(node)) Visit(*n);
             if (auto n = std::dynamic_pointer_cast<BlockNode>(node)) Visit(*n);
+            if (auto n = std::dynamic_pointer_cast<InterpolationNode>(node)) Visit(*n);
         }
     };
 }

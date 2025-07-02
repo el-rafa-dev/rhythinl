@@ -46,16 +46,21 @@ namespace Rythin
             {
                 std::cout << "Name: " << stmts.first << " value: " << var->val << std::endl;
             }
-            else if (auto var = std::dynamic_pointer_cast<LiteralNode>(stmts.second)) 
+            if (auto var = std::dynamic_pointer_cast<LiteralNode>(stmts.second)) 
             {
                 std::cout << "Name: " << stmts.first << " value: " << var->val << std::endl;
             }
-            else if (auto var = std::dynamic_pointer_cast<VariableNode>(stmts.second)) 
+             if (auto var = std::dynamic_pointer_cast<InterpolationNode>(stmts.second)) 
             {
-                // std::cout << "Name: " << stmts.first << " Variable called: " << var->name <<  << std::endl;
+                std::cout << "Name: " << stmts.first << " Variable called: " << var->var_name << std::endl;
 
             }
-            else if (auto var = std::dynamic_pointer_cast<BinOp>(stmts.second)) 
+            if (auto var = std::dynamic_pointer_cast<f32Node>(stmts.second)) 
+            {
+                std::cout << "Name: " << stmts.first << " Value: " << var->val << std::endl;
+
+            }
+            if (auto var = std::dynamic_pointer_cast<BinOp>(stmts.second)) 
             {
                 std::cout << "Name: " << stmts.first << " Left value: " << Tokens::tokenTypeToString(var->op) << std::endl;
             }
@@ -68,6 +73,15 @@ namespace Rythin
     {
         VisitNode(node.left);
         VisitNode(node.right);
+        
+    }
+
+    void SemanticAnalyzer::Visit(InterpolationNode &node) 
+    {
+        if (var_table.find(node.var_name) == var_table.end())
+        {
+            LogErrors::getInstance().addError("Invalid variable name or variable not declared", 22, 0, 0);
+        }
     }
 
     void SemanticAnalyzer::Visit(FunctionDefinitionNode &node)

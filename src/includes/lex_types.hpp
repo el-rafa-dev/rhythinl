@@ -98,6 +98,8 @@ enum class TokensTypes {
     TOKEN_TRUE,
     TOKEN_FALSE,
     TOKEN_NIL,
+    TOKEN_INTERP_START,
+    TOKEN_INTERP_END,
     TOKEN_HAS
 };
 

@@ -842,6 +842,7 @@ namespace Rythin
         std::string val;
 
         val = consume(TokensTypes::TOKEN_STRING_LITERAL).value;
+        
         if (check(TokensTypes::TOKEN_PLUS))
         {
             consume(TokensTypes::TOKEN_PLUS);
@@ -849,11 +850,9 @@ namespace Rythin
             while (check(TokensTypes::TOKEN_PLUS))
             {
                 consume(TokensTypes::TOKEN_PLUS);
+
                 val += consume(TokensTypes::TOKEN_STRING_LITERAL).value;
             }
-        } else {
-            LogErrors::getInstance().addError("Concatenation only accepts the '+' token, other types is not allowed", 24, current().line, current().column);
-            
         }
 
         return std::make_shared<LiteralNode>(val);

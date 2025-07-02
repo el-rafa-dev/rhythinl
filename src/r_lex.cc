@@ -21,6 +21,7 @@
 #include <stdexcept>
 #include <unordered_map>
 #include <limits.h>
+#include <queue>
 
 // local includes
 #include "../src/includes/r_lex.hpp"
@@ -32,6 +33,8 @@
 
 using namespace Log;
 using namespace std;
+
+std::queue<Tokens> token_buffer;
 
 namespace Rythin
 {
@@ -496,8 +499,6 @@ namespace Rythin
         if (current_input == '\0')
         {
             LogErrors::getInstance().addError("Unterminated string literal", 14, line, column);
-            LogErrors::getInstance().printAll();
-            throw Excepts::SyntaxException("Unterminated string literal");
         }
         advance_tk(); // skipping closing quotes
         return Tokens(TokensTypes::TOKEN_STRING_LITERAL, ivalue, line, column);
@@ -518,26 +519,12 @@ namespace Rythin
         }
         if (current_input == ']')
         {
-            auto inter_node = std::make_shared<InterpolationNode>();
             auto val = code_input.substr(start, position - start);
-            for (char i : val)
-            {
-                if (std::isdigit(i))
-                {
-                    inter_node->val = val;
-                    break;
-                } else {
-                    inter_node->var_name = val;
-                    break;
-                }
-            }
-            
             advance_tk(); // Skip ]
-            return inter_node->val;
+            return val;
         }
         else
         {
-            //std::cerr << "[Error]Unterminated interpolation at line " << line << " Column " << column << std::endl;
             LogErrors::getInstance().addError("Unterminated interpolation", 14, line, column);
             return nullptr;
         }
