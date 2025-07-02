@@ -478,7 +478,7 @@ namespace Rythin
                 else
                 {
                     // LogErrors
-                    LogErrors::getInstance().addError("Unknown escape sequence \\" + to_string(current_input), 34, line, column);
+                    LogErrors::getInstance().addError("Unknown escape sequence \\" + current_input, 34, line, column);
                     //std::cerr << "Unknown escape sequence \\" << current_input << " at line " << line << ", column " << column << std::endl;
                     continue;
                     //throw std::runtime_error("Unknown escape sequence");
@@ -498,7 +498,7 @@ namespace Rythin
         }
         if (current_input == '\0')
         {
-            LogErrors::getInstance().addError("Unterminated string literal", 14, line, column);
+            LogErrors::getInstance().addError("Unterminated/unclosed string literal", 14, line, column);
         }
         advance_tk(); // skipping closing quotes
         return Tokens(TokensTypes::TOKEN_STRING_LITERAL, ivalue, line, column);
