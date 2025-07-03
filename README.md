@@ -10,7 +10,7 @@
   </a>
   <br>
   <a href="https://github.com/el-rafa-dev/rhythinl/actions/workflows/cmake-multi-platform.yml">
-    <img src="https://github.com/el-rafa-dev/rhythinl/actions/workflows/cmake-multi-platform.yml/badge.svg?branch=main" alt="Build on multiple-platforms Status"/>
+    <img src="https://github.com/el-rafa-dev/rhythinl/actions/workflows/cmake-multi-platform.yml/badge.svg?branch=main" alt="Build on multiple platforms Status"/>
   </a>
 </p>
 
