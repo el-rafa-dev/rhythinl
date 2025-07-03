@@ -14,7 +14,7 @@
   </a>
 </p>
 
-RhythinLang will be a statically typed, interpreted and compiled (not JIT) programming language focused on being objective and direct to execute on Command Line Interface (CLI), facilitating learning for both beginners and programmers with experience in the area.
+RhythinLang will be a statically typed, explicit typed, interpreted and compiled (not JIT) programming language focused on being objective and direct to execute with support to parallelism on Command Line Interface (CLI), facilitating learning for both beginners and programmers with experience in the area.
 
 ## Current Status
 
