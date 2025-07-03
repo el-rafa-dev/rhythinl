@@ -38,6 +38,9 @@ def main:func() -> [
     printnl("Hello World from Rhythin!") ;; writing a message on console/terminal
     finish(0) ;; sucess code
 ]
+
+Expected output:
+Hello World from Rhythin!
 ```
 ## Compability
 
