@@ -1,5 +1,5 @@
 # Rhythin Syntax HighLighting
-A simple but usefull symtax highlight for you rhythin code
+A simple but usefull syntax highlight for you rhythin code
 # Installation
 just run ```./build.sh``` and starts coding with Rhythin on VS Code!
 # Author
