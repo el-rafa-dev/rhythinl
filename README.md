@@ -26,9 +26,9 @@ The first version for general use will be when it has the basic syntax of a lang
 
 
 
-## How use/Example
+## Quick Start/Example
 ```
-; this is only a little example
+; Here is a little example to get you started.
 ; the semicolon characther (; or #) is for comments inline
 ; here we will be create the main function 
 ; thats will be a func type.
@@ -74,7 +74,7 @@ The build will be finished and you can run Rhythin with:
 ./build/rhythin
 ```
 
-## Building on Windows (With mingw64. See [warning](#warning) first before proceeding):
+## Building on Windows (With mingw64. See [Windows Build Notes](#warning) first before proceeding):
 clone the repository with:
 ```
 git clone https://github.com/el-rafa-dev/rhythinl.git
@@ -96,7 +96,7 @@ The build will be finished and you can be run the rhythin executable saved in bu
 .\rhythin.exe
 ```
 
-## Warning
+## Windows Build Notes
 You need to have mingw64 configured first before proceeding
 
 See how [configure](./CONFIGURE_MINGW.md) the mingw in windows
