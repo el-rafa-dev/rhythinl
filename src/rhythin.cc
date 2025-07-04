@@ -236,5 +236,5 @@ int main(int argc, char *argv[])
         LogErrors::getInstance().printAll();
         return LogErrors::getInstance().exitCode();
     }
-    return 1;
+    return 0;
 }
