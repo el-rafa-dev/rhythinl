@@ -12,6 +12,15 @@
   <a href="https://github.com/el-rafa-dev/rhythinl/actions/workflows/cmake-multi-platform.yml">
     <img src="https://github.com/el-rafa-dev/rhythinl/actions/workflows/cmake-multi-platform.yml/badge.svg?branch=main" alt="Build on multiple platforms Status"/>
   </a>
+
+  <!-- <div align="center">
+  <h2>
+    Antes de tudo...
+  </h2>
+  <h4>
+    Para ser bem direto ao ponto: vim vós comunicar sobre a desistencia de criação da linguagem... Comecei esse projeto de uma forma incorreta e prejudicial para meu aprendizado... Tudo que fiz aqui foi com ajuda de I.A (Gemini e ChatGPT para sermos mais especificos). Tudo que aprendi e fiz aqui nesse repositorio foi com a ajuda deles... Não me sinto o dono disso aqui, fiz para tentar satisfazer uma vontade que todo Dev curioso tem que é criar uma linguagem e como ela realmente funciona... Eu descobri bastante como uma linguagem funciona por debaixo dos "panos", como ela trabalha processando milhoes de linhas de codigos para cada função na qual o codigo foi escrito e designado... Bom, é isso... Só vim comunicar e mostrar o tanto que fui incapaz de satisfazer esse meu desejo. Adios e hasta la vista baby!
+  </h4>
+  </div> -->
 </p>
 
 RhythinLang will be a statically typed, explicit typed, interpreted and compiled (not JIT) programming language focused on being objective and direct to execute with support to parallelism on Command Line Interface (CLI), facilitating learning for both beginners and programmers with experience in the area.

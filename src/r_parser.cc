@@ -847,11 +847,25 @@ namespace Rythin
         {
             consume(TokensTypes::TOKEN_PLUS);
             val += consume(TokensTypes::TOKEN_STRING_LITERAL).value;
+
+            // concatenation loop
             while (check(TokensTypes::TOKEN_PLUS))
             {
-                consume(TokensTypes::TOKEN_PLUS);
-
-                val += consume(TokensTypes::TOKEN_STRING_LITERAL).value;
+                if (consume(TokensTypes::TOKEN_PLUS).type != TokensTypes::TOKEN_PLUS)
+                    return nullptr;
+                
+                // checks if is a variable call or a string literal
+                switch (current().type)
+                {
+                    case TokensTypes::TOKEN_STRING_LITERAL:
+                        val += consume(TokensTypes::TOKEN_STRING_LITERAL).value;       
+                        break;
+                    case TokensTypes::TOKEN_IDENTIFIER:
+                        break;
+                    default:
+                        LogErrors::getInstance().addError("Invalid value for a charseq type", 51, current().line, current().column);
+                        return nullptr;
+                }
             }
         }
 

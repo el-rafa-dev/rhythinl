@@ -22,8 +22,8 @@
 #include <iostream>
 #include <iostream>
 
-/** * @name local includes 
- * @brief include files from the src dir 
+/** * @name local includes
+ * @brief include files from the src dir
  **/
 
 #include "lex_types.hpp"
@@ -31,7 +31,6 @@
 #include "rexcept.hpp"
 #include "t_tokens.hpp"
 // #include "ast_visit.hpp"
-
 
 namespace Rythin
 {
@@ -141,7 +140,6 @@ namespace Rythin
     {
         unsigned char byte;
         ByteNode(unsigned char by) : byte(by) {}
-        
     };
 
     struct f64Node : public ASTNode
@@ -217,7 +215,37 @@ namespace Rythin
     {
         TokensTypes op;     // operators
         ASTPtr left, right; // left value and right value
-        BinOp(ASTPtr left, TokensTypes &op, ASTPtr right) : left(left), op(op), right(right) {}
+        BinOp(ASTPtr left, TokensTypes &op, ASTPtr right) : left(left), op(op), right(right)
+        {
+            int l, r = 0;
+
+            if (auto vall = std::dynamic_pointer_cast<i32Node>(left))
+            {
+                //l = vall->val;
+                //std::cout << "Left value: " << vall->val << std::endl;
+                //std::cout << "Operator: " << Tokens::tokenTypeToString(op) << std::endl;
+                if (auto valr = std::dynamic_pointer_cast<i32Node>(right))
+                {
+                    //r = valr->val;
+                    //std::cout << "Right value: " << valr->val << std::endl;
+
+                    switch (op)
+                    {
+                    case TokensTypes::TOKEN_PLUS:
+                    {
+                        std::cout << "Out Value: " << (int)(vall->val + vall->val) << std::endl;
+                        break;
+                    }
+                        
+                    case TokensTypes::TOKEN_MINUS:
+                    {
+                        std::cout << "Out value: " << (int)(vall->val - vall->val) << "\n";
+                        break;
+                    }
+                    }
+                }
+            }
+        }
     };
 
     struct IfExpressionNode : public ASTNode
@@ -234,7 +262,8 @@ namespace Rythin
         std::vector<ASTPtr> args;
         TokensTypes type;
         ASTPtr block;
-        FunctionDefinitionNode(std::string name, TokensTypes tk, std::vector<ASTPtr> args, ASTPtr block) : var_name(name), type(tk), args(args), block(block) {
+        FunctionDefinitionNode(std::string name, TokensTypes tk, std::vector<ASTPtr> args, ASTPtr block) : var_name(name), type(tk), args(args), block(block)
+        {
             // Debugging code removed for cleaner ASTNode.
             // This kind of debug output is usually handled by a separate ASTVisitor or interpreter.
             // while (auto test = std::dynamic_pointer_cast<PrintNl>(block))

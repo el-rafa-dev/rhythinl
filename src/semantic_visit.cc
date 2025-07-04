@@ -62,7 +62,11 @@ namespace Rythin
             }
             if (auto var = std::dynamic_pointer_cast<BinOp>(stmts.second)) 
             {
-                std::cout << "Name: " << stmts.first << " Left value: " << Tokens::tokenTypeToString(var->op) << std::endl;
+                // std::cout << "Name: " << stmts.first << " Left value: " << Tokens::tokenTypeToString(var->op) << std::endl;
+                if (auto val_left = std::dynamic_pointer_cast<i32Node>(var->left))
+                {
+                    std::cout << "Value left: " << val_left->val << "\n";
+                }
             }
         }
         
