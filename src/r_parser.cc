@@ -891,7 +891,7 @@ namespace Rythin
             return nullptr;
 
         TokensTypes tk;
-        Tokens type_token = consume(current().type);
+        auto type_token = consume(current().type);
         if (type_token.type == TokensTypes::TOKEN_EOF)
         { // Check if consume failed
             LogErrors::getInstance().addError("Expected a type token after ':' in variable declaration.", 54, current().line, current().column);

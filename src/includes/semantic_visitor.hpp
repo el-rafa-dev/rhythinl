@@ -41,7 +41,6 @@ namespace Rythin
         void Visit(VariableNode &node) override;
         void Visit(BinOp &node) override;
         void Visit(FunctionDefinitionNode &node) override;
-        void Visit(InterpolationNode& node) override;
         // TODO: Adicionar outros Visit conforme eu for expandindo
     };
 }

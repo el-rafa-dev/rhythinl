@@ -80,14 +80,6 @@ namespace Rythin
         
     }
 
-    void SemanticAnalyzer::Visit(InterpolationNode &node) 
-    {
-        if (var_table.find(node.var_name) == var_table.end())
-        {
-            LogErrors::getInstance().addError("Invalid variable name or variable not declared", 22, 0, 0);
-        }
-    }
-
     void SemanticAnalyzer::Visit(FunctionDefinitionNode &node)
     {
         if (var_table.find(node.var_name) != var_table.end())
