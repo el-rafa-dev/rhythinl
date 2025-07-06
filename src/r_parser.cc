@@ -18,7 +18,6 @@
 #include <string>
 #include <stdexcept>
 #include <optional>
-#include <math.h>
 #include <iomanip>
 
 // local includes
