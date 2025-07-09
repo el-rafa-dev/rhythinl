@@ -26,7 +26,6 @@ set(RHYTHIN_SRC_CORE
     src/r_lex.cc
     src/r_parser.cc
     src/t_tokens.cc
-    src/r_inter.cc
     src/log_errors.cc
     src/semantic_visit.cc
 )
@@ -38,7 +37,6 @@ set(RHYTHIN_INCLUDES
     src/includes/log.hpp
     src/includes/lex_types.hpp
     src/includes/r_inst.hpp
-    src/includes/r_inter.hpp
     src/includes/r_lex.hpp
     src/includes/r_opcodes.hpp
     src/includes/r_parser.hpp
