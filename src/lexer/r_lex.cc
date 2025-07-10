@@ -24,12 +24,12 @@
 #include <queue>
 
 // local includes
-#include "../src/includes/r_lex.hpp"
-#include "../src/includes/t_tokens.hpp"
-#include "../src/includes/lex_types.hpp"
-#include "../src/includes/rexcept.hpp"
-#include "../src/includes/log.hpp"
-#include "../src/includes/ast.hpp"
+#include "../../src/lexer/r_lex.hpp"
+#include "../../src/tokens/t_tokens.hpp"
+#include "../../src/lexer/lex_types.hpp"
+#include "../../src/includes/rexcept.hpp"
+#include "../../src/includes/log.hpp"
+#include "../../src/includes/ast.hpp"
 
 using namespace Log;
 using namespace std;

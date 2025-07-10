@@ -26,10 +26,9 @@
  * @brief include files from the src dir
  **/
 
-#include "lex_types.hpp"
-#include "t_tokens.hpp"
+#include "../../src/lexer/lex_types.hpp"
+#include "../../src/tokens/t_tokens.hpp"
 #include "rexcept.hpp"
-#include "t_tokens.hpp"
 // #include "ast_visit.hpp"
 
 namespace Rythin

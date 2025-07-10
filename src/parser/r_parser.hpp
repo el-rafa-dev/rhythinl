@@ -17,10 +17,9 @@
 #define R_PARSER_HPP
 
 #include <vector>
-#include "t_tokens.hpp"
-#include "ast.hpp"
-#include "lex_types.hpp"
-#include "chunk.hpp"
+#include "../../src/tokens/t_tokens.hpp"
+#include "../../src/includes/ast.hpp"
+#include "../../src/lexer/lex_types.hpp"
 
 
 namespace Rythin {

@@ -21,11 +21,9 @@
 #include <vector>
 
 // local includes
-
-#include "../src/includes/t_tokens.hpp"
-#include "../src/includes/r_lex.hpp"
-#include "../src/includes/r_inter.hpp"
-#include "../src/includes/r_parser.hpp"
+#include "../src/tokens/t_tokens.hpp"
+#include "../src/lexer/r_lex.hpp"
+#include "../src/parser/r_parser.hpp"
 #include "../src/includes/r_opcodes.hpp"
 #include "../src/includes/log.hpp"
 #include "../src/includes/semantic_visitor.hpp"
@@ -83,9 +81,6 @@ namespace Rythin
                 {
                     analyzer.VisitNode(stmts);
                 }
-
-                // only for tests, a tree-walk interpreter
-                // Interpreter interpreter(nodes);
             }
             else
             {

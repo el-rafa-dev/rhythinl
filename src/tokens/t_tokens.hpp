@@ -14,7 +14,7 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include <string>
-#include "lex_types.hpp"
+#include "../lexer/lex_types.hpp"
 
 #ifndef T_TOKENS_H
 #define T_TOKENS_H

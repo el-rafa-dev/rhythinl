@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#include "../src/includes/t_tokens.hpp"
+#include "t_tokens.hpp"
 #include <string>
 #include <cctype>
 #include <iostream>

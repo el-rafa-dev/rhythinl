@@ -16,7 +16,7 @@
 #ifndef R_LEX_HPP
 #define R_LEX_HPP
 
-#include "t_tokens.hpp"
+#include "../../src/tokens/t_tokens.hpp"
 #include "lex_types.hpp"
 #include <string>
 

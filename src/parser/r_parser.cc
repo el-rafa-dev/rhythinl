@@ -20,13 +20,12 @@
 #include <optional>
 #include <iomanip>
 
-// local includes
-#include "../src/includes/ast.hpp"
-#include "../src/includes/t_tokens.hpp"
-#include "../src/includes/r_parser.hpp"
-#include "../src/includes/r_opcodes.hpp"
-#include "../src/includes/rexcept.hpp"
-#include "../src/includes/log.hpp"
+// local 
+#include "../../src/includes/ast.hpp"
+#include "../../src/tokens/t_tokens.hpp"
+#include "../../src/parser/r_parser.hpp"
+#include "../../src/includes/rexcept.hpp"
+#include "../../src/includes/log.hpp"
 
 // using namespace std;
 using namespace Log;
