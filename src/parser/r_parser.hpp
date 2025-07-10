@@ -75,7 +75,7 @@ namespace Rythin {
             return type == TokensTypes::TOKEN_LESS_THAN || // < 
                    type == TokensTypes::TOKEN_GREATER_THAN || // >
                    type == TokensTypes::TOKEN_EQUAL ||  // ==
-                   type == TokensTypes::TOKEN_NOT_EQUAL ||  //!=\
+                   type == TokensTypes::TOKEN_NOT_EQUAL ||  //!=
                    type == TokensTypes::TOKEN_LESS_EQUAL || // <=
                    type == TokensTypes::TOKEN_GREATER_EQUAL; // >=
         }
