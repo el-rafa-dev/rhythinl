@@ -405,6 +405,7 @@ namespace Rythin
             {"printe", TokensTypes::TOKEN_PRINT_ERROR},
             {"true", TokensTypes::TOKEN_TRUE},
             {"false", TokensTypes::TOKEN_FALSE},
+            {"parallel", TokensTypes::TOKEN_PARALLEL},
             {"nil", TokensTypes::TOKEN_NIL},
             {"has", TokensTypes::TOKEN_HAS}};
 

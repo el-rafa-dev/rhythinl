@@ -1,0 +1,809 @@
+#!/usr/bin/env python3
+"""
+SimpleScript - Uma linguagem de programação simples com AST bem estruturada
+Syntax básica:
+- let x = 10
+- if (x > 5) { print(x) } else { print("pequeno") }
+- func add(a, b) { return a + b }
+"""
+from enum import Enum
+from dataclasses import dataclass
+from typing import List, Optional, Union, Any
+import re
+# =============================================================================
+# TOKENS
+# =============================================================================
+class TokenType(Enum):
+    # Literals
+    NUMBER = "NUMBER"
+    STRING = "STRING"
+    IDENTIFIER = "IDENTIFIER"
+    
+    # Keywords
+    LET = "LET"
+    IF = "IF"
+    ELSE = "ELSE"
+    FUNC = "FUNC"
+    RETURN = "RETURN"
+    PRINT = "PRINT"
+    
+    # Operators
+    PLUS = "PLUS"
+    MINUS = "MINUS"
+    MULTIPLY = "MULTIPLY"
+    DIVIDE = "DIVIDE"
+    ASSIGN = "ASSIGN"
+    EQUALS = "EQUALS"
+    NOT_EQUALS = "NOT_EQUALS"
+    GREATER = "GREATER"
+    LESS = "LESS"
+    GREATER_EQUAL = "GREATER_EQUAL"
+    LESS_EQUAL = "LESS_EQUAL"
+    
+    # Delimiters
+    LPAREN = "LPAREN"
+    RPAREN = "RPAREN"
+    LBRACE = "LBRACE"
+    RBRACE = "RBRACE"
+    COMMA = "COMMA"
+    SEMICOLON = "SEMICOLON"
+    
+    # Special
+    EOF = "EOF"
+    NEWLINE = "NEWLINE"
+@dataclass
+class Token:
+    type: TokenType
+    value: Any
+    line: int
+    column: int
+# =============================================================================
+# LEXER
+# =============================================================================
+class Lexer:
+    def __init__(self, text: str):
+        self.text = text
+        self.pos = 0
+        self.line = 1
+        self.column = 1
+        
+        self.keywords = {
+            'let': TokenType.LET,
+            'if': TokenType.IF,
+            'else': TokenType.ELSE,
+            'func': TokenType.FUNC,
+            'return': TokenType.RETURN,
+            'print': TokenType.PRINT,
+        }
+    
+    def current_char(self) -> Optional[str]:
+        if self.pos >= len(self.text):
+            return None
+        return self.text[self.pos]
+    
+    def peek_char(self) -> Optional[str]:
+        peek_pos = self.pos + 1
+        if peek_pos >= len(self.text):
+            return None
+        return self.text[peek_pos]
+    
+    def advance(self):
+        if self.pos < len(self.text) and self.text[self.pos] == '\n':
+            self.line += 1
+            self.column = 1
+        else:
+            self.column += 1
+        self.pos += 1
+    
+    def skip_whitespace(self):
+        while self.current_char() and self.current_char() in ' \t\r':
+            self.advance()
+    
+    def read_number(self) -> float:
+        result = ''
+        while self.current_char() and (self.current_char().isdigit() or self.current_char() == '.'):
+            result += self.current_char()
+            self.advance()
+        
+        return float(result) if '.' in result else int(result)
+    
+    def read_string(self) -> str:
+        result = ''
+        self.advance()  # Skip opening quote
+        
+        while self.current_char() and self.current_char() != '"':
+            if self.current_char() == '\\':
+                self.advance()
+                if self.current_char() == 'n':
+                    result += '\n'
+                elif self.current_char() == 't':
+                    result += '\t'
+                elif self.current_char() == '\\':
+                    result += '\\'
+                elif self.current_char() == '"':
+                    result += '"'
+                else:
+                    result += self.current_char()
+            else:
+                result += self.current_char()
+            self.advance()
+        
+        if self.current_char() == '"':
+            self.advance()  # Skip closing quote
+        
+        return result
+    
+    def read_identifier(self) -> str:
+        result = ''
+        while (self.current_char() and 
+               (self.current_char().isalnum() or self.current_char() == '_')):
+            result += self.current_char()
+            self.advance()
+        return result
+    
+    def get_next_token(self) -> Token:
+        while self.current_char():
+            if self.current_char() in ' \t\r':
+                self.skip_whitespace()
+                continue
+            
+            if self.current_char() == '\n':
+                token = Token(TokenType.NEWLINE, '\n', self.line, self.column)
+                self.advance()
+                return token
+            
+            if self.current_char().isdigit():
+                return Token(TokenType.NUMBER, self.read_number(), self.line, self.column)
+            
+            if self.current_char() == '"':
+                return Token(TokenType.STRING, self.read_string(), self.line, self.column)
+            
+            if self.current_char().isalpha() or self.current_char() == '_':
+                value = self.read_identifier()
+                token_type = self.keywords.get(value, TokenType.IDENTIFIER)
+                return Token(token_type, value, self.line, self.column)
+            
+            # Single character tokens
+            single_chars = {
+                '+': TokenType.PLUS,
+                '-': TokenType.MINUS,
+                '*': TokenType.MULTIPLY,
+                '/': TokenType.DIVIDE,
+                '(': TokenType.LPAREN,
+                ')': TokenType.RPAREN,
+                '{': TokenType.LBRACE,
+                '}': TokenType.RBRACE,
+                ',': TokenType.COMMA,
+                ';': TokenType.SEMICOLON,
+            }
+            
+            if self.current_char() in single_chars:
+                token = Token(single_chars[self.current_char()], self.current_char(), self.line, self.column)
+                self.advance()
+                return token
+            
+            # Multi-character operators
+            if self.current_char() == '=':
+                if self.peek_char() == '=':
+                    self.advance()
+                    self.advance()
+                    return Token(TokenType.EQUALS, '==', self.line, self.column - 1)
+                else:
+                    token = Token(TokenType.ASSIGN, '=', self.line, self.column)
+                    self.advance()
+                    return token
+            
+            if self.current_char() == '!':
+                if self.peek_char() == '=':
+                    self.advance()
+                    self.advance()
+                    return Token(TokenType.NOT_EQUALS, '!=', self.line, self.column - 1)
+            
+            if self.current_char() == '>':
+                if self.peek_char() == '=':
+                    self.advance()
+                    self.advance()
+                    return Token(TokenType.GREATER_EQUAL, '>=', self.line, self.column - 1)
+                else:
+                    token = Token(TokenType.GREATER, '>', self.line, self.column)
+                    self.advance()
+                    return token
+            
+            if self.current_char() == '<':
+                if self.peek_char() == '=':
+                    self.advance()
+                    self.advance()
+                    return Token(TokenType.LESS_EQUAL, '<=', self.line, self.column - 1)
+                else:
+                    token = Token(TokenType.LESS, '<', self.line, self.column)
+                    self.advance()
+                    return token
+            
+            # Skip unknown characters
+            self.advance()
+        
+        return Token(TokenType.EOF, None, self.line, self.column)
+# =============================================================================
+# AST NODES
+# =============================================================================
+class ASTNode:
+    """Classe base para todos os nós da AST"""
+    pass
+# Expressions
+class Expression(ASTNode):
+    pass
+@dataclass
+class NumberLiteral(Expression):
+    value: Union[int, float]
+@dataclass
+class StringLiteral(Expression):
+    value: str
+@dataclass
+class Identifier(Expression):
+    name: str
+@dataclass
+class BinaryOperation(Expression):
+    left: Expression
+    operator: str
+    right: Expression
+@dataclass
+class UnaryOperation(Expression):
+    operator: str
+    operand: Expression
+@dataclass
+class FunctionCall(Expression):
+    name: str
+    arguments: List[Expression]
+# Statements
+class Statement(ASTNode):
+    pass
+@dataclass
+class ExpressionStatement(Statement):
+    expression: Expression
+@dataclass
+class Assignment(Statement):
+    name: str
+    value: Expression
+@dataclass
+class IfStatement(Statement):
+    condition: Expression
+    then_branch: 'Block'
+    else_branch: Optional['Block'] = None
+@dataclass
+class ReturnStatement(Statement):
+    value: Optional[Expression] = None
+@dataclass
+class PrintStatement(Statement):
+    value: Expression
+@dataclass
+class Block(Statement):
+    statements: List[Statement]
+@dataclass
+class FunctionDefinition(Statement):
+    name: str
+    parameters: List[str]
+    body: Block
+@dataclass
+class Program(ASTNode):
+    statements: List[Statement]
+# =============================================================================
+# PARSER
+# =============================================================================
+class Parser:
+    def __init__(self, lexer: Lexer):
+        self.lexer = lexer
+        self.current_token = self.lexer.get_next_token()
+    
+    def error(self, message: str):
+        raise Exception(f"Parser error at line {self.current_token.line}, column {self.current_token.column}: {message}")
+    
+    def eat(self, token_type: TokenType):
+        if self.current_token.type == token_type:
+            self.current_token = self.lexer.get_next_token()
+        else:
+            self.error(f"Expected {token_type}, got {self.current_token.type}")
+    
+    def skip_newlines(self):
+        while self.current_token.type == TokenType.NEWLINE:
+            self.eat(TokenType.NEWLINE)
+    
+    def parse(self) -> Program:
+        statements = []
+        
+        while self.current_token.type != TokenType.EOF:
+            self.skip_newlines()
+            if self.current_token.type == TokenType.EOF:
+                break
+            
+            stmt = self.parse_statement()
+            if stmt:
+                statements.append(stmt)
+        
+        return Program(statements)
+    
+    def parse_statement(self) -> Optional[Statement]:
+        self.skip_newlines()
+        
+        if self.current_token.type == TokenType.LET:
+            return self.parse_assignment()
+        elif self.current_token.type == TokenType.IF:
+            return self.parse_if_statement()
+        elif self.current_token.type == TokenType.FUNC:
+            return self.parse_function_definition()
+        elif self.current_token.type == TokenType.RETURN:
+            return self.parse_return_statement()
+        elif self.current_token.type == TokenType.PRINT:
+            return self.parse_print_statement()
+        else:
+            return self.parse_expression_statement()
+    
+    def parse_assignment(self) -> Assignment:
+        self.eat(TokenType.LET)
+        
+        if self.current_token.type != TokenType.IDENTIFIER:
+            self.error("Expected identifier after 'let'")
+        
+        name = self.current_token.value
+        self.eat(TokenType.IDENTIFIER)
+        self.eat(TokenType.ASSIGN)
+        
+        value = self.parse_expression()
+        return Assignment(name, value)
+    
+    def parse_if_statement(self) -> IfStatement:
+        self.eat(TokenType.IF)
+        self.eat(TokenType.LPAREN)
+        
+        condition = self.parse_expression()
+        
+        self.eat(TokenType.RPAREN)
+        
+        then_branch = self.parse_block()
+        else_branch = None
+        
+        if self.current_token.type == TokenType.ELSE:
+            self.eat(TokenType.ELSE)
+            else_branch = self.parse_block()
+        
+        return IfStatement(condition, then_branch, else_branch)
+    
+    def parse_function_definition(self) -> FunctionDefinition:
+        self.eat(TokenType.FUNC)
+        
+        if self.current_token.type != TokenType.IDENTIFIER:
+            self.error("Expected function name")
+        
+        name = self.current_token.value
+        self.eat(TokenType.IDENTIFIER)
+        
+        self.eat(TokenType.LPAREN)
+        
+        parameters = []
+        if self.current_token.type != TokenType.RPAREN:
+            parameters.append(self.current_token.value)
+            self.eat(TokenType.IDENTIFIER)
+            
+            while self.current_token.type == TokenType.COMMA:
+                self.eat(TokenType.COMMA)
+                parameters.append(self.current_token.value)
+                self.eat(TokenType.IDENTIFIER)
+        
+        self.eat(TokenType.RPAREN)
+        
+        body = self.parse_block()
+        
+        return FunctionDefinition(name, parameters, body)
+    
+    def parse_return_statement(self) -> ReturnStatement:
+        self.eat(TokenType.RETURN)
+        
+        value = None
+        if self.current_token.type not in [TokenType.NEWLINE, TokenType.EOF, TokenType.RBRACE]:
+            value = self.parse_expression()
+        
+        return ReturnStatement(value)
+    
+    def parse_print_statement(self) -> PrintStatement:
+        self.eat(TokenType.PRINT)
+        self.eat(TokenType.LPAREN)
+        
+        value = self.parse_expression()
+        
+        self.eat(TokenType.RPAREN)
+        
+        return PrintStatement(value)
+    
+    def parse_expression_statement(self) -> ExpressionStatement:
+        expr = self.parse_expression()
+        return ExpressionStatement(expr)
+    
+    def parse_block(self) -> Block:
+        statements = []
+        
+        self.eat(TokenType.LBRACE)
+        self.skip_newlines()
+        
+        while self.current_token.type != TokenType.RBRACE and self.current_token.type != TokenType.EOF:
+            stmt = self.parse_statement()
+            if stmt:
+                statements.append(stmt)
+            self.skip_newlines()
+        
+        self.eat(TokenType.RBRACE)
+        
+        return Block(statements)
+    
+    def parse_expression(self) -> Expression:
+        return self.parse_comparison()
+    
+    def parse_comparison(self) -> Expression:
+        expr = self.parse_addition()
+        
+        while self.current_token.type in [TokenType.EQUALS, TokenType.NOT_EQUALS,
+                                         TokenType.GREATER, TokenType.LESS,
+                                         TokenType.GREATER_EQUAL, TokenType.LESS_EQUAL]:
+            op = self.current_token.value
+            self.eat(self.current_token.type)
+            right = self.parse_addition()
+            expr = BinaryOperation(expr, op, right)
+        
+        return expr
+    
+    def parse_addition(self) -> Expression:
+        expr = self.parse_multiplication()
+        
+        while self.current_token.type in [TokenType.PLUS, TokenType.MINUS]:
+            op = self.current_token.value
+            self.eat(self.current_token.type)
+            right = self.parse_multiplication()
+            expr = BinaryOperation(expr, op, right)
+        
+        return expr
+    
+    def parse_multiplication(self) -> Expression:
+        expr = self.parse_unary()
+        
+        while self.current_token.type in [TokenType.MULTIPLY, TokenType.DIVIDE]:
+            op = self.current_token.value
+            self.eat(self.current_token.type)
+            right = self.parse_unary()
+            expr = BinaryOperation(expr, op, right)
+        
+        return expr
+    
+    def parse_unary(self) -> Expression:
+        if self.current_token.type in [TokenType.PLUS, TokenType.MINUS]:
+            op = self.current_token.value
+            self.eat(self.current_token.type)
+            expr = self.parse_unary()
+            return UnaryOperation(op, expr)
+        
+        return self.parse_primary()
+    
+    def parse_primary(self) -> Expression:
+        if self.current_token.type == TokenType.NUMBER:
+            value = self.current_token.value
+            self.eat(TokenType.NUMBER)
+            return NumberLiteral(value)
+        
+        if self.current_token.type == TokenType.STRING:
+            value = self.current_token.value
+            self.eat(TokenType.STRING)
+            return StringLiteral(value)
+        
+        if self.current_token.type == TokenType.IDENTIFIER:
+            name = self.current_token.value
+            self.eat(TokenType.IDENTIFIER)
+            
+            # Check for function call
+            if self.current_token.type == TokenType.LPAREN:
+                self.eat(TokenType.LPAREN)
+                
+                args = []
+                if self.current_token.type != TokenType.RPAREN:
+                    args.append(self.parse_expression())
+                    
+                    while self.current_token.type == TokenType.COMMA:
+                        self.eat(TokenType.COMMA)
+                        args.append(self.parse_expression())
+                
+                self.eat(TokenType.RPAREN)
+                return FunctionCall(name, args)
+            
+            return Identifier(name)
+        
+        if self.current_token.type == TokenType.LPAREN:
+            self.eat(TokenType.LPAREN)
+            expr = self.parse_expression()
+            self.eat(TokenType.RPAREN)
+            return expr
+        
+        self.error(f"Unexpected token: {self.current_token.type}")
+# =============================================================================
+# INTERPRETER
+# =============================================================================
+class Environment:
+    def __init__(self, parent=None):
+        self.parent = parent
+        self.variables = {}
+        self.functions = {}
+    
+    def define(self, name: str, value: Any):
+        self.variables[name] = value
+    
+    def get(self, name: str) -> Any:
+        if name in self.variables:
+            return self.variables[name]
+        elif self.parent:
+            return self.parent.get(name)
+        else:
+            raise Exception(f"Undefined variable: {name}")
+    
+    def define_function(self, name: str, func_def: FunctionDefinition):
+        self.functions[name] = func_def
+    
+    def get_function(self, name: str) -> FunctionDefinition:
+        if name in self.functions:
+            return self.functions[name]
+        elif self.parent:
+            return self.parent.get_function(name)
+        else:
+            raise Exception(f"Undefined function: {name}")
+class ReturnException(Exception):
+    def __init__(self, value):
+        self.value = value
+class Interpreter:
+    def __init__(self):
+        self.global_env = Environment()
+        self.current_env = self.global_env
+    
+    def interpret(self, node: ASTNode) -> Any:
+        if isinstance(node, Program):
+            result = None
+            for stmt in node.statements:
+                result = self.interpret(stmt)
+            return result
+        
+        elif isinstance(node, NumberLiteral):
+            return node.value
+        
+        elif isinstance(node, StringLiteral):
+            return node.value
+        
+        elif isinstance(node, Identifier):
+            return self.current_env.get(node.name)
+        
+        elif isinstance(node, BinaryOperation):
+            left = self.interpret(node.left)
+            right = self.interpret(node.right)
+            
+            if node.operator == '+':
+                return left + right
+            elif node.operator == '-':
+                return left - right
+            elif node.operator == '*':
+                return left * right
+            elif node.operator == '/':
+                return left / right
+            elif node.operator == '==':
+                return left == right
+            elif node.operator == '!=':
+                return left != right
+            elif node.operator == '>':
+                return left > right
+            elif node.operator == '<':
+                return left < right
+            elif node.operator == '>=':
+                return left >= right
+            elif node.operator == '<=':
+                return left <= right
+        
+        elif isinstance(node, UnaryOperation):
+            operand = self.interpret(node.operand)
+            
+            if node.operator == '+':
+                return +operand
+            elif node.operator == '-':
+                return -operand
+        
+        elif isinstance(node, Assignment):
+            value = self.interpret(node.value)
+            self.current_env.define(node.name, value)
+            return value
+        
+        elif isinstance(node, ExpressionStatement):
+            return self.interpret(node.expression)
+        
+        elif isinstance(node, PrintStatement):
+            value = self.interpret(node.value)
+            print(value)
+            return value
+        
+        elif isinstance(node, Block):
+            result = None
+            for stmt in node.statements:
+                result = self.interpret(stmt)
+            return result
+        
+        elif isinstance(node, IfStatement):
+            condition = self.interpret(node.condition)
+            
+            if condition:
+                return self.interpret(node.then_branch)
+            elif node.else_branch:
+                return self.interpret(node.else_branch)
+        
+        elif isinstance(node, FunctionDefinition):
+            self.current_env.define_function(node.name, node)
+            return None
+        
+        elif isinstance(node, FunctionCall):
+            func_def = self.current_env.get_function(node.name)
+            
+            if len(node.arguments) != len(func_def.parameters):
+                raise Exception(f"Function {node.name} expects {len(func_def.parameters)} arguments, got {len(node.arguments)}")
+            
+            # Create new environment for function execution
+            func_env = Environment(self.current_env)
+            
+            # Bind parameters to arguments
+            for param, arg in zip(func_def.parameters, node.arguments):
+                arg_value = self.interpret(arg)
+                func_env.define(param, arg_value)
+            
+            # Execute function body
+            old_env = self.current_env
+            self.current_env = func_env
+            
+            try:
+                result = self.interpret(func_def.body)
+                return result
+            except ReturnException as ret:
+                return ret.value
+            finally:
+                self.current_env = old_env
+        
+        elif isinstance(node, ReturnStatement):
+            value = None
+            if node.value:
+                value = self.interpret(node.value)
+            raise ReturnException(value)
+        
+        return None
+# =============================================================================
+# MAIN
+# =============================================================================
+def run_simple_script(code: str):
+    """Executa código SimpleScript"""
+    try:
+        # Tokenização
+        lexer = Lexer(code)
+        
+        # Parsing
+        parser = Parser(lexer)
+        ast = parser.parse()
+        
+        # Interpretação
+        interpreter = Interpreter()
+        result = interpreter.interpret(ast)
+        
+        return result
+    
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
+def print_ast(node, indent=0):
+    """Função helper para visualizar a AST"""
+    spaces = "  " * indent
+    
+    if isinstance(node, Program):
+        print(f"{spaces}Program:")
+        for stmt in node.statements:
+            print_ast(stmt, indent + 1)
+    
+    elif isinstance(node, Assignment):
+        print(f"{spaces}Assignment: {node.name}")
+        print_ast(node.value, indent + 1)
+    
+    elif isinstance(node, BinaryOperation):
+        print(f"{spaces}BinaryOp: {node.operator}")
+        print_ast(node.left, indent + 1)
+        print_ast(node.right, indent + 1)
+    
+    elif isinstance(node, NumberLiteral):
+        print(f"{spaces}Number: {node.value}")
+    
+    elif isinstance(node, StringLiteral):
+        print(f"{spaces}String: '{node.value}'")
+    
+    elif isinstance(node, Identifier):
+        print(f"{spaces}Identifier: {node.name}")
+    
+    elif isinstance(node, IfStatement):
+        print(f"{spaces}If:")
+        print(f"{spaces}  Condition:")
+        print_ast(node.condition, indent + 2)
+        print(f"{spaces}  Then:")
+        print_ast(node.then_branch, indent + 2)
+        if node.else_branch:
+            print(f"{spaces}  Else:")
+            print_ast(node.else_branch, indent + 2)
+    
+    elif isinstance(node, Block):
+        print(f"{spaces}Block:")
+        for stmt in node.statements:
+            print_ast(stmt, indent + 1)
+    
+    elif isinstance(node, FunctionDefinition):
+        print(f"{spaces}Function: {node.name}")
+        print(f"{spaces}  Parameters: {node.parameters}")
+        print(f"{spaces}  Body:")
+        print_ast(node.body, indent + 1)
+    
+    elif isinstance(node, FunctionCall):
+        print(f"{spaces}FunctionCall: {node.name}")
+        print(f"{spaces}  Arguments:")
+        for arg in node.arguments:
+            print_ast(arg, indent + 2)
+    
+    elif isinstance(node, PrintStatement):
+        print(f"{spaces}Print:")
+        print_ast(node.value, indent + 1)
+    
+    else:
+        print(f"{spaces}{type(node).__name__}")
+# =============================================================================
+# EXEMPLO DE USO
+# =============================================================================
+if __name__ == "__main__":
+    # Exemplo 1: Operações básicas
+    print("=== Exemplo 1: Operações básicas ===")
+    code1 = """
+    let x = 10
+    let y = 20
+    let result = x + y * 2
+    print(result)
+    """
+    
+    lexer = Lexer(code1)
+    parser = Parser(lexer)
+    ast = parser.parse()
+    
+    print("AST:")
+    print_ast(ast)
+    
+    print("\nExecução:")
+    run_simple_script(code1)
+    
+    # Exemplo 2: Condicionais
+    print("\n=== Exemplo 2: Condicionais ===")
+    code2 = """
+    let age = 25
+    if (age >= 18) {
+        print("Adulto")
+    } else {
+        print("Menor de idade")
+    }
+    """
+    
+    print("Execução:")
+    run_simple_script(code2)
+    
+    # Exemplo 3: Funções
+    print("\n=== Exemplo 3: Funções ===")
+    code3 = """
+    func add(a, b) {
+        return a + b
+    }
+    
+    func greet(name) {
+        print("Olá, " + name + "!")
+    }
+    
+    let soma = add(5, 3)
+    print(soma)
+    greet("João")
+    """
+    
+    print("Execução:")
+    run_simple_script(code3)

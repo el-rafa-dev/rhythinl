@@ -22,7 +22,8 @@
 #include <iostream>
 #include <iostream>
 
-/** * @name local includes
+/** 
+ * @name local includes
  * @brief include files from the src dir
  **/
 

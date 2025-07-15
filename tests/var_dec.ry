@@ -1,0 +1,20 @@
+# using "./rhythins.ry"
+
+def main:func() -> 
+[
+    def val1:int32 := 1
+    def val2:int32 := 1
+
+    def val3:int32 := val1 + val2 / 2
+
+    loop (val:int32 in val3) -> 
+    [
+        print("Hello $[val]")
+        if (val != 23) -> 
+        [
+            print("val is not equals 23")
+           continue
+        ]
+        stop
+    ]
+]

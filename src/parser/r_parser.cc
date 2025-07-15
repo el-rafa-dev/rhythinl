@@ -859,6 +859,7 @@ namespace Rythin
                         val += consume(TokensTypes::TOKEN_STRING_LITERAL).value;       
                         break;
                     case TokensTypes::TOKEN_IDENTIFIER:
+                        // em breve adiciono suporte
                         break;
                     default:
                         LogErrors::getInstance().addError("Invalid value for a charseq type", 51, current().line, current().column);
@@ -962,7 +963,8 @@ namespace Rythin
         case TokensTypes::TOKEN_INT_64:
         case TokensTypes::TOKEN_FLOAT_32:
         case TokensTypes::TOKEN_FLOAT_64:
-            parsed_val = ParseAdditiveExpression(); // Now calls the top-level arithmetic expression parser
+            // Now calls the top-level arithmetic expression parser
+            parsed_val = ParseIntVal();
             break;
         case TokensTypes::TOKEN_BYTES:
             parsed_val = ParseByteVal();
@@ -1035,7 +1037,8 @@ namespace Rythin
                         case TokensTypes::TOKEN_INT_64:
                         case TokensTypes::TOKEN_FLOAT_32:
                         case TokensTypes::TOKEN_FLOAT_64:
-                            arg_val = ParseNumeralExpression();
+                            // arg_val = ParseNumeralExpression();
+                            arg_val = ParseIntVal();
                             break;
                         case TokensTypes::TOKEN_TRUE:
                         case TokensTypes::TOKEN_FALSE:

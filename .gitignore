@@ -4,8 +4,8 @@ CMakeFiles/
 cmake-build-debug/
 .idea/
 *.i
-*.ry
 r_parser.cc.
 rhythin
 CMakeCache.txt
 cmake_install.cmake
+langs/

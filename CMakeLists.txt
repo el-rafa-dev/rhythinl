@@ -21,6 +21,9 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS OFF)
 
+# a test flag to force the compilation for rythin as static 
+set(CMAKE_EXE_LINKER_FLAGS "-static")
+
 set(RHYTHIN_SRC_CORE
     src/rhythin.cc
     src/lexer/r_lex.cc

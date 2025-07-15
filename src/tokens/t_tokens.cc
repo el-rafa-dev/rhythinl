@@ -110,6 +110,8 @@ std::string Tokens::tokenTypeToString(TokensTypes type)
         return "^";
 
     // keywords
+    case TokensTypes::TOKEN_PARALLEL:
+        return "parallel";
     case TokensTypes::TOKEN_USING:
         return "using";
     case TokensTypes::TOKEN_CONST:

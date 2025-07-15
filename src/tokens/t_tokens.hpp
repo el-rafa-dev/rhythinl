@@ -19,7 +19,7 @@
 #ifndef T_TOKENS_H
 #define T_TOKENS_H
 
-struct Tokens
+class Tokens
 {
     public:
         TokensTypes type;

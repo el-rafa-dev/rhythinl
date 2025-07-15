@@ -100,7 +100,8 @@ enum class TokensTypes {
     TOKEN_NIL,
     TOKEN_INTERP_START,
     TOKEN_INTERP_END,
-    TOKEN_HAS
+    TOKEN_HAS,
+    TOKEN_PARALLEL
 };
 
 #endif
