@@ -9,12 +9,12 @@ def main:func() ->
 
     loop (val:int32 in val3) -> 
     [
-        print("Hello $[val]")
+        println("Hello $[val]")
         if (val != 23) -> 
         [
-            print("val is not equals 23")
-           continue
+            println("val is not equals 23")
+           #continue
         ]
-        stop
+        #stop
     ]
 ]

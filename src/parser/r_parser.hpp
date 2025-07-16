@@ -53,8 +53,6 @@ namespace Rythin {
         ASTPtr ParseCinput();
         ASTPtr ParseLoopCondition();
         ASTPtr ParseLoopCond();
-        ASTPtr ParsePositiveVals(TokensTypes curr);
-        ASTPtr ParseNegativeVals(TokensTypes curr);
         ASTPtr ParseVarDeclaration();
         ASTPtr ParseVarCall();
         ASTPtr ParseCharseqValues();

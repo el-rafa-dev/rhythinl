@@ -76,7 +76,7 @@ namespace Rythin
                 Rythin::Parser parser(tokens);
                 std::vector<ASTPtr> nodes = parser.Parse();
 
-                Rythin::SemanticAnalyzer analyzer;
+                Rythin::SemanticAnalyzer analyzer; 
                 for (ASTPtr &stmts : nodes)
                 {
                     analyzer.VisitNode(stmts);
